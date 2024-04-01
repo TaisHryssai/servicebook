@@ -32,10 +32,12 @@ import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 @RequestMapping("/minha-conta/cliente")
 @Controller
@@ -104,6 +106,23 @@ public class ClientController {
     @Autowired
     private ProfessionalMapper professionalMapper;
 
+    @Autowired
+    private PaymentService paymentService;
+
+    @Autowired
+    private PaymentMapper paymentMapper;
+
+    @Autowired
+    private PaymentVoucherService paymentVoucherService;
+
+    @Autowired
+    private PaymentVoucherMapper paymentVoucherMapper;
+
+    @Autowired
+    private PaymentJobService paymentJobService;
+
+    @Autowired
+    private PaymentJobMapper paymentJobMapper;
 
     /**
      * Método que apresenta a tela inicial do cliente
@@ -775,5 +794,132 @@ public class ClientController {
         jobContractedService.save(jobContracted);
 
         return "redirect:/minha-conta/cliente/meus-pedidos/"+jobId;
+    }
+
+    /**
+     * Responsável por realizar o pagamento via API Mercado Pago.
+     */
+    @PostMapping("/pagamento")
+    @RolesAllowed({RoleType.USER})
+    public ResponseEntity<?> createPayment(@RequestBody Map<String, Object> paymentData){
+        ResponseDTO response = new ResponseDTO();
+
+        try {
+            if (paymentData == null || paymentData.isEmpty()) {
+                response.setMessage("Erro ao enviar dados. Verifique os campos e tente novamente!");
+                return ResponseEntity.status(400).body(response);
+            }
+
+            Optional<User> oUser = (userService.findByEmail(authentication.getEmail()));
+
+            if (!oUser.isPresent()) {
+                response.setMessage("Usuário não autenticado! Por favor, realize sua autenticação no sistema.");
+                return ResponseEntity.status(401).body(response);
+            }
+
+            ResponseEntity<?> paymentResponse = paymentService.pay(paymentData);
+
+            if(!paymentResponse.getStatusCode().is2xxSuccessful()){
+                response.setMessage("Erro ao processar pagamento. Tente novamente");
+                return ResponseEntity.status(paymentResponse.getStatusCode()).body(response);
+            }
+
+            Object responseBody = paymentResponse.getBody();
+
+            Map<?, ?> responseMap = (Map<?, ?>) responseBody;
+            Integer paymentId = (Integer) responseMap.get("id");
+            String status = (String) responseMap.get("status");
+
+            PaymentDTO paymentDTO = new PaymentDTO(paymentId, status);
+            Payment payment = paymentMapper.toEntity(paymentDTO);
+
+            paymentService.save(payment);
+
+            response.setData(paymentResponse.getBody());
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.setMessage("Erro ao fazer pagamento. Por favor, tente novamente.");
+            return ResponseEntity.status(400).body(response);
+        }
+    }
+
+    /**
+     * Apos processar o pagamento, ele é inserido na tabela payments_jobRequests
+     * contendo o id do pagamento e do serviço que foi realizado o pagamento.
+     * Finalizado este processo é preciso gerar um comprovante do pagamento
+     * tanto para cliente quanto profissional, que sera enviado por email
+     * **/
+    @PostMapping("/pagamento/jobRequest")
+    @RolesAllowed({RoleType.USER})
+    public ModelAndView savePaymentJob(@RequestBody  PaymentJobDTO dto, BindingResult errors, RedirectAttributes redirectAttributes){
+        ModelAndView modelAndView = new ModelAndView();
+        final Date now = new Date();
+
+        Optional<Payment> oPayment = paymentService.find(dto.getPaymentId());
+        Optional<JobRequest> oJobRequest = jobRequestService.findById(dto.getJobRequestId());
+
+        PaymentJobRequest paymentJob = new PaymentJobRequest();
+        paymentJob.setJobRequestId(dto.getJobRequestId());
+        paymentJob.setPayment(oPayment.get());
+        paymentJob.setJobRequest(oJobRequest.get());
+        paymentJob.setDateCreated(now);
+
+        paymentJobService.save(paymentJob);
+
+        createVoucherPayment(paymentJob); // GERA O COMPROVANTE DE PAGAMENTO
+
+        modelAndView.addObject("mensagem", "Pagamento processado com sucesso!");
+
+        return modelAndView;
+    }
+
+    public String createVoucherPayment(PaymentJobRequest paymentJob){
+        /*Busca o job request - cliente*/
+        Optional<JobRequest> oJobRequest = jobRequestService.findById(paymentJob.getJobRequestId());
+
+        /*Traz o profissional*/
+        Optional<JobContracted> oJobContracted = jobContractedService.findByJobRequest(oJobRequest.get());
+
+        /*Traz o servico*/
+        Optional<Expertise> oExpertise = expertiseService.findById(oJobRequest.get().getExpertise().getId());
+
+        PaymentVoucher paymentVoucher = new PaymentVoucher();
+        paymentVoucher.setClient(oJobRequest.get().getUser());
+        paymentVoucher.setProfessional(oJobContracted.get().getUser());
+        paymentVoucher.setCode(gerarCodigoAlfanumerico());
+        paymentVoucher.setJobRequest(oJobRequest.get());
+
+        String emailProfissional = oJobContracted.get().getUser().getEmail();
+        String emailClient = oJobRequest.get().getUser().getEmail();
+
+        paymentVoucherService.save(paymentVoucher);
+        Date dataInicial = paymentJob.getDateCreated();
+        Date dataAtual = new Date();
+
+        // Converter LocalDate para Date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dataAtual);
+
+        // Incrementando 15 dias
+        calendar.add(Calendar.DATE, 15);
+
+        // Obtendo a nova data após o incremento
+        Date dataFinal = calendar.getTime();
+
+        /*Envio de email para o profissional*/
+        quartzService.sendEmailPaymentVoucher(paymentVoucher.getCode(),
+                oJobRequest.get().getUser().getId(), oJobContracted.get().getUser().getId(), oExpertise.get().getName(), sdf.format(dataFinal));
+
+        return "redirect:/minha-conta/cliente#executados";
+    }
+
+    /* Gera código aleatorico e unico para gravação de comprovante */
+    private String gerarCodigoAlfanumerico() {
+        UUID uuid = UUID.randomUUID();
+        String codigo = uuid.toString().replace("-", "").substring(0, 10);
+        return codigo.toUpperCase();
     }
 }

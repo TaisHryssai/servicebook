@@ -7,6 +7,15 @@
 <jsp:useBean id="jobRequest" type="br.edu.utfpr.servicebook.model.dto.JobRequestFullDTO" scope="request"/>
 <jsp:useBean id="candidates" type="java.util.List<br.edu.utfpr.servicebook.model.dto.JobCandidateDTO>" scope="request"/>
 
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+    const mpPublicKEy = 'TEST-1e11381f-3efe-4d15-b55a-0ec993c0d477';
+    const mpInstance = new MercadoPago(mpPublicKEy, {
+        locale: "pt-BR",
+    });
+    const bricksBuilder = mpInstance.bricks();
+</script>
+
 <head>
     <!-- Funciona apenas com caminho absoluto porque é renderizado antes da tag base -->
     <link href="${pageContext.request.contextPath}/assets/resources/styles/client/client.css" rel="stylesheet">
@@ -106,6 +115,25 @@
                                             class="waves-effect waves-light btn spacing-buttons red modal-trigger"
                                     >Excluir</a
                                     >
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12">
+                                <div class="right-align">
+                                    <a href="minha-conta/cliente"
+                                       class="spacing-buttons waves-effect waves-light btn">Voltar para
+                                        solicitações</a>
+                                    <a class="spacing-buttons waves-effect waves-light btn green"
+                                       onClick="showPayment(${jobRequest.id})">Pagamento</a>
+                                </div>
+                            </div>
+
+                            <div class="col s12 m12">
+                                <div class="center">
+                                    <div id="paymentBrick_container" class="brick-payment"
+                                         style="display:none;"></div>
+                                    <div id="statusScreenBrick_container" class="brick-status"
+                                         style="display:none;"></div>
                                 </div>
                             </div>
                         </div>

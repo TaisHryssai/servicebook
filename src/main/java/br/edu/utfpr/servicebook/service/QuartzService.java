@@ -213,4 +213,30 @@ public class QuartzService {
             System.out.println(e.getMessage());
         }
     }
+
+    /** Envio de email para o cliente e profissional com o comprovante de pagamento*/
+    public void sendEmailPaymentVoucher(String codePayment, Long client, Long professional, String service, String date) {
+        try {
+            System.out.println("clientId---------------------");
+            System.out.println(client);
+            JobDetail job = JobBuilder.newJob(SendEmailVoucher.class)
+                    .withIdentity(SendEmailVoucher.class.getSimpleName(), GROUP).build();
+            job.getJobDataMap().put(SendEmailVoucher.PAYMENT_KEY, codePayment);
+            job.getJobDataMap().put(String.valueOf((Long) SendEmailVoucher.CLIENT_ID), client);
+            job.getJobDataMap().put(String.valueOf(SendEmailVoucher.PROFESSIONAL_ID), professional);
+            job.getJobDataMap().put(SendEmailVoucher.SERVICE_KEY, service);
+            job.getJobDataMap().put(SendEmailVoucher.DATE_KEY, date);
+
+            Trigger trigger = getTrigger(SendEmailWithVerificationCodeJob.class.getSimpleName(), GROUP);
+
+            scheduler.scheduleJob(job, trigger);
+
+            if (!scheduler.isStarted()) {
+                scheduler.start();
+            }
+
+        }catch (SchedulerException e){
+            System.out.println(e.getMessage());
+        }
+    }
 }
