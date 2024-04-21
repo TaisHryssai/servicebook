@@ -1,4 +1,3 @@
-
 function showPayment(jobRequestId) {
 
     if ($(".brick-payment").is(":hidden")) {
@@ -120,7 +119,6 @@ function paymentJobRequest(paymentId, jobRequestId) {
     const URL = "/servicebook/minha-conta/cliente/pagamento/jobRequest";
 
     var dto = {
-        id: null,
         jobRequestId: jobRequestId,
         paymentId: 1,
     };

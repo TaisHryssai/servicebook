@@ -104,13 +104,13 @@ public class JobContractedController {
         JobContracted jobContracted = oJobContracted.get();
 
         if (dto.isConfirm()) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             JobRequest jobRequest = jobContracted.getJobRequest();
             jobRequest.setStatus(JobRequest.Status.TO_DO);
             jobRequestService.save(jobRequest);
 
-            jobContracted.setTodoDate(LocalDate.parse(dto.getTodoDate(), dateTimeFormatter));
+//            jobContracted.setTodoDate(LocalDate.parse(dto.getTodoDate(), dateTimeFormatter));
+            jobContracted.setTodoDate(LocalDate.parse(dto.getTodoDate()));
             jobContractedService.save(jobContracted);
         } else {
             JobRequest jobRequest = jobContracted.getJobRequest();

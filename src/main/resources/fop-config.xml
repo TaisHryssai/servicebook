@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fop version="1.0">
+    <fonts>
+<!--        <directory>D:\java-external-resources\fonts</directory>-->
+        <!--auto-detect /-->
+    </fonts>
+</fop>

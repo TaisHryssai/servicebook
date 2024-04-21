@@ -658,3 +658,17 @@ textarea {
 .expertise-select-card:hover{
   background-color: #4962B3;
 }
+
+.card-request1{
+  color: white;
+  font-size: 130%;
+  padding: 15px;
+}
+
+.spacing-standard-request{
+  margin-top: 30px;
+}
+
+.btn-view-request{
+  width: 150px;
+}

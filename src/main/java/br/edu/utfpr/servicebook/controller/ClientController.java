@@ -16,9 +16,13 @@ import br.edu.utfpr.servicebook.util.pagination.PaginationDTO;
 import br.edu.utfpr.servicebook.util.pagination.PaginationUtil;
 import br.edu.utfpr.servicebook.util.UserTemplateInfo;
 import br.edu.utfpr.servicebook.util.TemplateUtil;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import org.apache.batik.transcoder.TranscoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,6 +35,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.transform.TransformerException;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -38,6 +44,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import com.google.zxing.WriterException;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.fop.configuration.ConfigurationException;
 
 @RequestMapping("/minha-conta/cliente")
 @Controller
@@ -124,6 +133,14 @@ public class ClientController {
     @Autowired
     private PaymentJobMapper paymentJobMapper;
 
+    @Autowired
+    private Cloudinary cloudinary;
+
+    @Autowired
+    private ProfessionalServiceOfferingService professionalServiceOfferingService;
+
+    @Value("${svg.certificate.template}")
+    private String svgCertificateTemplate;
     /**
      * Método que apresenta a tela inicial do cliente
      * @return
@@ -292,7 +309,7 @@ public class ClientController {
     public ModelAndView showAvailableJobs(
             HttpServletRequest request,
             @RequestParam(value = "pag", defaultValue = "1") int page,
-            @RequestParam(value = "siz", defaultValue = "3") int size,
+            @RequestParam(value = "siz", defaultValue = "4") int size,
             @RequestParam(value = "ord", defaultValue = "id") String order,
             @RequestParam(value = "dir", defaultValue = "ASC") String direction
     ) throws Exception {
@@ -783,14 +800,19 @@ public class ClientController {
         jobRequest.setStatus(JobRequest.Status.TO_HIRED);
         jobRequestService.save(jobRequest);
 
-        //guarda a data de contratação
-        Optional<JobContracted> oJobContracted = jobContractedService.findByJobRequest(jobRequest);
-        if(!oJobContracted.isPresent()) {
-            throw new EntityNotFoundException("O profissional não pode ser contratado!");
-        }
+        System.out.println("JOBBBBBBBBB" + oJobRequest.get());
 
-        JobContracted jobContracted = oJobContracted.get();
+        //guarda a data de contratação
+        Optional<JobContracted> oJobContracted = jobContractedService.findByJobRequest(oJobRequest.get());
+//        if(!oJobContracted.isPresent()) {
+//            throw new EntityNotFoundException("O profissional não pode ser contratado!");
+//        }
+        Optional<User> oUser = userService.findById(userId);
+
+        JobContracted jobContracted = new JobContracted();
         jobContracted.setHiredDate(LocalDate.now());
+        jobContracted.setJobRequest(oJobRequest.get());
+        jobContracted.setUser(oUser.get());
         jobContractedService.save(jobContracted);
 
         return "redirect:/minha-conta/cliente/meus-pedidos/"+jobId;
@@ -836,7 +858,15 @@ public class ClientController {
             paymentService.save(payment);
 
             response.setData(paymentResponse.getBody());
+
+
+
+            System.out.println("SATTSUS PAGAMENTO.....");
+            System.out.println(status);
+
+
             return ResponseEntity.ok(response);
+
 
         } catch (Exception e) {
             response.setMessage("Erro ao fazer pagamento. Por favor, tente novamente.");
@@ -852,7 +882,7 @@ public class ClientController {
      * **/
     @PostMapping("/pagamento/jobRequest")
     @RolesAllowed({RoleType.USER})
-    public ModelAndView savePaymentJob(@RequestBody  PaymentJobDTO dto, BindingResult errors, RedirectAttributes redirectAttributes){
+    public ModelAndView savePaymentJob(@RequestBody  PaymentJobDTO dto, BindingResult errors, RedirectAttributes redirectAttributes) throws ConfigurationException, TranscoderException, IOException, TransformerException, WriterException {
         ModelAndView modelAndView = new ModelAndView();
         final Date now = new Date();
 
@@ -874,7 +904,7 @@ public class ClientController {
         return modelAndView;
     }
 
-    public String createVoucherPayment(PaymentJobRequest paymentJob){
+    public String createVoucherPayment(PaymentJobRequest paymentJob) throws IOException, TranscoderException, ConfigurationException, TransformerException, WriterException, TransformerException {
         /*Busca o job request - cliente*/
         Optional<JobRequest> oJobRequest = jobRequestService.findById(paymentJob.getJobRequestId());
 
@@ -894,7 +924,6 @@ public class ClientController {
         String emailClient = oJobRequest.get().getUser().getEmail();
 
         paymentVoucherService.save(paymentVoucher);
-        Date dataInicial = paymentJob.getDateCreated();
         Date dataAtual = new Date();
 
         // Converter LocalDate para Date
@@ -908,10 +937,46 @@ public class ClientController {
 
         // Obtendo a nova data após o incremento
         Date dataFinal = calendar.getTime();
+        SimpleDateFormat sdfNovo = new SimpleDateFormat("dd/MM/yyyy");
 
+        String client_name = paymentVoucher.getClient().getName(); // NOME DO CLIENTE
+        String client_fone = paymentVoucher.getClient().getPhoneNumber(); // TELEFONE DO CLIENTE
+        String client_email = paymentVoucher.getClient().getEmail(); // EMAIL DO CLIENTE
+        String client_address_name = paymentVoucher.getClient().getAddress().getNeighborhood(); // ENDEREÇO DO CLIENTE
+        String client_address_number = paymentVoucher.getClient().getAddress().getNumber(); // NUMERO ENDEREÇO DO CLIENTE
+        String client_address = client_address_name + " - " + client_address_number; // ENDEREÇO DO CLIENTE
+
+        String profes_name = paymentVoucher.getProfessional().getName(); // NOME DO PROFISSIONAL
+        String profes_fone = paymentVoucher.getProfessional().getPhoneNumber(); // TELEFONE DO PROFISSIONAL
+        String profes_email = paymentVoucher.getProfessional().getEmail(); // EMAIL DO PROFISSIONAL
+        String profes_address_name = paymentVoucher.getProfessional().getAddress().getNeighborhood(); // ENDEREÇO DO PROFISSIONAL
+        String profes_address_number = paymentVoucher.getProfessional().getAddress().getNumber(); // NUMERO ENDEREÇO DO PROFISSIONAL
+        String profes_address = profes_address_name + " - " + profes_address_number; // ENDEREÇO DO PROFISSIONAL
+
+        String service_name = oJobRequest.get().getExpertise().getName();
+
+        Optional<ProfessionalServiceOffering> optionalProfessionalServiceOffering = professionalServiceOfferingService.findProfessionalServiceOfferingByExpertiseAAndUser(paymentVoucher.getProfessional().getId(), oJobRequest.get().getExpertise().getId());
+
+        String value_service = "0,00";
+        if (optionalProfessionalServiceOffering.isPresent()){
+            value_service = String.valueOf(optionalProfessionalServiceOffering.get().getPrice());
+        }
+
+        File pdfFile = paymentVoucherService.generateCertificate(svgCertificateTemplate, paymentVoucher.getCode(),service_name, sdfNovo.format(dataAtual), sdfNovo.format(dataFinal),
+                client_name, "111111111", client_fone, client_email, profes_name, "10444444440",
+                profes_email, profes_fone, profes_address, "PIX", value_service, "QRDCOD");
+        Map uploadResult = cloudinary.uploader().upload(pdfFile, ObjectUtils.asMap("folder", "certificates"));
+
+        String uploadURL = (String)uploadResult.get("url");
+
+        //envia um email com a URL do certificado
         /*Envio de email para o profissional*/
         quartzService.sendEmailPaymentVoucher(paymentVoucher.getCode(),
-                oJobRequest.get().getUser().getId(), oJobContracted.get().getUser().getId(), oExpertise.get().getName(), sdf.format(dataFinal));
+                oJobRequest.get().getUser().getId(), oJobContracted.get().getUser().getId(), oExpertise.get().getName(), sdf.format(dataFinal), (String)uploadResult.get("url"));
+        pdfFile.delete();
+
+//        (url.openStream(), voucher, service,date, date_due,name_client,document_client,fone_client,mail_client,name_professional, document_professional,
+//                mail_professional, fone_professional, endereco_pro, payment_type, payment_value, qrCode);
 
         return "redirect:/minha-conta/cliente#executados";
     }

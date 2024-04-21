@@ -117,6 +117,7 @@ public class ProfessionalController {
      * Retorna a lista de profissionais de acordo com o termo de busca.
      * Se estiver logado, o usuário poderá ter acesso a todos os profissionais de acordo com a sua busca.
      * Caso seja um visitante, terá acesso a apenas 4 profissionais.
+     *
      * @param searchService
      * @param page
      * @return
@@ -147,7 +148,7 @@ public class ProfessionalController {
             page = 1;
             size = this.paginationSizeVisitor;
         }
-        if(searchService == 0){
+        if (searchService == 0) {
             redirectAttributes.addFlashAttribute("msg", "A atualização foi salva com sucesso!");
         } else {
 
@@ -171,10 +172,15 @@ public class ProfessionalController {
                     .map(s -> categoryMapper.toDto(s))
                     .collect(Collectors.toList());
 
-            PaginationDTO paginationDTO = paginationUtil.getPaginationDTO(professionals, "/profissionais/busca?termo-da-busca="+ searchService);
+            PaginationDTO paginationDTO = paginationUtil.getPaginationDTO(professionals, "/profissionais/busca?termo-da-busca=" + searchService);
 
 
-            mv.addObject("professionals", professionalSearchItemDTOS);
+            List<Individual> professionals1 = individualService.findAllIndividualsAutonomosByService(expertise.get().getId(), page, size);
+            List<ProfessionalSearchItemDTO> professionalSearchItemDTOS1 = professionals1.stream()
+                    .map(s -> individualMapper.toSearchItemDto(s, individualService.getExpertises(s)))
+                    .collect(Collectors.toList());
+
+            mv.addObject("professionals", professionals1);
             mv.addObject("categoryDTOs", categoryDTOs);
             mv.addObject("pagination", paginationDTO);
             mv.addObject("isParam", true);
@@ -185,7 +191,6 @@ public class ProfessionalController {
             mv.addObject("dto_service", service.get());
 
             mv.addObject("professionalServiceOfferingDTOS", professionalServiceOfferingDTOS);
-
         }
 
         return mv;
@@ -194,6 +199,7 @@ public class ProfessionalController {
     /**
      * Retorna a página de detalhes do profissional.
      * Esta página pode ser acessada de forma autenticada ou anônima.
+     *
      * @param id
      * @return
      * @throws Exception
@@ -204,7 +210,7 @@ public class ProfessionalController {
 
         Optional<User> oProfessional = userService.findById(id);
 
-        if(!oProfessional.isPresent()) {
+        if (!oProfessional.isPresent()) {
             throw new EntityNotFoundException("Profissional não encontrado.");
         }
 
@@ -221,10 +227,10 @@ public class ProfessionalController {
 
         //serviços por especialidade
         Map<ProfessionalExpertise, List<ProfessionalServiceOfferingDTO>> servicesByExpertise = new HashMap<>();
-        for(ProfessionalExpertise pe : professionalExpertises) {
+        for (ProfessionalExpertise pe : professionalExpertises) {
             List<ProfessionalServiceOffering> professionalServiceOfferings = professionalServiceOfferingService.findProfessionalServiceOfferingByUserAndExpertise(oProfessional.get().getId(), pe.getExpertise().getId());
 
-            if(professionalServiceOfferings.isEmpty()){
+            if (professionalServiceOfferings.isEmpty()) {
                 continue;
             }
 
@@ -243,7 +249,7 @@ public class ProfessionalController {
         mv.addObject("servicesByExpertise", servicesByExpertise);
 
         //se o cliente está logado, mostra se ele segue o profissional
-        if(oClientAuthenticated.isPresent()){
+        if (oClientAuthenticated.isPresent()) {
             List<Follows> follows = followsService.findFollowProfessionalClient(oProfessional.get(), oClientAuthenticated.get());
             boolean isFollow = !follows.isEmpty();
             UserDTO clientDTO = userMapper.toDto(oClientAuthenticated.get());

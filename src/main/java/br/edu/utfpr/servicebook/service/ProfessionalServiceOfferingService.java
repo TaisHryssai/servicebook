@@ -49,6 +49,13 @@ public class ProfessionalServiceOfferingService {
         return professionalServiceOfferingRepository.findProfessionalServiceOfferingByUser(user);
     }
 
+    public List<ProfessionalServiceOffering> findFirst3ProfessionalServiceOfferingByUserAndType(User user, Enum type){
+        return professionalServiceOfferingRepository.findFirst3ByUserAndType(user, type);
+    }
+
+    public List<ProfessionalServiceOffering> findProfessionalServiceOfferingByUserAndType(User user, Enum type){
+        return professionalServiceOfferingRepository.findByUserAndType(user, type);
+    }
     /**
      * Busca todas as ofertas de serviços de um profissional
      * @param id
@@ -107,4 +114,25 @@ public class ProfessionalServiceOfferingService {
         return this.professionalServiceOfferingRepository.findAllIndividualsByService(searchTerm, pageRequest);
     }
 
+
+    /**
+     * Busca o serviço pelo id.
+     * @param id
+     * @return
+     */
+    public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingByName(Long id){
+        return professionalServiceOfferingRepository.findProfessionalServiceOfferingById(id);
+    }
+
+    public List<ProfessionalServiceOffering> findAllByProfessionalServicePackageOfferingUser(User professionalServicePackageOffering){
+        return professionalServiceOfferingRepository.findProfessionalServiceOfferingAdItemsByUser(professionalServicePackageOffering);
+    }
+
+    public List<ProfessionalServiceOffering> findAll(){
+        return professionalServiceOfferingRepository.findDistinctProfessionalServiceOfferings();
+    }
+
+    public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingByExpertiseAAndUser(Long user, Long expertise){
+        return professionalServiceOfferingRepository.findProfessionalServiceOfferingByExpertiseAAndUser(user, expertise);
+    }
 }

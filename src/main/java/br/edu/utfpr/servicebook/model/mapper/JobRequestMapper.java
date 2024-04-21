@@ -25,6 +25,8 @@ public class JobRequestMapper {
     @Autowired
     private ExpertiseMapper expertiseMapper;
 
+    @Autowired
+    private ClientMapper clientMapper;
     public JobRequestDTO toDto(JobRequest entity) {
         return mapper.map(entity, JobRequestDTO.class);
     }
@@ -48,6 +50,7 @@ public class JobRequestMapper {
         JobRequestMinDTO dto = mapper.map(entity, JobRequestMinDTO.class);
         dto.setAmountOfCandidates(amountOfCandidates);
         dto.setExpertiseDTO(expertiseMapper.toDto(entity.getExpertise()));
+//        dto.setClientDTO(clientMapper.toDto1(entity.getUser()));
         dto.setDateCreated(this.dateTimeFormatter.format(entity.getDateCreated()));
         dto.setDateTarget(this.dateTimeFormatter.format(entity.getDateTarget()));
 

@@ -88,10 +88,19 @@ INSERT INTO services (name, description, allow_scheduling, path_icon, expertise_
 VALUES ('Balanceamento', 'Balanceamento das rodas', false, 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176876/servicebook/expertises/mecanico_quczum.svg', 4),
        ('Troca de óleo', 'Troca do óleo do motor', false, 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176876/servicebook/expertises/mecanico_quczum.svg', 4);
 
-INSERT INTO professional_service_offerings (name, description, price, service_id, user_id)
-VALUES ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000,  1, 2),
-       ('Troca de óleo', 'Troca de óleo', 25000,  2, 2);
+-- INSERT INTO professional_service_offerings (name, description, price, unit, duration, service_id, user_id, type, id)
+-- VALUES ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'INDIVIDUAL', 1),
+--  ('Balanceamento com máquina importada1', 'O balanceamento com 100% de garantia', 219000, 'Hora', '2 Horas', 1, 2, 'COMBINED_PACKAGE', 2);
+--  ('Balanceamento com máquina importada2', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'INDIVIDUAL', 3),
+--  ('Balanceamento com máquina importada3', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'INDIVIDUAL', 4);
+--        (null, null, 2, 2);
 
+-- INSERT INTO professional_service_package_offering (name, description, price, unit, duration, service_id, user_id, type, amount,id)
+-- VALUES ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'SIMPLE_PACKAGE', 2, 1),
+--  ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'COMBINED_PACKAGE', 2, 2);
+--  ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'SIMPLE_PACKAGE', 2, 3),
+--  ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'SIMPLE_PACKAGE', 2, 4),
+--  ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'SIMPLE_PACKAGE', 2, 5);
 
 INSERT INTO companies (cnpj, id)
 VALUES ('98.988.640/0001-91', 7);
@@ -129,19 +138,19 @@ VALUES ('false', '2021-01-01', '2021-01-01', 'Preciso de um Encanador 1!', 'true
 
 
 INSERT INTO job_contracted (comments, rating, job_request, professional, hired_date, todo_date)
-VALUES ('Ótimo Encanador!', '5', '19', '5', '2021-04-01', '2021-08-26'),
-       ('Ótimo Eletricista!', '5', '10', '2', '2021-04-01', '2021-08-26'),
-       ('Ótimo Pintor!', '5', '16', '2', '2021-04-01', '2021-08-26'),
-       ('Bom Encanador!', '3', '5', '2', '2021-04-01', '2021-08-26'),
-       ('Bom Encanador!', '3', '8', '2', '2021-04-01', '2021-08-26'),
-       ('Bom Encanador!', '3', '9', '2', '2021-04-01', '2021-08-26'),
-       ('Péssimo Encanador!', '1', '6', '2', '2021-04-01', '2021-08-26'),
-       ('Bom Eletricista!', '3', '11', '2', '2021-04-01', '2021-08-26'),
-       ('Péssimo Eletricista!', '1', '12', '2', '2021-04-01', '2021-08-26'),
-       ('Bom Pintor!', '3', '15', '2', '2021-04-01','2021-08-26'),
-       ('Bom Pintor!', '3', '20', '2', '2021-04-01', '2021-08-26'),
-       ('Bom Pintor!', '3', '21', '2', '2021-04-01', '2021-08-26'),
-       ('Péssimo Pintor!', '1', '14', '2', '2021-04-01', '2021-08-26');
+VALUES ('Ótimo Encanador!', '5', '19', '5', '2024-04-01', '2024-08-26'),
+       ('Ótimo Eletricista!', '5', '10', '2', '2024-04-01', '2024-08-26'),
+       ('Ótimo Pintor!', '5', '16', '2', '2024-04-01', '2024-08-26'),
+       ('Bom Encanador!', '3', '5', '2', '2024-04-01', '2024-08-26'),
+       ('Bom Encanador!', '3', '8', '2', '2024-04-01', '2024-08-26'),
+       ('Bom Encanador!', '3', '9', '2', '2024-04-01', '2024-08-26'),
+       ('Péssimo Encanador!', '1', '6', '2', '2024-04-01', '2024-08-26'),
+       ('Bom Eletricista!', '3', '11', '2', '2024-04-01', '2024-08-26'),
+       ('Péssimo Eletricista!', '1', '12', '2', '2024-04-01', '2024-08-26'),
+       ('Bom Pintor!', '3', '15', '2', '2024-04-01','2024-08-26'),
+       ('Bom Pintor!', '3', '20', '2', '2024-04-01', '2024-08-26'),
+       ('Bom Pintor!', '3', '21', '2', '2024-04-01', '2024-08-26'),
+       ('Péssimo Pintor!', '1', '14', '2', '2024-04-01', '2024-08-26');
 
 
 
@@ -155,6 +164,25 @@ VALUES ('1', '2', 'false'),
 
 
 INSERT INTO follows (client_id, professional_id)
-VALUES (4, 2)
+VALUES (4, 2);
+
+-- DURAÇÃO DE SERVIÇOS
+INSERT INTO duration_services (name)
+VALUES ('Sem agendamento'),
+       ('30 minutos'),
+       ('1 hora'),
+       ('1 hora e meia'),
+       ('2 horas'),
+       ('3 horas'),
+       ('Um período do dia'),
+       ('O dia inteiro');
+
+-- UNIDADE DE PREÇO
+INSERT INTO price_units (name)
+VALUES ('Hora'),
+       ('Metro quadrado'),
+       ('Unidade');
 
 
+INSERT INTO payments (id, payment_id, status)
+VALUES (1, 1, 'approved')

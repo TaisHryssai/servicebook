@@ -215,7 +215,7 @@ public class QuartzService {
     }
 
     /** Envio de email para o cliente e profissional com o comprovante de pagamento*/
-    public void sendEmailPaymentVoucher(String codePayment, Long client, Long professional, String service, String date) {
+    public void sendEmailPaymentVoucher(String codePayment, Long client, Long professional, String service, String date, String voucher) {
         try {
             System.out.println("clientId---------------------");
             System.out.println(client);
@@ -226,6 +226,7 @@ public class QuartzService {
             job.getJobDataMap().put(String.valueOf(SendEmailVoucher.PROFESSIONAL_ID), professional);
             job.getJobDataMap().put(SendEmailVoucher.SERVICE_KEY, service);
             job.getJobDataMap().put(SendEmailVoucher.DATE_KEY, date);
+            job.getJobDataMap().put(SendEmailVoucher.VOUCHER_KEY, voucher);
 
             Trigger trigger = getTrigger(SendEmailWithVerificationCodeJob.class.getSimpleName(), GROUP);
 

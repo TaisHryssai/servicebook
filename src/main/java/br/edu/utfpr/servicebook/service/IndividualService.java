@@ -134,6 +134,11 @@ public class IndividualService {
         return this.individualRepository.findAllIndividualsByService(searchTerm, pageRequest);
     }
 
+    public List<Individual> findAllIndividualsAutonomosByService(Long searchTerm, Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        return this.individualRepository.findAllIndividualsAutonomosByService(searchTerm, pageRequest);
+    }
+
     @Transactional
     public void saveExpertisesCompany(Company company, ProfessionalExpertise professionalExpertise) {
         professionalExpertiseRepository.save(professionalExpertise);

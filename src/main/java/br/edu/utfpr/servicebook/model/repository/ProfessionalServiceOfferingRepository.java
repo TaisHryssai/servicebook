@@ -20,6 +20,8 @@ public interface ProfessionalServiceOfferingRepository extends JpaRepository<Pro
      */
     public List<ProfessionalServiceOffering> findProfessionalServiceOfferingByUser(User user);
 
+    public List<ProfessionalServiceOffering> findFirst3ByUserAndType(User user, Enum type);
+    public List<ProfessionalServiceOffering> findByUserAndType(User user, Enum type);
 
     /**
      * Busca todas os serviços de um profissional
@@ -72,6 +74,8 @@ public interface ProfessionalServiceOfferingRepository extends JpaRepository<Pro
     Page<ProfessionalServiceOffering> findDistinctByTermIgnoreCaseWithPagination(
             String term,
             Pageable pageable);
+    @Query("SELECT e FROM ProfessionalServiceOffering e WHERE e.service = :id")
+    public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingById(Long id);
 
     /**
      * Busca o serviço atraves dos anuncios gravados.
@@ -85,4 +89,20 @@ public interface ProfessionalServiceOfferingRepository extends JpaRepository<Pro
             Service term,
             Pageable pageable);
 
+    /**
+     * Retorna os serviços que o usuário possui.
+     * @param user
+     * @return
+     */
+    @Query("SELECT u FROM ProfessionalServiceOfferingAdItem u WHERE EXISTS (SELECT pe FROM ProfessionalServiceOffering pe WHERE pe.user = :user)")
+    List<ProfessionalServiceOffering> findProfessionalServiceOfferingAdItemsByUser(User user);
+
+    @Query("SELECT u FROM ProfessionalServiceOffering u JOIN ProfessionalServiceOfferingAdItem r WHERE r.professionalServiceOffering.id = u.id")
+    public List<ProfessionalServiceOffering> findProfessionalServiceOfferingAdItemsByUserJoin(User user);
+
+    @Query("SELECT u FROM ProfessionalServiceOfferingAdItem u JOIN FETCH u.professionalServicePackageOffering")
+    List<ProfessionalServiceOffering> findDistinctProfessionalServiceOfferings();
+
+    @Query("SELECT e FROM ProfessionalServiceOffering e WHERE e.user.id = :userId AND e.service.expertise.id = :expertiseId")
+    public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingByExpertiseAAndUser(Long userId, Long expertiseId);
 }

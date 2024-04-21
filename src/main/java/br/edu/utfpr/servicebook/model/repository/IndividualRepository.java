@@ -61,4 +61,9 @@ public interface IndividualRepository extends JpaRepository<Individual, Long> {
             Service term,
             Pageable pageable);
 
+    @Query("select p from Individual p left join ProfessionalExpertise pe on p.id = pe.professional.id  " +
+            "where pe.expertise.id = 4")
+    List<Individual> findAllIndividualsAutonomosByService(
+            Long term,
+            Pageable pageable);
 }
