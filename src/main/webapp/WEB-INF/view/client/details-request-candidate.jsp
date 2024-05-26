@@ -11,9 +11,20 @@
     <jsp:body>
         <main>
             <div class="blue lighten-1">
-                <div class="section no-pad-bot">
+                <div class="section1 no-pad-bot">
                     <div class="container">
                         <div class="row center-align">
+                            <div class="col s12">
+                                <c:forEach var="star" begin="1" end="5">
+                                    <c:if test="${star <= jobCandidate.user.rating}">
+                                        <i class="material-icons yellow-text small">star</i>
+                                    </c:if>
+                                    <c:if test="${star > jobCandidate.user.rating}">
+                                        <i class="material-icons yellow-text small">star_border</i>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+
                             <c:choose>
                                 <c:when test="${jobCandidate.user.profilePicture != null}">
                                     <img src="${jobCandidate.user.profilePicture}" class="avatar"
@@ -26,17 +37,7 @@
                             </c:choose>
                         </div>
                         <div class="row center">
-                            <div class="col s4">
-                                <c:forEach var="star" begin="1" end="5">
-                                    <c:if test="${star <= jobCandidate.user.rating}">
-                                        <i class="material-icons yellow-text small">star</i>
-                                    </c:if>
-                                    <c:if test="${star > jobCandidate.user.rating}">
-                                        <i class="material-icons yellow-text small">star_border</i>
-                                    </c:if>
-                                </c:forEach>
-                            </div>
-                            <div class="col s4">
+                            <div class="col s12 center">
                                 <c:if test="${!isFollow}">
                                     <form method="post" id="follow-form">
                                         <input type="hidden" name="professional" value="${jobCandidate.id}"/>
@@ -53,40 +54,107 @@
                                     </button>
                                 </c:if>
                             </div>
-                            <div class="col s4">
-                                <div class="right check-circle-candidate">
-                                    <i class="material-icons green-text darken-4-text">check_circle</i>
+                            <div class="row center">
+                                <div class="col s4">
+                                    <div class=" check-circle-candidate">
+                                        <c:if test="${jobCandidate.user.phoneVerified}">
+
+                                            <strong>
+                                                <i class="small material-icons green-text tooltipped middle"
+                                                   data-position="top"
+                                                   data-tooltip="Telefone verificado." style="color: #1b5e20 !important;">phone </i>
+                                            </strong>
+                                        </c:if>
+                                        <c:if test="${!jobCandidate.user.phoneVerified}">
+
+                                            <strong>
+                                                <i class="small material-icons red-text tooltipped middle"
+                                                   data-position="top"
+                                                   data-tooltip="Telefone não verificado.">phone</i>
+                                            </strong>
+                                        </c:if>
+                                    </div>
+                                </div>
+                                <div class="col s4">
+                                    <div class=" check-circle-candidate">
+                                        <c:if test="${jobCandidate.user.emailVerified}">
+
+                                            <strong>
+                                                <i class="small material-icons green-text tooltipped middle truncate"
+                                                   data-position="top" data-tooltip="Email verificado." style="color: #1b5e20 !important;">email </i>
+                                            </strong>
+                                        </c:if>
+                                        <c:if test="${!jobCandidate.user.emailVerified}">
+
+                                            <strong>
+                                                <i class="small material-icons red-text tooltipped middle"
+                                                   data-position="top"
+                                                   data-tooltip="Email não verificado.">email</i>
+                                            </strong>
+                                        </c:if>
+                                    </div>
+                                </div>
+                                <div class="col s4">
+                                    <div class=" check-circle-candidate">
+                                        <c:if test="${jobCandidate.user.profileVerified}">
+
+                                            <strong>
+                                                <i class="small material-icons green-text tooltipped middle truncate"
+                                                   data-position="top" data-tooltip="Perfil verificado." style="color: #1b5e20 !important;">person </i>
+                                            </strong>
+                                        </c:if>
+                                        <c:if test="${!jobCandidate.user.profileVerified}">
+
+                                            <strong>
+                                                <i class="small material-icons red-text tooltipped middle"
+                                                   data-position="top"
+                                                   data-tooltip="Perfil não verificado.">person</i>
+                                            </strong>
+                                        </c:if>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="tertiary-background-color white-text center-align no-margin">
-                <p class="upper-case job-details-professional-name">
-
-                        ${jobCandidate.user.name}
-                </p>
+                <div class="tertiary-background-color white-text center-align no-margin">
+                    <p class="upper-case job-details-professional-name">
+                            ${jobCandidate.user.name}
+                    </p>
+                </div>
             </div>
 
             <div class="container">
                 <div class="section">
                     <div class="row center-align">
                         <div class="col s6">
-                            <i class="left material-icons">email</i>
-                            <span class="left">
-                                    ${jobCandidate.user.email}
-                            </span>
+                            <div class="row">
+                                <div class="s12">
+                                    <i class="material-icons medium">email</i>
+                                </div>
+                                <div class="s12">
+                                        <span class="flow-text">
+                                          ${jobCandidate.user.email}
+                                        </span>
+                                </div>
+                            </div>
                         </div>
                         <div class="col s6">
-                            <i class="left material-icons">local_phone</i>
-                            <span class="left">
-                                    ${jobCandidate.user.phoneNumber}
-                            </span>
+                            <div class="row">
+                                <div class="s12">
+                                    <i class="material-icons medium">local_phone</i>
+                                </div>
+                                <div class="s12">
+                                        <span class="flow-text">
+                                                ${jobCandidate.user.phoneNumber}
+                                        </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row center-align">
-                        <p class="contact-item center dark-color-text">${jobCandidate.user.description}</p>
+                        <p class=" center dark-color-text flow-text">${jobCandidate.user.description}</p>
                     </div>
 
                     <c:if test="${jobCandidate.getJobRequest().status == 'AVAILABLE'}">

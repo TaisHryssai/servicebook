@@ -37,30 +37,30 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <sec:authorize access="isAuthenticated()">
-            <div class="col s12 center">
-                <c:if test="${!isFollow}">
-                    <form method="post" id="follow-form">
-                        <input type="hidden" name="professional" value="${professional.id}"/>
-                        <input type="hidden" name="client" value="${client.id}"/>
-                        <button alt="seguir" type="button"
-                                class="waves-effect waves-light btn" id="follow-button">Seguir
+            <sec:authorize access="isAuthenticated()">
+                <div class="col s12 center">
+                    <c:if test="${!isFollow}">
+                        <form method="post" id="follow-form">
+                            <input type="hidden" name="professional" value="${professional.id}"/>
+                            <input type="hidden" name="client" value="${client.id}"/>
+                            <button alt="seguir" type="button"
+                                    class="waves-effect waves-light btn" id="follow-button">Seguir
+                            </button>
+                        </form>
+                    </c:if>
+                    <c:if test="${isFollow}">
+                        <button type="button" data-professional="${professional.id}"
+                                class="waves-effect waves-light btn"
+                                id="unfollow-button">Deixar de Seguir
                         </button>
-                    </form>
-                </c:if>
-                <c:if test="${isFollow}">
-                    <button type="button" data-professional="${professional.id}"
-                            class="waves-effect waves-light btn"
-                            id="unfollow-button">Deixar de Seguir
-                    </button>
-                </c:if>
-            </div>
-        </sec:authorize>
+                    </c:if>
+                </div>
+            </sec:authorize>
 
-        <div class="tertiary-background-color white-text center-align">
-            <h5 class="upper-case mb-1 mt-1">${professional.name}</h5>
+            <div class="tertiary-background-color white-text center-align">
+                <h5 class="upper-case mb-1 mt-1">${professional.name}</h5>
+            </div>
         </div>
 
         <div class="container">
@@ -81,12 +81,32 @@
                     </div>
                 </div>
 
+                <hr>
+
+
+                <div class="row">
+                    <h5><strong>${service.expertise.name}</strong></h5>
+                    <div class="col s12">
+                        <p class="dark-color-text">${service.expertise.description}</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <h5><strong>${service.name}</strong></h5>
+                    <div class="col s12">
+                        <p class="dark-color-text">${service.description}</p>
+                    </div>
+                </div>
+
+                <hr>
+
                 <c:forEach var="entry" items="${servicesByExpertise.entrySet()}">
                     <div class="row">
-                        <h5><strong>${entry.key.expertise.name}</strong></h5>
-                        <div class="col s12">
-                                <p class="dark-color-text">${entry.key.description}</p>
-                        </div>
+                        <h5><strong>Outros serviços: </strong></h5>
+
+
                         <div class="col s12">
                             <c:forEach var="service" items="${entry.value}">
                                 <div class="col s12 m6">
@@ -94,6 +114,7 @@
                                 </div>
                             </c:forEach>
                         </div>
+
                     </div>
                 </c:forEach>
 

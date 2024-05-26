@@ -26,6 +26,10 @@
     background-color: #81c5f3 !important;
 }
 
+.primary-background-color-light{
+    background-color: rgba(191, 222, 255, 0.8) !important;
+}
+
 .secondary-background-color{
     background-color: rgb(51, 51, 51) !important;
 }

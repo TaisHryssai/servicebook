@@ -45,7 +45,7 @@
         <div class="col s12 no-margin no-padding">
             <p class="header-verification secondary-color-text center">FILTRAGEM</p>
             <div class="col s12">
-                <form action="a/dashboard/q" method="get">
+                <form action="a/dashboard/q" method="get" class="nav-form-especialidade">
                     <h6>Data do serviço</h6>
                     <div class="input-field col s12">
                         <select name="startDate" id="select-status" class="white-text mt-1 no-padding center" style="padding: 0 !important;">

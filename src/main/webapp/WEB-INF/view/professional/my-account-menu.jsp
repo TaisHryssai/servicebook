@@ -49,14 +49,14 @@
                         </div>
                     </a>
                 </div>
-                <div class="col s12 l6 spacing-buttons">
-                    <a href="minha-conta/profissional/minha-agenda" class="dark-color-text">
-                        <div class="active-profission no-padding">
-                            <h3 class="center"><strong><i class="medium material-icons">event_note</i></strong></h3>
-                            <h4 class="center"><strong>Minha Agenda</strong></h4>
-                        </div>
-                    </a>
-                </div>
+<%--                <div class="col s12 l6 spacing-buttons">--%>
+<%--                    <a href="minha-conta/profissional/minha-agenda" class="dark-color-text">--%>
+<%--                        <div class="active-profission no-padding">--%>
+<%--                            <h3 class="center"><strong><i class="medium material-icons">event_note</i></strong></h3>--%>
+<%--                            <h4 class="center"><strong>Minha Agenda</strong></h4>--%>
+<%--                        </div>--%>
+<%--                    </a>--%>
+<%--                </div>--%>
             </div>
         </main>
     </jsp:body>

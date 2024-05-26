@@ -12,11 +12,18 @@
     <jsp:body>
         <main>
             <div class="">
+                <div class="row">
+                    <div class="col s12 breadcrumbs" style="margin-top: 20px">
+                        <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+                        <a href="${pageContext.request.contextPath}/minha-conta/profissional">Minha Conta</a> &gt;
+                        <a href="${pageContext.request.contextPath}/minha-conta/profissional/meus-anuncios">Meus anúncios</a> &gt;
+                        Novo Anúncio
+                    </div>
+                </div>
                 <div class="section">
                     <div class="row">
 
                         <t:message-box/>
-
                         <div class="col s12">
                             <h3 class="secondary-color-text">Anunciar Serviços</h3>
                         </div>
@@ -34,10 +41,11 @@
                         </blockquote>
                         <!-- Formulário de adição de especialidade -->
                         <div class="row">
-                            <div class="col s12 card-panel grey darken-3">
-                                <p class="white-text div_text_section">TIPO DE ANÚNCIO</p>
+                            <div class="col s12">
+                                <p class="darken-text"> <strong> TIPO DE ANÚNCIO </strong> </p>
                                 <hr>
                             </div>
+
                             <div class="input-field col s6">
                                 <p for="service-type" class="label-ads">Qual o tipo do serviço?</p>
                                 <select id="service-type" name="type">
@@ -55,8 +63,10 @@
                                 <jsp:include page="my-ads-register-combined.jsp"/>
                             </div>
                         </div>
-                        <div class="col s12 card-panel grey darken-3 type-individual">
-                            <p class="white-text div_text_section">SERVIÇO</p>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 type-individual">
+                            <p class="darken-text"> <strong> SERVIÇO </strong> </p>
                             <hr>
                         </div>
                         <div class="col s12 type-individual" id="type-individual">
@@ -95,11 +105,18 @@
                                             </label>
                                         </p>
                                     </div>
-                                    <div class="col s12 card-panel grey darken-3">
-                                        <p class="white-text div_text_section">PREÇO E AGENDAMENTO</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                            <label>
+                                                <input type="checkbox" id="add_price"/>
+                                                <span> <strong> ADICIONAR PREÇO </strong></span>
+                                            </label>
+                                        </p>
                                         <hr>
                                     </div>
-                                    <div class="input-field col s6">
+
+                                    <div class="input-field col s12 m6 div-price">
                                         <p for="ads-uni" class="label-ads">Qual a unidade de preço do serviço? </p>
                                         <select id="ads-uni" name="unit">
                                             <option disabled selected>Selecione</option>
@@ -109,13 +126,13 @@
                                         </select>
                                     </div>
 
-                                    <div class="input-field col s6">
+                                    <div class="input-field col s12 m6 div-price">
                                         <p for="ads-price" class="label-ads">Quanto você cobra por este serviço? </p>
                                         <input id="ads-price-individual" class="ads-price" type="text" name="" onblur="return RemoveMaskIndividual(event)"/>
                                         <input id="price-service-individual" class="price-service" type="hidden" name="price"/>
                                     </div>
 
-                                    <div class="input-field col s6">
+                                    <div class="input-field col s12 m6 div-price">
                                         <p class="label-ads">Qual a Duração do serviço?</p>
                                         <select id="ads-duracao" name="duration">
                                             <option disabled selected>Selecione</option>
@@ -152,6 +169,18 @@
         str = $("#ads-name-individual").val();
         $("#name-service-individual").val(str);
     }
+
+    $(".div-price").hide();
+
+    $('#add_price').change(function () {
+        let addPrice = $("#add_price"); // Seleciona o checkbox
+        if(addPrice.is(":checked")){
+            $(".div-price").show();
+        } else {
+            $(".div-price").hide();
+        }
+    });
+
 
     //inicializa o select de serviços com os serviços da especialidade selecionada
     $('#expertise-select').change(function () {

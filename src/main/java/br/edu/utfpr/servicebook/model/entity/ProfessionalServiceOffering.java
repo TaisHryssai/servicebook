@@ -13,7 +13,7 @@ import javax.persistence.*;
  * Ele pode ter várias customizações para um mesmo serviço cadastrado pelo Administrador.
  */
 @Data
-@Table(name = "professional_service_offerings")
+    @Table(name = "professional_service_offerings")
 @NoArgsConstructor
 @Entity
 public class ProfessionalServiceOffering {

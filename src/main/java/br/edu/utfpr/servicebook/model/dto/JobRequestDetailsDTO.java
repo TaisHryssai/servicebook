@@ -3,6 +3,7 @@ package br.edu.utfpr.servicebook.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -21,5 +22,6 @@ public class JobRequestDetailsDTO implements Serializable {
     private Long totalCandidates;
     private String textualDate;
     private Long amountOfCandidates;
+    private MultipartFile imageFile;
 
 }

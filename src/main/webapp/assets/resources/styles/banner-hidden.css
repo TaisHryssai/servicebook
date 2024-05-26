@@ -1,0 +1,34 @@
+.city-name {
+    width: 100%;
+    padding: 10px 0;
+    /*background-color: #f5f5f5;*/
+    color: #0d47a1;
+}
+
+.cityNameContent {
+    display: flex;
+    justify-content: start;
+}
+.expanded {
+    transform: rotate(180deg);
+}
+
+#painel {
+    padding: 0;
+}
+
+#toggle-city-id {
+    cursor: pointer;
+    margin-left: 1.2em;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 600px) {
+    .cityNameContent {
+        justify-content: space-between;
+    }
+}
+#city-panel{
+    margin: 0 !important;
+}

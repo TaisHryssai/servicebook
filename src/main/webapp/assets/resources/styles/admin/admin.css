@@ -6,6 +6,7 @@
 
 .input-field {
     padding: 0 !important;
+    height: auto !important;
 }
 
 .input-field .select-wrapper input {

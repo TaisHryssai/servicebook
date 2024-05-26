@@ -1,10 +1,7 @@
 package br.edu.utfpr.servicebook.model.mapper;
 
 
-import br.edu.utfpr.servicebook.model.dto.JobRequestDTO;
-import br.edu.utfpr.servicebook.model.dto.JobRequestDetailsDTO;
-import br.edu.utfpr.servicebook.model.dto.JobRequestFullDTO;
-import br.edu.utfpr.servicebook.model.dto.JobRequestMinDTO;
+import br.edu.utfpr.servicebook.model.dto.*;
 import br.edu.utfpr.servicebook.model.entity.JobRequest;
 import br.edu.utfpr.servicebook.util.DateUtil;
 import org.modelmapper.ModelMapper;
@@ -70,6 +67,9 @@ public class JobRequestMapper {
         dto.setDateCreated(this.dateTimeFormatter.format(entity.getDateCreated()));
         dto.setDateTarget(this.dateTimeFormatter.format(entity.getDateTarget()));
         dto.setTextualDate(DateUtil.getTextualDate((entity.getDateTarget())));
+
+        dto.setUser(entity.getUser());
+        dto.setJobImages(entity.getJobImages());
 
         return dto;
     }

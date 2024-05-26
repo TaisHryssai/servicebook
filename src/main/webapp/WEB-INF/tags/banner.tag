@@ -13,7 +13,7 @@
 
                         <select id="select-city" class="white-text select-city">
                             <c:forEach var="city" items="${cities}">
-                                <option value="${city.pathImage}">${city.name} - ${city.state.uf}</option>
+                                <option class="cityOption" value="${city.pathImage}">${city.name} - ${city.state.uf}</option>
                             </c:forEach>
                         </select>
                     </div>

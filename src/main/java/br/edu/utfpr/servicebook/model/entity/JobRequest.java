@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import br.edu.utfpr.servicebook.model.dto.ClientMinDTO;
 import lombok.*;
 
 @Data
@@ -39,7 +40,7 @@ public class JobRequest {
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User user;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "expertise_id")
 	private Expertise expertise;

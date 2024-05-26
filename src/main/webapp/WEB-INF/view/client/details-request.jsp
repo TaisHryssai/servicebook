@@ -7,20 +7,17 @@
 <jsp:useBean id="jobRequest" type="br.edu.utfpr.servicebook.model.dto.JobRequestFullDTO" scope="request"/>
 <jsp:useBean id="candidates" type="java.util.List<br.edu.utfpr.servicebook.model.dto.JobCandidateDTO>" scope="request"/>
 
-<script src="https://sdk.mercadopago.com/js/v2"></script>
-<script>
-    const mpPublicKEy = 'TEST-1e11381f-3efe-4d15-b55a-0ec993c0d477';
-    const mpInstance = new MercadoPago(mpPublicKEy, {
-        locale: "pt-BR",
-    });
-    const bricksBuilder = mpInstance.bricks();
-</script>
 
 <head>
     <!-- Funciona apenas com caminho absoluto porque é renderizado antes da tag base -->
     <link href="${pageContext.request.contextPath}/assets/resources/styles/client/client.css" rel="stylesheet">
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 
+<script>
+    const mp = new MercadoPago("TEST-4f0ff070-df15-44df-9d79-90269d190835");
+    const bricksBuilder = mp.bricks();
+</script>
 
 <t:template-side-nav title="Detalhes da Solicitação" userInfo="${userInfo}">
     <jsp:body>
@@ -29,6 +26,15 @@
             <div class="col s12">
                 <div class="section">
                     <div class="row">
+                        <div class="breadcrumbs" style="margin-top: 20px">
+                            <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+                            <a href="${pageContext.request.contextPath}/minha-conta/cliente#disponiveis">Minhas Solicitações</a> &gt;
+                            Meus Pedidos
+                        </div>
+
+                            <%--                        <a class="spacing-buttons waves-effect waves-light btn green"--%>
+                            <%--                           onClick="paymentJobRequest(1, ${jobRequest.id})">Pagamento Teste</a>--%>
+
                         <!-- Caso não haja nenhum candidato -->
                         <c:if test="${empty candidates}">
                             <div class="col s12 center">
@@ -118,29 +124,32 @@
                                 </div>
                             </div>
 
-                            <div class="col s12 m12">
-                                <div class="right-align">
-                                    <a href="minha-conta/cliente"
-                                       class="spacing-buttons waves-effect waves-light btn">Voltar para
-                                        solicitações</a>
-                                    <a class="spacing-buttons waves-effect waves-light btn green"
-                                       onClick="showPayment(${jobRequest.id})">Pagamento</a>
+                                <%-- HABILITA O CAMPO DE PAGAMENTO APENAS QUANDO O PROFISSIONAL CONFIRMAR --%>
+                            <c:if test="${jobRequest.status == 'TO_DO'}">
+                                <div class="col s12 m12">
+                                    <div class="right-align">
+                                        <a href="minha-conta/cliente"
+                                           class="spacing-buttons waves-effect waves-light btn">Voltar para
+                                            solicitações</a>
+                                        <a class="spacing-buttons waves-effect waves-light btn green"
+                                           onClick="showPayment(${jobRequest.id})">Pagamento</a>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col s12 m12">
-                                <div class="center">
-                                    <div id="paymentBrick_container" class="brick-payment"
-                                         style="display:none;"></div>
-                                    <div id="statusScreenBrick_container" class="brick-status"
-                                         style="display:none;"></div>
+                                <div class="col s12 m12 right">
+                                    <div class="center">
+                                        <div id="paymentBrick_container" class="brick-payment"
+                                             style="display:none;"></div>
+                                        <div id="statusScreenBrick_container" class="brick-status"
+                                             style="display:none;"></div>
+                                    </div>
                                 </div>
-                            </div>
+                            </c:if>
                         </div>
 
                         <!-- Subtítulo da listagem -->
                         <div class="col s12 tertiary-color-text description-orcamento text-info-request">
-                            <hr class="hr-request-area">
+                            <hr class="">
                             <c:if test="${jobRequest.status == 'AVAILABLE'}">
                                 <p>Entre em contato com um ou mais profissionais que se interessaram em
                                     realizar o serviço para marcar um orçamento.</p>
@@ -178,7 +187,7 @@
 
                         <!-- Listagem de candidatos -->
                         <c:forEach var="c" items="${candidates}">
-                            <div class="col s12 l6 xl4">
+                            <div class="col s12 l6 ">
                                 <t:professional-order-card jobCandidate="${c}"/>
                             </div>
                         </c:forEach>
@@ -240,7 +249,16 @@
         </main>
     </jsp:body>
 </t:template-side-nav>
+<style>
+    select {
+        display: block !important;
+    }
+</style>
+
+<script src="assets/resources/scripts/mp-payment.js"></script>
+
 <script>
+
     $(document).ready(function () {
         $('.modal').modal({
             onOpenEnd: function (modal, trigger) {

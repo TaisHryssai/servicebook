@@ -116,6 +116,7 @@ public class JobRequestController {
     @GetMapping
     @PermitAll
     public String showWizard(@RequestParam(value = "passo", required = false, defaultValue = "1") Long step,
+                             @RequestParam(value = "especialidade", required = false, defaultValue = "0") Long expertiseId,
                              HttpSession httpSession,
                              Model model) throws Exception {
         log.debug("Mostrando o passo {}", step);
@@ -132,6 +133,11 @@ public class JobRequestController {
 
         JobRequestDTO dto = wizardSessionUtil.getWizardState(httpSession, JobRequestDTO.class, WizardSessionUtil.KEY_WIZARD_JOB_REQUEST);
         model.addAttribute("dto", dto);
+
+        if(expertiseId != 0){
+            JobRequestDTO sessionDTO = wizardSessionUtil.getWizardState(httpSession, JobRequestDTO.class, WizardSessionUtil.KEY_WIZARD_JOB_REQUEST);
+            sessionDTO.setExpertiseId(expertiseId);
+        }
 
         if(step == 1L){
             List<Expertise> expertise = expertiseService.findAll();
@@ -182,7 +188,6 @@ public class JobRequestController {
     @PermitAll
     public String saveFormDateJob(HttpSession httpSession, @Validated(JobRequestDTO.RequestExpirationGroupValidation.class) JobRequestDTO dto, BindingResult errors, RedirectAttributes redirectAttributes, Model model) throws Exception {
 
-
         if(errors.hasErrors()){
             model.addAttribute("dto", dto);
             model.addAttribute("errors", errors.getAllErrors());
@@ -225,7 +230,7 @@ public class JobRequestController {
         }
         sessionDTO.setDateTarget(DateUtil.getToday());
         log.debug("Passo 2 {}", sessionDTO);
-        return "redirect:/requisicoes?passo=3";
+        return "redirect:/requisicoes?passo=4";
 
     }
     @PostMapping("/passo-3")
@@ -300,7 +305,7 @@ public class JobRequestController {
             sessionDTO.setImageSession((String)data.get("url"));
             log.debug("Passo 5 {}", sessionDTO);
 
-            return "redirect:/requisicoes?passo=8";
+            return "redirect:/requisicoes?passo=7";
         } else {
             return "redirect:/requisicoes/passo=5";
         }

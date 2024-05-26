@@ -1,6 +1,7 @@
 package br.edu.utfpr.servicebook.service;
 
 import br.edu.utfpr.servicebook.model.entity.Expertise;
+import br.edu.utfpr.servicebook.model.entity.JobImages;
 import br.edu.utfpr.servicebook.model.entity.JobRequest;
 import br.edu.utfpr.servicebook.model.entity.User;
 import br.edu.utfpr.servicebook.model.repository.JobRequestRepository;
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -124,5 +127,10 @@ public class JobRequestService {
 
     public long countByStatusAndExpertise(JobRequest.Status status, Expertise expertise){
         return this.jobRequestRepository.countByStatusAndExpertise(status, expertise);
+    }
+
+    public Set<JobImages> getJobImagesById(Long jobId) {
+        Optional<JobRequest> optionalJobRequest = jobRequestRepository.findById(jobId);
+        return optionalJobRequest.map(JobRequest::getJobImages).orElse(Collections.emptySet());
     }
 }

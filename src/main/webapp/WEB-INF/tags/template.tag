@@ -15,14 +15,14 @@
     <meta property=”og:title” content="${jobRequest.description}"/>
     <meta property=”og:type” content=”website“/>
     <meta property=”og:description” content=”SERVICEBOOK - O MELHOR PROFISSIONAL QUE VOCÊ PRECISA ESTÁ AQUI!“/>
-    <meta property=”og:image”content="${jobCandidate.individual.profilePicture}"/>
+    <meta property=”og:image”content="${jobCandidate.user.profilePicture}"/>
     <meta property=”og:site_name” content=”Servicebook“/>
 
     <meta name=”twitter:card” content=”photo“>
     <meta name=”twitter:url” content="$(location).attr('href')">
     <meta name=”twitter:title” content="${jobRequest.description}">
     <meta name=”twitter:description” content=”SERVICEBOOK - O MELHOR PROFISSIONAL QUE VOCÊ PRECISA ESTÁ AQUI!“>
-    <meta name=”twitter:image”content="${jobCandidate.individual.profilePicture}">
+    <meta name=”twitter:image”content="${jobCandidate.user.profilePicture}">
 
     <title>${title}</title>
 
@@ -37,6 +37,8 @@
     <link href="assets/resources/styles/tags/template-tag.css" type="text/css" rel="stylesheet"
           media="screen,projection"/>
     <link href="assets/resources/styles/styles.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="assets/resources/styles/banner-hidden.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
 </head>
 
 <body>
@@ -154,7 +156,7 @@
 <script src="assets/resources/scripts/init.js"></script>
 <script src="assets/resources/scripts/sse.js"></script>
 <script src="assets/libraries/jquery.mask.js"></script>
-
+<script src="assets/resources/scripts/banner-hidden.js"></script>
 <!--script src="assets/resources/scripts/expertise-sidepanel-ajax.js"></script!-->
 <script type="text/javascript">
     function rolar(objID) {

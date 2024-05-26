@@ -1,5 +1,9 @@
 package br.edu.utfpr.servicebook.model.repository;
 
+import br.edu.utfpr.servicebook.model.dto.IndividualDTO;
+import br.edu.utfpr.servicebook.model.dto.ProfessionalSearchItemDTO;
+import br.edu.utfpr.servicebook.model.entity.Category;
+import br.edu.utfpr.servicebook.model.entity.Expertise;
 import br.edu.utfpr.servicebook.model.entity.Individual;
 import br.edu.utfpr.servicebook.model.entity.Service;
 import org.springframework.data.domain.Page;
@@ -66,4 +70,20 @@ public interface IndividualRepository extends JpaRepository<Individual, Long> {
     List<Individual> findAllIndividualsAutonomosByService(
             Long term,
             Pageable pageable);
+
+    @Query("select distinct p from Individual p left join ProfessionalExpertise pe on p.id = pe.professional.id  " +
+            " left  join Expertise ex on pe.expertise.id = ex.id "+
+            "where pe.expertise = :expertiseId ")
+    Page<Individual> findDistinctByExpertiseAndCategoryPagination(
+            Expertise expertiseId,
+            Pageable pageable);
+
+    @Query("select distinct ex from Individual p left join ProfessionalExpertise pe on p.id = pe.professional.id  " +
+            " left  join Expertise ex on pe.expertise.id = ex.id "+
+            "where pe.expertise = :expertiseId or pe.expertise.category = :categoryId")
+    Page<Individual> listByExpertiseAndCategory(
+            Expertise expertiseId,
+            Category categoryId,
+            Pageable pageable);
+
 }

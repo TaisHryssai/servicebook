@@ -3,6 +3,8 @@ $(document).ready(function () {
         selectCategory($("#category-select").val())
     }
 
+
+
     var element = $("#dto_expertise").val();
 
     function selectCategory(categoryId) {
@@ -55,7 +57,7 @@ $(document).ready(function () {
                     $("#service-select").append("<option disabled selected>Selecione um serviço</option>");
 
                 $.each(services, function (index, service) {
-                    $("#service-select").append("<option value='" + service.id + "'>" + service.name + "</option>");
+                    // $("#service-select").append("<option value='" + service.id + "'>" + service.name + "</option>");
 
                     if(service.id == element_service){
                         $("#service-select").append("<option value='" + service.id + "' selected>" + service.name + "</option>");
@@ -65,6 +67,7 @@ $(document).ready(function () {
 
                 });
                 $("#service-select").formSelect();
+
             }
         });
     }
@@ -118,4 +121,28 @@ $(document).ready(function () {
             }
         });
     });
+
+    var selectedValue = $('#service-select').val();
+
+    if (selectedValue) {
+        $("#hide_simple_button").prop("disabled", false);
+        $("#add_ads").show();
+    } else {
+        $("#hide_simple_button").prop("disabled", true);
+        $("#add_ads").hide();
+    }
+
+    $("#service-select").on("change", function() {
+        var selectedValue = $('#service-select').val();
+
+        if (selectedValue) {
+            $("#hide_simple_button").prop("disabled", false);
+            $("#add_ads").show();
+        } else {
+            $("#hide_simple_button").prop("disabled", true);
+            $("#add_ads").hide();
+        }
+
+    });
+
 })

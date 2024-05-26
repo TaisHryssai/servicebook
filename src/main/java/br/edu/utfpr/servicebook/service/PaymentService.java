@@ -30,7 +30,7 @@ public class PaymentService {
         String apiUrl = "https://api.mercadopago.com/v1/payments";
 
         try {
-            String accessToken = environment.getProperty("MP_ACCESS_TOKEN");
+            String accessToken = environment.getProperty("TEST-2738533774159236-052518-f4e09de99516f8d7b2adb21186313d1b-494777183");
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);

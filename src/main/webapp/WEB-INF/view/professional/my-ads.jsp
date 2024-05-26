@@ -17,11 +17,11 @@
       <div class="">
         <div class="section">
           <div class="row">
-            <div class="breadcrumbs">
+            <div class="col s12 l12 breadcrumbs" style="margin-top: 20px">
               <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+              <a href="${pageContext.request.contextPath}/minha-conta/profissional">Minha Conta</a> &gt;
               Meus anúncios
             </div>
-
             <t:message-box/>
 
             <div class="col s12">

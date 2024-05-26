@@ -15,6 +15,7 @@ function showPayment(jobRequestId) {
         const settings = {
             initialization: {
                 amount: 0.5,
+                preferenceId: "2738533774159236",
             },
             customization: {
                 paymentMethods: {
@@ -52,9 +53,9 @@ function showPayment(jobRequestId) {
                             })
                             .then((response) => {
                                 const paymentId = response.data.id;
-                                renderStatusScreenBrick(bricksBuilder, paymentId);
+                                // renderStatusScreenBrick(bricksBuilder, paymentId);
                                 // sendPaymentVoucher(paymentId);
-                                paymentJobRequest(paymentId, jobRequestId);
+                                // paymentJobRequest(paymentId, jobRequestId);
                                 resolve();
                             })
                             .catch((error) => {
@@ -78,42 +79,36 @@ function showPayment(jobRequestId) {
             "paymentBrick_container",
             settings
         )
-            .then(paymentBrickController => {
-
-            })
-            .catch(error => {
-                console.error(error);
-            });
     };
 
     renderPaymentBrick(bricksBuilder);
 }
 
 
-const renderStatusScreenBrick = async (bricksBuilder, paymentId) => {
-    const settings = {
-        initialization: {
-            paymentId: paymentId,
-        },
-        callbacks: {
-            onReady: () => {
-                /*
-                    Callback chamado quando o Brick estiver pronto.
-                    Aqui você pode ocultar loadings do seu site, por exemplo.
-                */
-            },
-            onError: (error) => {
-                console.error(error);
-            },
-        },
-    };
-
-    window.statusScreenBrickController = await bricksBuilder.create(
-        'statusScreen',
-        'statusScreenBrick_container',
-        settings,
-    );
-};
+// const renderStatusScreenBrick = async (bricksBuilder, paymentId) => {
+//     const settings = {
+//         initialization: {
+//             paymentId: paymentId,
+//         },
+//         callbacks: {
+//             onReady: () => {
+//                 /*
+//                     Callback chamado quando o Brick estiver pronto.
+//                     Aqui você pode ocultar loadings do seu site, por exemplo.
+//                 */
+//             },
+//             onError: (error) => {
+//                 console.error(error);
+//             },
+//         },
+//     };
+//
+//     window.statusScreenBrickController = await bricksBuilder.create(
+//         'statusScreen',
+//         'statusScreenBrick_container',
+//         settings,
+//     );
+// };
 
 function paymentJobRequest(paymentId, jobRequestId) {
     const URL = "/servicebook/minha-conta/cliente/pagamento/jobRequest";

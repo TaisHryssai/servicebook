@@ -166,7 +166,7 @@ input[type=range]::-webkit-slider-runnable-track{
 
 .card-candidate {
   padding: 0;
-  border: #3f51b5 10px solid;
+  border: #3f51b5 2px solid;
   color: white;
 }
 
@@ -183,10 +183,13 @@ input[type=range]::-webkit-slider-runnable-track{
 
 .title-card-resquest{
   height: 35px;
-  background-color: #1c2231;
+  background-color: #314564;
+  /*background-color: #1c2231;*/
+
   font-size: 140%;
   font-weight: 600;
   color: white;
+  border-radius: 5px;
 }
 
 .contact-item{
@@ -253,6 +256,10 @@ input[type=range]::-webkit-slider-runnable-track{
 }
 .info-headers{
   padding: 12px;
+}
+
+.icons-area-request {
+  margin-top: 20px;
 }
 
 .header-verification {
@@ -671,4 +678,24 @@ textarea {
 
 .btn-view-request{
   width: 150px;
+}
+
+.contact-item-professional{
+  font-size: 100%;
+}
+
+.contact-item-professional i{
+  font-size: 1.5rem !important;
+}
+
+#follow-button, #unfollow-button{
+  border-radius: 10px;
+}
+
+.nav-form-especialidade{
+  height: auto !important;
+}
+
+.input-field{
+  height: auto !important;
 }

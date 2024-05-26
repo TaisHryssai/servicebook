@@ -1,6 +1,8 @@
 package br.edu.utfpr.servicebook.service;
 
 import br.edu.utfpr.servicebook.model.dto.ExpertiseDTO;
+import br.edu.utfpr.servicebook.model.dto.IndividualDTO;
+import br.edu.utfpr.servicebook.model.dto.ProfessionalSearchItemDTO;
 import br.edu.utfpr.servicebook.model.entity.*;
 import br.edu.utfpr.servicebook.model.mapper.ExpertiseMapper;
 import br.edu.utfpr.servicebook.model.repository.CompanyRepository;
@@ -144,4 +146,15 @@ public class IndividualService {
         professionalExpertiseRepository.save(professionalExpertise);
         companyRepository.save(company);
     }
+
+    public Page<Individual> findDistinctByExpertiseAndCategoryPagination(Expertise expertiseId, Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        return this.individualRepository.findDistinctByExpertiseAndCategoryPagination(expertiseId, pageRequest);
+    }
+
+    public Page<Individual> listByExpertiseAndCategory(Expertise expertiseId, Category categoryId, Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        return this.individualRepository.listByExpertiseAndCategory(expertiseId, categoryId, pageRequest);
+    }
+
 }

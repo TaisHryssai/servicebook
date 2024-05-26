@@ -66,10 +66,13 @@
     font-weight: bold;
     font-size: 1rem;
     text-align: center;
+    margin: 0 !important;
     padding: 5px;
 }
+
 .label_duration{
     /*background-color: #333333;*/
+    margin: 0 !important;
     background-color: #53b1ed;
     font-weight: bold;
     font-size: 1rem;
@@ -111,3 +114,39 @@
     position: absolute;
     top: 10%;
 }
+.select-visitor .select-wrapper .select-dropdown{
+    padding: 0 0 0 5px !important;
+    margin-right: 5px !important;
+}
+
+.div-buttons{
+    padding: 0 !important;
+    margin: 5px 8px;
+}
+
+.input-field{
+    margin-bottom: 0 !important;
+    height: auto !important;
+}
+
+.card-image{
+    display: flex !important;
+    justify-content: center !important; /* Centraliza horizontalmente */
+    align-items: center !important; /* Centraliza verticalmente */
+}
+
+.image-professional{
+    width: 50% !important;
+}
+
+.card-link{
+    color: black;
+}
+.description-job-card{
+    font-size: .8rem;
+}
+
+/*.select-wrapper .select-dropdown {*/
+/*    padding-left: 10px !important; !* Ajuste o valor conforme necessário *!*/
+/*    font-size: .9rem !important; !* Opcional: ajuste o tamanho da fonte *!*/
+/*}*/

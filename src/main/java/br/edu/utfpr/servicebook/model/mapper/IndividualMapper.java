@@ -2,6 +2,7 @@ package br.edu.utfpr.servicebook.model.mapper;
 
 
 import br.edu.utfpr.servicebook.model.dto.*;
+import br.edu.utfpr.servicebook.model.entity.Expertise;
 import br.edu.utfpr.servicebook.model.entity.Individual;
 import br.edu.utfpr.servicebook.util.UserTemplateInfo;
 import org.modelmapper.ModelMapper;

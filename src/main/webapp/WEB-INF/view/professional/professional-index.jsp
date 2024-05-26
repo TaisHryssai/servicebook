@@ -3,8 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
     <!-- Funciona apenas com caminho absoluto porque é renderizado antes da tag base -->
-    <link href="${pageContext.request.contextPath}/assets/resources/styles/professional/professional.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/resources/styles/professional/professional.css"
+          rel="stylesheet">
 </head>
+
 
 <t:template title="Início" userInfo="${userInfo}">
     <jsp:body>
@@ -18,85 +20,64 @@
                 <c:if test="${empty jobs}">
                     <t:empty-list/>
                 </c:if>
+                <div class="col s12">
+                    <p>
+                        professional-index
+                    </p>
+                </div>
 
-                <c:forEach var="job" items="${jobs}">
-                    <c:if test="${not empty job.id}">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col s12 spacing-buttons">
-                                    <div style="border: solid 1px black">
-                                        <div class="secondary-background-color">
-                                            <div class="row">
-                                                <div class="col s8 offset-s2">
-                                                    <h5 class="center white-text">${job.expertise.name}</h5>
+                <div class="row">
+                    <c:forEach var="job" items="${jobs}">
+                        <a href="minha-conta/profissional/detalhes-servico/${job.id}">
+                            <div class="col s12 m6 l4">
+                                <div class="card">
+                                    <div class="card-title">
+                                        <p class="label_especialidade center">${job.expertise.name}</p>
+                                    </div>
+
+                                    <div class="card-image">
+                                        <c:if test="${empty job.jobImages}">
+                                            <div class="black-text text-darken-2 col-image-job-request">
+                                                <span class="icone-default"><i
+                                                        class="material-icons right">dashboard</i></span>
+                                            </div>
+                                        </c:if>
+
+                                        <c:if test="${not empty job.jobImages}">
+                                            <c:forEach var="jobImage" items="${job.jobImages}">
+                                                <div class="carousel-item blue white-text col-image-job-request">
+                                                    <img src="${jobImage.path}" width="150px" height="150px"
+                                                         alt="image_job">
                                                 </div>
-                                                <div class="col s2">
-                                                    <h5 class="right white-text badge-service">
-                                                            ${job.totalCandidates}/${job.quantityCandidatorsMax}
-                                                    </h5>
-                                                </div>
-                                            </div>
+                                            </c:forEach>
+                                        </c:if>
+
+                                        <span class="card-title"> <i
+                                                class="material-icons small blue-color-text icon_default">location_on</i>
+                                                ${job.user.address.neighborhood}
+                                        </span>
+                                    </div>
+
+                                    <div class="card-content">
+                                        <p class="description-job-card blue-text"><strong> Solicitado
+                                            em: ${job.dateCreated} </strong></p>
+                                        <p class="grey-text text-darken-4"> ${job.description} </p>
+
+                                        <p class="description-job-card right grey-text text-darken-4"> ${job.textualDate} </p>
+                                    </div>
+
+                                    <div class="card-footer progress" style="position: relative; height: 30px;">
+                                        <div class="determinate"
+                                             style="width: ${job.totalCandidates / job.quantityCandidatorsMax * 100}%; height: 100%;">
                                         </div>
-                                        <div class="row">
-                                            <div class="col s4">
-                                                <p class="center text-form-dados primary-color-text">
-                                                    <i class="material-icons small dark-color-text">person</i>
-                                                </p>
-                                                <p class="center text-form-dados primary-color-text">
-                                                        ${job.individual.name}
-                                                </p>
-                                            </div>
-                                            <div class="col s4">
-                                                <p
-                                                        class="center center-align text-form-dados primary-color-text"
-                                                >
-                                                    <i class="material-icons small dark-color-text"
-                                                    >location_on</i
-                                                    >
-                                                </p>
-                                                <p class="center text-form-dados primary-color-text">
-                                                        ${job.individual.address.neighborhood},
-                                                        ${job.individual.address.city.name}/${job.individual.address.city.state.uf}
-                                                </p>
-                                            </div>
-                                            <div class="col s4">
-                                                <p class="center text-form-dados primary-color-text">
-                                                    <i class="material-icons small dark-color-text"
-                                                    >access_time</i
-                                                    >
-                                                </p>
-                                                <p class="center text-form-dados primary-color-text">
-                                                        ${job.textualDate}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <blockquote class="light-blue lighten-5 info-headers">
-                                            <p>${job.description}</p>
-                                        </blockquote>
-                                        <div class="col s6 m6 spacing-buttons">
-                                            <div class="center">
-                                                <a
-                                                        href="#modal-delete"
-                                                        data-url="${pageContext.request.contextPath}/requisicoes/nao-quero/${job.id}"
-                                                        class="waves-effect waves-light btn spacing-buttons red modal-trigger"
-                                                >Não quero</a
-                                                >
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="center">
-                                                <a
-                                                        href="minha-conta/profissional/detalhes-servico/${job.id}"
-                                                        class="waves-effect waves-light btn spacing-buttons"
-                                                >
-                                                    Detalhes
-                                                </a>
-                                            </div>
+                                        <div class="progress-text"
+                                             style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); white-space: nowrap;">
+                                                ${job.totalCandidates} de ${job.quantityCandidatorsMax}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div id="modal-delete" class="modal">
                             <div class="modal-content">
                                 <form action="" method="post">
@@ -123,8 +104,192 @@
                                 </form>
                             </div>
                         </div>
-                    </c:if>
-                </c:forEach>
+
+
+                        <%--                        ${job}--%>
+                        <%--                        <div class="col s6 spacing-buttons">--%>
+                        <%--                            <div style="border: solid 1px black">--%>
+                        <%--                                <div class="secondary-background-color">--%>
+                        <%--                                    <div class="row">--%>
+                        <%--                                        <div class="col s8 offset-s2">--%>
+                        <%--                                            <h5 class="center white-text">${job.expertise.name}</h5>--%>
+                        <%--                                        </div>--%>
+                        <%--                                        <div class="col s2">--%>
+                        <%--                                            <h5 class="right white-text badge-service">--%>
+                        <%--                                                    ${job.totalCandidates}/${job.quantityCandidatorsMax}--%>
+                        <%--                                            </h5>--%>
+                        <%--                                        </div>--%>
+                        <%--                                    </div>--%>
+                        <%--                                </div>--%>
+                        <%--                                <div class="row">--%>
+                        <%--                                    <div class="col s4">--%>
+                        <%--                                        <p class="center text-form-dados primary-color-text">--%>
+                        <%--                                            <i class="material-icons small dark-color-text">person</i>--%>
+                        <%--                                        </p>--%>
+                        <%--                                        <p class="center text-form-dados primary-color-text">--%>
+                        <%--                                                ${job.user.name}--%>
+                        <%--                                        </p>--%>
+                        <%--                                    </div>--%>
+                        <%--                                    <div class="col s4">--%>
+                        <%--                                        <p--%>
+                        <%--                                                class="center center-align text-form-dados primary-color-text"--%>
+                        <%--                                        >--%>
+                        <%--                                            <i class="material-icons small dark-color-text"--%>
+                        <%--                                            >location_on</i--%>
+                        <%--                                            >--%>
+                        <%--                                        </p>--%>
+                        <%--                                        <p class="center text-form-dados primary-color-text">--%>
+                        <%--                                                ${job.user.address.neighborhood},--%>
+                        <%--                                                ${job.user.address.city.name}/${job.user.address.city.state.uf}--%>
+                        <%--                                        </p>--%>
+                        <%--                                    </div>--%>
+                        <%--                                    <div class="col s4">--%>
+                        <%--                                        <p class="center text-form-dados primary-color-text">--%>
+                        <%--                                            <i class="material-icons small dark-color-text"--%>
+                        <%--                                            >access_time</i--%>
+                        <%--                                            >--%>
+                        <%--                                        </p>--%>
+                        <%--                                        <p class="center text-form-dados primary-color-text">--%>
+                        <%--                                                ${job.textualDate}--%>
+                        <%--                                        </p>--%>
+                        <%--                                    </div>--%>
+                        <%--                                </div>--%>
+                        <%--                                <blockquote class="light-blue lighten-5 info-headers">--%>
+                        <%--                                    <p>${job.description}</p>--%>
+                        <%--                                </blockquote>--%>
+                        <%--                                <div class="col s6 m6 spacing-buttons">--%>
+                        <%--                                    <div class="center">--%>
+                        <%--                                        <a--%>
+                        <%--                                                href="#modal-delete"--%>
+                        <%--                                                data-url="${pageContext.request.contextPath}/requisicoes/nao-quero/${job.id}"--%>
+                        <%--                                                class="waves-effect waves-light btn spacing-buttons red modal-trigger"--%>
+                        <%--                                        >Não quero</a--%>
+                        <%--                                        >--%>
+                        <%--                                    </div>--%>
+                        <%--                                </div>--%>
+                        <%--                                <div>--%>
+                        <%--                                    <div class="center">--%>
+                        <%--                                        <a--%>
+                        <%--                                                href="minha-conta/profissional/detalhes-servico/${job.id}"--%>
+                        <%--                                                class="waves-effect waves-light btn spacing-buttons"--%>
+                        <%--                                        >--%>
+                        <%--                                            Detalhes--%>
+                        <%--                                        </a>--%>
+                        <%--                                    </div>--%>
+                        <%--                                </div>--%>
+                        <%--                            </div>--%>
+                        <%--                        </div>--%>
+
+                    </c:forEach>
+
+                </div>
+
+                    <%--                <c:forEach var="job" items="${jobs}">--%>
+                    <%--                    <c:if test="${not empty job.id}">--%>
+                    <%--                        <div class="container">--%>
+                    <%--                            <div class="row">--%>
+                    <%--                                <div class="col s12 spacing-buttons">--%>
+                    <%--                                    <div style="border: solid 1px black">--%>
+                    <%--                                        <div class="secondary-background-color">--%>
+                    <%--                                            <div class="row">--%>
+                    <%--                                                <div class="col s8 offset-s2">--%>
+                    <%--                                                    <h5 class="center white-text">${job.expertise.name}</h5>--%>
+                    <%--                                                </div>--%>
+                    <%--                                                <div class="col s2">--%>
+                    <%--                                                    <h5 class="right white-text badge-service">--%>
+                    <%--                                                            ${job.totalCandidates}/${job.quantityCandidatorsMax}--%>
+                    <%--                                                    </h5>--%>
+                    <%--                                                </div>--%>
+                    <%--                                            </div>--%>
+                    <%--                                        </div>--%>
+                    <%--                                        <div class="row">--%>
+                    <%--                                            <div class="col s4">--%>
+                    <%--                                                <p class="center text-form-dados primary-color-text">--%>
+                    <%--                                                    <i class="material-icons small dark-color-text">person</i>--%>
+                    <%--                                                </p>--%>
+                    <%--                                                <p class="center text-form-dados primary-color-text">--%>
+                    <%--                                                        ${job.individual.name}--%>
+                    <%--                                                </p>--%>
+                    <%--                                            </div>--%>
+                    <%--                                            <div class="col s4">--%>
+                    <%--                                                <p--%>
+                    <%--                                                        class="center center-align text-form-dados primary-color-text"--%>
+                    <%--                                                >--%>
+                    <%--                                                    <i class="material-icons small dark-color-text"--%>
+                    <%--                                                    >location_on</i--%>
+                    <%--                                                    >--%>
+                    <%--                                                </p>--%>
+                    <%--                                                <p class="center text-form-dados primary-color-text">--%>
+                    <%--                                                        ${job.individual.address.neighborhood},--%>
+                    <%--                                                        ${job.individual.address.city.name}/${job.individual.address.city.state.uf}--%>
+                    <%--                                                </p>--%>
+                    <%--                                            </div>--%>
+                    <%--                                            <div class="col s4">--%>
+                    <%--                                                <p class="center text-form-dados primary-color-text">--%>
+                    <%--                                                    <i class="material-icons small dark-color-text"--%>
+                    <%--                                                    >access_time</i--%>
+                    <%--                                                    >--%>
+                    <%--                                                </p>--%>
+                    <%--                                                <p class="center text-form-dados primary-color-text">--%>
+                    <%--                                                        ${job.textualDate}--%>
+                    <%--                                                </p>--%>
+                    <%--                                            </div>--%>
+                    <%--                                        </div>--%>
+                    <%--                                        <blockquote class="light-blue lighten-5 info-headers">--%>
+                    <%--                                            <p>${job.description}</p>--%>
+                    <%--                                        </blockquote>--%>
+                    <%--                                        <div class="col s6 m6 spacing-buttons">--%>
+                    <%--                                            <div class="center">--%>
+                    <%--                                                <a--%>
+                    <%--                                                        href="#modal-delete"--%>
+                    <%--                                                        data-url="${pageContext.request.contextPath}/requisicoes/nao-quero/${job.id}"--%>
+                    <%--                                                        class="waves-effect waves-light btn spacing-buttons red modal-trigger"--%>
+                    <%--                                                >Não quero</a--%>
+                    <%--                                                >--%>
+                    <%--                                            </div>--%>
+                    <%--                                        </div>--%>
+                    <%--                                        <div>--%>
+                    <%--                                            <div class="center">--%>
+                    <%--                                                <a--%>
+                    <%--                                                        href="minha-conta/profissional/detalhes-servico/${job.id}"--%>
+                    <%--                                                        class="waves-effect waves-light btn spacing-buttons"--%>
+                    <%--                                                >--%>
+                    <%--                                                    Detalhes--%>
+                    <%--                                                </a>--%>
+                    <%--                                            </div>--%>
+                    <%--                                        </div>--%>
+                    <%--                                    </div>--%>
+                    <%--                                </div>--%>
+                    <%--                            </div>--%>
+                    <%--                        </div>--%>
+                    <%--                        <div id="modal-delete" class="modal">--%>
+                    <%--                            <div class="modal-content">--%>
+                    <%--                                <form action="" method="post">--%>
+                    <%--                                    <div class="modal-content">--%>
+                    <%--                                        <h4>--%>
+                    <%--                                            Você tem certeza que deseja não se candidatar para este serviço?--%>
+                    <%--                                            <strong id="strong-name"></strong>?--%>
+                    <%--                                        </h4>--%>
+                    <%--                                    </div>--%>
+                    <%--                                    <div class="modal-footer">--%>
+                    <%--                                        <button--%>
+                    <%--                                                type="button"--%>
+                    <%--                                                class="modal-close btn-flat waves-effect waves-light btn btn-gray"--%>
+                    <%--                                        >--%>
+                    <%--                                            Cancelar--%>
+                    <%--                                        </button>--%>
+                    <%--                                        <button--%>
+                    <%--                                                type="submit"--%>
+                    <%--                                                class="modal-close btn waves-effect waves-light gray"--%>
+                    <%--                                        >--%>
+                    <%--                                            Sim--%>
+                    <%--                                        </button>--%>
+                    <%--                                    </div>--%>
+                    <%--                                </form>--%>
+                    <%--                            </div>--%>
+                    <%--                        </div>--%>
+                    <%--                    </c:if>--%>
+                    <%--                </c:forEach>--%>
 
                 <div class="container col s12 center-align">
                     <t:pagination-tab-ajax pagination="${pagination}"></t:pagination-tab-ajax>

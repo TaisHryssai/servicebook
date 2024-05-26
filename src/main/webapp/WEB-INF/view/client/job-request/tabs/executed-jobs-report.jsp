@@ -18,45 +18,91 @@
     </div>
 </c:if>
 
-<c:forEach var="job" items="${jobs}">
-    <div class="container">
-        <div class="row card-request spacing-standard">
-            <div class="col s8 m10 l2 center center-align">
-                <svg style="width:120px;height:120px" viewBox="0 0 24 24">
-                    <path class="dark-color-icon" d="M11,2H13V4H13.5A1.5,1.5 0 0,1 15,5.5V9L14.56,9.44L16.2,12.28C17.31,11.19 18,9.68 18,8H20C20,10.42 18.93,12.59 17.23,14.06L20.37,19.5L20.5,21.72L18.63,20.5L15.56,15.17C14.5,15.7 13.28,16 12,16C10.72,16 9.5,15.7 8.44,15.17L5.37,20.5L3.5,21.72L3.63,19.5L9.44,9.44L9,9V5.5A1.5,1.5 0 0,1 10.5,4H11V2M9.44,13.43C10.22,13.8 11.09,14 12,14C12.91,14 13.78,13.8 14.56,13.43L13.1,10.9H13.09C12.47,11.5 11.53,11.5 10.91,10.9H10.9L9.44,13.43M12,6A1,1 0 0,0 11,7A1,1 0 0,0 12,8A1,1 0 0,0 13,7A1,1 0 0,0 12,6Z" />
-                </svg>
-            </div>
-            <div class="col s4 m2 hide-on-large-only">
-                <div class="center">
-                    <div class="badge-requests no-margin right"><span>${job.jobRequest.amountOfCandidates}</span></div>
-                </div>
-            </div>
-            <div class="col s12 l8 text-detail-request">
-                <p>${job.jobRequest.expertise.name}</p>
-                <p class="truncate">${job.jobRequest.description}</p>
-                <p>Solicitado: ${job.jobRequest.dateCreated}</p>
-            </div>
-            <div class="col s4 l2 hide-on-med-and-down">
-                <div class="center">
-                    <div class="badge-requests no-margin right"><span>${job.jobRequest.totalCandidates}</span></div>
-                </div>
-            </div>
-            <div class="col s12">
-                <div class="row no-margin">
-                    <div class="col s6 m6 l2 offset-l8 spacing-buttons center">
-                        <div class="center">
-                            <a href="#modal-delete" data-url="${pageContext.request.contextPath}/minha-conta/cliente/meus-pedidos/${job.jobRequest.id}" data-name="${job.jobRequest.description}" class="waves-effect waves-light btn modal-trigger">Excluir</a>                                                        </div>
+<div class="row">
+    <c:forEach var="job" items="${jobs}">
+        <a href="minha-conta/cliente/meus-pedidos/${job.jobRequest.id}">
+            <div class="col s12 m6">
+                <div class="card">
+                    <div class="card-title">
+                        <p class="label_especialidade center">${job.jobRequest.expertise.name}</p>
                     </div>
-                    <div class="col s6 m6  l2 spacing-buttons center">
-                        <div class="center">
-                            <a class="waves-effect waves-light btn" href="minha-conta/cliente/meus-pedidos/${job.jobRequest.id}">Ver</a>
+
+                    <div class="card-image">
+                        <c:if test="${empty job.jobRequest.jobImages}">
+                            <div class="black-text text-darken-2 col-image-job-request">
+                                <span class="icone-default"><i class="material-icons right">dashboard</i></span>
+                            </div>
+                        </c:if>
+
+                        <c:if test="${not empty job.jobRequest.jobImages}">
+                            <c:forEach var="jobImage" items="${job.jobRequest.jobImages}">
+                                <div class="carousel-item blue white-text col-image-job-request">
+                                    <img src="${jobImage.path}" width="150px" height="150px"
+                                         alt="image_job">
+                                </div>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+
+                    <div class="card-content center">
+                        <p class="description-job-card"> ${job.jobRequest.description} </p>
+                        <span class="blue-text"> <strong>  Solicitado em: ${job.jobRequest.dateCreated} </strong> </span>
+                        <span class="right grey-text text-darken-4"> ${job.jobRequest.textualDate} </span>
+                    </div>
+
+                    <div class="card-footer progress" style="position: relative; height: 30px;">
+                        <div class="determinate"
+                             style="width: ${job.jobRequest.totalCandidates / job.jobRequest.quantityCandidatorsMax * 100}%; height: 100%;">
+                        </div>
+                        <div class="progress-text"
+                             style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); white-space: nowrap;">
+                                ${job.jobRequest.totalCandidates} de ${job.jobRequest.quantityCandidatorsMax}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</c:forEach>
+        </a>
+
+
+        <%--    <div class="container">--%>
+        <%--        <div class="row card-request spacing-standard">--%>
+        <%--            <div class="col s8 m10 l2 center center-align">--%>
+        <%--                <svg style="width:120px;height:120px" viewBox="0 0 24 24">--%>
+        <%--                    <path class="dark-color-icon" d="M11,2H13V4H13.5A1.5,1.5 0 0,1 15,5.5V9L14.56,9.44L16.2,12.28C17.31,11.19 18,9.68 18,8H20C20,10.42 18.93,12.59 17.23,14.06L20.37,19.5L20.5,21.72L18.63,20.5L15.56,15.17C14.5,15.7 13.28,16 12,16C10.72,16 9.5,15.7 8.44,15.17L5.37,20.5L3.5,21.72L3.63,19.5L9.44,9.44L9,9V5.5A1.5,1.5 0 0,1 10.5,4H11V2M9.44,13.43C10.22,13.8 11.09,14 12,14C12.91,14 13.78,13.8 14.56,13.43L13.1,10.9H13.09C12.47,11.5 11.53,11.5 10.91,10.9H10.9L9.44,13.43M12,6A1,1 0 0,0 11,7A1,1 0 0,0 12,8A1,1 0 0,0 13,7A1,1 0 0,0 12,6Z" />--%>
+        <%--                </svg>--%>
+        <%--            </div>--%>
+        <%--            <div class="col s4 m2 hide-on-large-only">--%>
+        <%--                <div class="center">--%>
+        <%--                    <div class="badge-requests no-margin right"><span>${job.jobRequest.amountOfCandidates}</span></div>--%>
+        <%--                </div>--%>
+        <%--            </div>--%>
+        <%--            <div class="col s12 l8 text-detail-request">--%>
+        <%--                <p>${job.jobRequest.expertise.name}</p>--%>
+        <%--                <p class="truncate">${job.jobRequest.description}</p>--%>
+        <%--                <p>Solicitado: ${job.jobRequest.dateCreated}</p>--%>
+        <%--            </div>--%>
+        <%--            <div class="col s4 l2 hide-on-med-and-down">--%>
+        <%--                <div class="center">--%>
+        <%--                    <div class="badge-requests no-margin right"><span>${job.jobRequest.totalCandidates}</span></div>--%>
+        <%--                </div>--%>
+        <%--            </div>--%>
+        <%--            <div class="col s12">--%>
+        <%--                <div class="row no-margin">--%>
+        <%--                    <div class="col s6 m6 l2 offset-l8 spacing-buttons center">--%>
+        <%--                        <div class="center">--%>
+        <%--                            <a href="#modal-delete" data-url="${pageContext.request.contextPath}/minha-conta/cliente/meus-pedidos/${job.jobRequest.id}" data-name="${job.jobRequest.description}" class="waves-effect waves-light btn modal-trigger">Excluir</a>                                                        </div>--%>
+        <%--                    </div>--%>
+        <%--                    <div class="col s6 m6  l2 spacing-buttons center">--%>
+        <%--                        <div class="center">--%>
+        <%--                            <a class="waves-effect waves-light btn" href="minha-conta/cliente/meus-pedidos/${job.jobRequest.id}">Ver1</a>--%>
+        <%--                        </div>--%>
+        <%--                    </div>--%>
+        <%--                </div>--%>
+        <%--            </div>--%>
+        <%--        </div>--%>
+        <%--    </div>--%>
+    </c:forEach>
+</div>
 
 <div class="container col s12 center-align">
     <t:pagination-tab-ajax pagination="${pagination}"></t:pagination-tab-ajax>

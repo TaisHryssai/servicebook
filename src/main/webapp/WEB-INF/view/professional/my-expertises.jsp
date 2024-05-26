@@ -12,6 +12,12 @@
     <jsp:body>
         <div class="row">
             <t:message-box/>
+            <div class="col s12 l12 breadcrumbs" style="margin-top: 20px">
+                <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+                <a href="${pageContext.request.contextPath}/minha-conta/profissional">Minha Conta</a> &gt;
+                Minhas especialidades
+            </div>
+
             <div class="col s12">
                 <h2 class="secondary-color-text">Minhas especialidades</h2>
                 <blockquote class="light-blue lighten-5 info-headers">

@@ -8,12 +8,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Component
 public class JobContractedMapper {
     @Autowired
     private ModelMapper mapper;
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public JobContractedDTO toDto(JobContracted entity) {
         JobContractedDTO dto = mapper.map(entity, JobContractedDTO.class);
@@ -40,7 +42,11 @@ public class JobContractedMapper {
         JobContractedFullDTO dto = mapper.map(entity, JobContractedFullDTO.class);
         dto.getJobRequest().setTotalCandidates(totalCandidates.get());
         dto.getJobRequest().setTextualDate(DateUtil.getTextualDate((entity.getJobRequest().getDateTarget())));
-
+        dto.getJobRequest().setIndividual(dto.getJobRequest().getIndividual());
+        if(entity.getJobRequest().getDateCreated() != null) {
+            dto.getJobRequest().setDateCreated(this.dateTimeFormatter.format(entity.getJobRequest().getDateCreated()));
+        }
+        dto.setTodoDate(this.dateTimeFormatter.format(entity.getTodoDate()));
         return dto;
     }
 

@@ -10,9 +10,6 @@
 
 <div class="right">
     <ul class="right nav-btn">
-        <li>
-            <a class="menu-link" href="requisicoes?passo=1">ANUNCIAR</a>
-        </li>
 
         <li class="hide-on-med-and-down">
             <a class='dropdown-trigger btn' href='#' data-target='dropdown-cliente'>SOU CLIENTE<i

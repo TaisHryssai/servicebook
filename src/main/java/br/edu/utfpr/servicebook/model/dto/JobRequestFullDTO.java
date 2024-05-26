@@ -1,10 +1,15 @@
 package br.edu.utfpr.servicebook.model.dto;
 
+import br.edu.utfpr.servicebook.model.entity.JobImages;
+import br.edu.utfpr.servicebook.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +26,11 @@ public class JobRequestFullDTO implements Serializable {
     private Long totalCandidates;
     private String textualDate;
     private Long amountOfCandidates;
+    private User user;
 
     public String status;
+    private MultipartFile imageFile;
+    private Set<JobImages> jobImages = new HashSet<>();
+
 
 }

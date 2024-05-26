@@ -18,6 +18,11 @@ import br.edu.utfpr.servicebook.util.UserTemplateInfo;
 import br.edu.utfpr.servicebook.util.TemplateUtil;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.mercadopago.client.common.AddressRequest;
+import com.mercadopago.client.common.IdentificationRequest;
+import com.mercadopago.client.common.PhoneRequest;
+import com.mercadopago.client.preference.*;
+import com.mercadopago.resources.preference.Preference;
 import org.apache.batik.transcoder.TranscoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -47,6 +53,7 @@ import org.springframework.validation.BindingResult;
 import com.google.zxing.WriterException;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.fop.configuration.ConfigurationException;
+import com.mercadopago.MercadoPagoConfig;
 
 @RequestMapping("/minha-conta/cliente")
 @Controller
@@ -258,6 +265,106 @@ public class ClientController {
                 })
                 .collect(Collectors.toList());
 
+        MercadoPagoConfig.setAccessToken("TEST-2738533774159236-052518-f4e09de99516f8d7b2adb21186313d1b-494777183");
+        PreferenceClient client = new PreferenceClient();
+
+        PreferenceItemRequest itemRequest =
+                PreferenceItemRequest.builder()
+                        .id("1234")
+                        .title("Dummy Title")
+                        .description("Dummy description")
+                        .pictureUrl("http://www.myapp.com/myimage.jpg")
+                        .categoryId("car_electronics")
+                        .quantity(1)
+                        .currencyId("BRL")
+                        .unitPrice(new BigDecimal("10"))
+                        .build();
+
+        List<PreferenceItemRequest> items = new ArrayList<>();
+        items.add(itemRequest);
+
+        PreferenceFreeMethodRequest freeMethod =
+                PreferenceFreeMethodRequest.builder()
+                        .id(1L).build();
+        List<PreferenceFreeMethodRequest> freeMethodList = new ArrayList<>();
+        freeMethodList.add(freeMethod);
+
+        List<PreferencePaymentTypeRequest> excludedPaymentTypes = new ArrayList<>();
+        excludedPaymentTypes.add(PreferencePaymentTypeRequest.builder().id("ticket").build());
+
+        List<PreferencePaymentMethodRequest> excludedPaymentMethods = new ArrayList<>();
+        excludedPaymentMethods.add(PreferencePaymentMethodRequest.builder().id("").build());
+
+        PreferenceRequest preferenceRequest = PreferenceRequest.builder()
+                .backUrls(
+                        PreferenceBackUrlsRequest.builder()
+                                .success("http://test.com/success")
+                                .failure("http://test.com/failure")
+                                .pending("http://test.com/pending")
+                                .build())
+                .differentialPricing(
+                        PreferenceDifferentialPricingRequest.builder()
+                                .id(1L)
+                                .build())
+                .expires(false)
+                .items(items)
+                .marketplaceFee(new BigDecimal("0"))
+                .payer(
+                        PreferencePayerRequest.builder()
+                                .name("Test")
+                                .surname("User")
+                                .email("your_test_email@example.com")
+                                .phone(PhoneRequest.builder().areaCode("11").number("4444-4444").build())
+                                .identification(
+                                        IdentificationRequest.builder().type("CPF").number("19119119100").build())
+                                .address(
+                                        AddressRequest.builder()
+                                                .zipCode("06233200")
+                                                .streetName("Street")
+                                                .streetNumber("123")
+                                                .build())
+                                .build())
+                .additionalInfo("Discount: 12.00")
+                .autoReturn("all")
+                .binaryMode(true)
+                .externalReference("1643827245")
+                .marketplace("marketplace")
+                .notificationUrl("http://notificationurl.com")
+                .operationType("regular_payment")
+                .paymentMethods(
+                        PreferencePaymentMethodsRequest.builder()
+                                .defaultPaymentMethodId("master")
+                                .excludedPaymentTypes(excludedPaymentTypes)
+                                .excludedPaymentMethods(excludedPaymentMethods)
+                                .installments(5)
+                                .defaultInstallments(1)
+                                .build())
+                .shipments(
+                        PreferenceShipmentsRequest.builder()
+                                .mode("custom")
+                                .localPickup(false)
+                                .defaultShippingMethod(null)
+                                .freeMethods(freeMethodList)
+                                .cost(BigDecimal.TEN)
+                                .freeShipping(false)
+                                .dimensions("10x10x20,500")
+                                .receiverAddress(
+                                        PreferenceReceiverAddressRequest.builder()
+                                                .zipCode("06000000")
+                                                .streetNumber("123")
+                                                .streetName("Street")
+                                                .floor("12")
+                                                .apartment("120A")
+                                                .build())
+                                .build())
+                .statementDescriptor("Test Store")
+                .build();
+
+        Preference preference = client.create(preferenceRequest);
+
+
+        System.out.println("AAAAAAA");
+        System.out.println(preference.getClientId());
         mv.addObject("candidates", jobCandidatesDTOs);
         mv.addObject("expertise", expertiseDTO);
         mv.addObject("jobRequest", jobDTO);

@@ -8,7 +8,7 @@
 <c:set var="currenturl" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 
 <div class="col s12" style="padding-left: 0" id="area-perfil">
-    <div class="row center primary-background-color area-perfil no-margin" >
+    <div class="row center primary-background-color area-perfil no-margin">
         <div class="dark-color-text tooltipped col offset-s1 center-align" data-position="bottom"
              data-tooltip="${userInfo.rating} estrela (s)." style="cursor: pointer">
 
@@ -115,7 +115,8 @@
             <div class="row secondary-background-color no-margin">
                 <div class="col s12">
                     <h5 class="name-header no-margin center white-text">
-                        <strong><a href="minha-conta/cliente/profissionais-favoritos">${userInfo.followingAmount}</a></strong>
+                        <strong><a
+                                href="minha-conta/cliente/profissionais-favoritos">${userInfo.followingAmount}</a></strong>
                     </h5>
                 </div>
             </div>
@@ -167,19 +168,22 @@
             <!-- Fim Funcionários - mostra só para empresa -->
 
             <!-- Especialidades -->
-            <div class="row no-margin center">
-                <div class="col s12 no-margin no-padding input-field area-profission-select">
+            <div class="row no-margin center"
+                 style="margin: 0 !important; padding: 0 !important;">
+                <div class="col s12 no-margin no-padding area-profission-select">
                     <p class="header-verification tertiary-color-text">
                         ESPECIALIDADES
                     </p>
 
-                    <form method="get" action="minha-conta/profissional" id="form-expertise">
-                        <div class="input-field col s12 no-padding white-text">
+                    <form method="get" action="minha-conta/profissional" id="form-expertise"
+                          class="nav-form-especialidade">
+                        <div class="col input-field s12 no-padding white-text">
                             <select name="id" id="select-expertise" onchange="updateStatistics(this)">
                                 <option value="0">Todas as Especialidades</option>
 
                                 <c:forEach var="e" items="${professionalExpertises}">
-                                    <option value="${e.id}" ${e.id == currentExpertiseId ? 'selected' : ''}><p>${e.name}</p></option>
+                                    <option value="${e.id}" ${e.id == currentExpertiseId ? 'selected' : ''}>
+                                        <p>${e.name}</p></option>
                                 </c:forEach>
 
                             </select>
@@ -245,7 +249,8 @@
                     <p class="header-verification tertiary-color-text center">COMENTÁRIOS</p>
                     <div class="row secondary-background-color no-margin">
                         <h5 class="info-headers no-margin center white-text center">
-                            <strong id="expertise-comments" class="expertise-comments">${statisticInfo.comments}</strong>
+                            <strong id="expertise-comments"
+                                    class="expertise-comments">${statisticInfo.comments}</strong>
                         </h5>
                     </div>
                 </div>

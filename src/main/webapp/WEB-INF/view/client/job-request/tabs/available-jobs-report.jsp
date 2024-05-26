@@ -16,72 +16,94 @@ tagdir="/WEB-INF/tags" %>
 </c:if>
 
 <c:forEach var="jobRequest" items="${jobs}">
-  <div class="container">
-    <div class="row card-request spacing-standard">
-      <div class="col s8 m10 l2 center center-align">
-        <svg style="width: 120px; height: 120px" viewBox="0 0 24 24">
-          <path
-            class="dark-color-icon"
-            d="M11,2H13V4H13.5A1.5,1.5 0 0,1 15,5.5V9L14.56,9.44L16.2,12.28C17.31,11.19 18,9.68 18,8H20C20,10.42 18.93,12.59 17.23,14.06L20.37,19.5L20.5,21.72L18.63,20.5L15.56,15.17C14.5,15.7 13.28,16 12,16C10.72,16 9.5,15.7 8.44,15.17L5.37,20.5L3.5,21.72L3.63,19.5L9.44,9.44L9,9V5.5A1.5,1.5 0 0,1 10.5,4H11V2M9.44,13.43C10.22,13.8 11.09,14 12,14C12.91,14 13.78,13.8 14.56,13.43L13.1,10.9H13.09C12.47,11.5 11.53,11.5 10.91,10.9H10.9L9.44,13.43M12,6A1,1 0 0,0 11,7A1,1 0 0,0 12,8A1,1 0 0,0 13,7A1,1 0 0,0 12,6Z"
-          />
-        </svg>
-      </div>
-      <div class="col s4 m2 hide-on-large-only">
-        <div class="center">
-          <div class="badge-requests no-margin right">
-            <span>${jobRequest.amountOfCandidates}</span>
-          </div>
+  <a href="minha-conta/cliente/meus-pedidos/${jobRequest.id}" class="card-link">
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-title">
+          <p class="label_especialidade center">${jobRequest.expertise.name}</p>
         </div>
-      </div>
-      <div class="col s12 l8 text-detail-request">
-        <p>${jobRequest.expertise.name}</p>
-        <p class="truncate">${jobRequest.description}</p>
-        <p>Solicitado: ${jobRequest.dateCreated}</p>
-      </div>
-      <div class="col s4 l2 hide-on-med-and-down">
-        <div class="center">
-          <div class="s2">
-            <h5 class="right white-text badge-service no-margin right">
-              ${jobRequest.totalCandidates}/${jobRequest.quantityCandidatorsMax}
-            </h5>
-          </div>
-        </div>
-      </div>
-      <div class="col s12">
-        <div class="row no-margin">
-          <div class="col s6 m6 l2 offset-l8 spacing-buttons center">
-            <!-- <div class="center">
-              <a
-                href="#modal-delete"
-                data-url="${pageContext.request.contextPath}/minha-conta/cliente/meus-pedidos/${jobRequest.id}"
-                data-name="${jobRequest.description}"
-                class="waves-effect waves-light btn modal-trigger"
-                >Excluir</a
-              >
-            </div> -->
 
-            <div class="center">
-              <a
-                href="#modal-delete"
-                data-url="${pageContext.request.contextPath}/minha-conta/cliente/desistir/${jobRequest.id}"
-                class="waves-effect waves-light btn spacing-buttons red modal-trigger"
-                >Excluir</a
-              >
+        <div class="card-image">
+          <c:if test="${empty jobRequest.jobImages}">
+            <div class="black-text text-darken-2 col-image-job-request">
+              <span class="icone-default"><i class="material-icons right">dashboard</i></span>
             </div>
+          </c:if>
+
+          <c:if test="${not empty jobRequest.jobImages}">
+            <c:forEach var="jobImage" items="${jobRequest.jobImages}">
+              <div class="carousel-item blue white-text col-image-job-request">
+                <img src="${jobImage.path}" width="150px" height="150px"
+                     alt="image_job">
+              </div>
+            </c:forEach>
+          </c:if>
+        </div>
+
+        <div class="card-content center">
+          <p class="description-job-card"> ${jobRequest.description} </p>
+          <span class="blue-text"> <strong>  Solicitado em: ${jobRequest.dateCreated} </strong> </span>
+          <span class="right grey-text text-darken-4"> ${jobRequest.textualDate} </span>
+        </div>
+
+        <div class="card-footer progress" style="position: relative; height: 30px;">
+          <div class="determinate" style="width: ${jobRequest.totalCandidates / jobRequest.quantityCandidatorsMax * 100}%; height: 100%;">
           </div>
-          <div class="col s6 m6 l2 spacing-buttons center">
-            <div class="center">
-              <a
-                class="waves-effect waves-light btn"
-                href="minha-conta/cliente/meus-pedidos/${jobRequest.id}"
-                >Ver</a
-              >
-            </div>
+          <div class="progress-text" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); white-space: nowrap;">
+              ${jobRequest.totalCandidates} de ${jobRequest.quantityCandidatorsMax}
           </div>
         </div>
+
       </div>
     </div>
-  </div>
+  </a>
+
+
+
+<%--  <div class="col s6 m6  spacing-standard-request">--%>
+<%--    <div class="card ticky-action card-request1">--%>
+<%--      <div class="card-image waves-effect waves-block waves-light">--%>
+<%--        <h5 class="left black-text text-darken-2 no-margin">--%>
+<%--            ${jobRequest.expertise.name}--%>
+<%--        </h5>--%>
+<%--      </div>--%>
+
+<%--      <div class="card-action row">--%>
+<%--        <div class="col s12 m12 l12 card-image black-text text-darken-2 col-image-job-request">--%>
+<%--          <span class="icone-default"><i class="material-icons right">dashboard</i></span>--%>
+<%--        </div>--%>
+
+<%--        <div class="col s12 blue-text text-darken-2 right">--%>
+<%--          <span class="right" style="font-size: .85rem">--%>
+<%--            <strong>  Solicitado: ${jobRequest.dateCreated} </strong>--%>
+<%--          </span>--%>
+<%--        </div>--%>
+
+<%--        <div class="col s12 no-margin">--%>
+<%--          <h5 class="card-title activator grey-text text-darken-4"> ${jobRequest.description} </h5>--%>
+<%--          <p class="truncate grey-text text-darken-4">--%>
+<%--             ${jobRequest.textualDate}--%>
+<%--          </p>--%>
+<%--        </div>--%>
+<%--      </div>--%>
+
+<%--      <div class="card-action card-progress no-margin">--%>
+<%--        <div class="row">--%>
+<%--          <div class="col s10 m10 l10 progress">--%>
+<%--            <div class="determinate" style="width: ${jobRequest.totalCandidates / jobRequest.quantityCandidatorsMax * 100}%">--%>
+<%--              <span class="progress-text"></span>--%>
+<%--            </div>--%>
+<%--          </div>--%>
+
+<%--          <div class="col s2 qtd_candidates">${jobRequest.totalCandidates} de ${jobRequest.quantityCandidatorsMax}</div>--%>
+
+<%--          <div class="col s12 m12 l12">--%>
+<%--            <a class="waves-effect waves-light btn btn-view-request" href="minha-conta/cliente/meus-pedidos/${jobRequest.id}">Visualizar </a>--%>
+<%--          </div>--%>
+<%--        </div>--%>
+<%--      </div>--%>
+<%--    </div>--%>
+<%--  </div>--%>
 </c:forEach>
 
 <div class="container col s12 center-align">

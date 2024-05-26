@@ -9,8 +9,20 @@
     <jsp:body>
 
         <main>
-            <t:banner cities="${cities}"></t:banner>
+            <div class="row">
+                <div class="col s12" id="painel">
+                    <div class="city-name">
+                        <div class="container cityNameContent">
+                            <span id="select-city-name" class="chip"></span>
+                            <a id="toggle-city-id">ALTERAR A CIDADE</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div id="city-panel">
+                <t:banner cities="${cities}"></t:banner>
+            </div>
             <t:search-bar items="${categories}"></t:search-bar>
 
             <section class="container center-align">
@@ -26,10 +38,10 @@
                     </div>
                     <div class="col s12 m4">
                         <div class="card indigo">
-                        <div class="card-content white-text">
-                            <span class="card-title">${totalProfessionals}</span>
-                            <p>PROFISSIONAIS</p>
-                        </div>
+                            <div class="card-content white-text">
+                                <span class="card-title">${totalProfessionals}</span>
+                                <p>PROFISSIONAIS</p>
+                            </div>
                         </div>
                     </div>
                     <div class="col s12 m4">
@@ -40,31 +52,31 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col s12 cards-container">
-                        <h4>QUAL É A QUANTIDADE DE CLIENTES INTERESSADOS?</h4>
-                        <div class="col s12 m4">
-                            <div class="card indigo">
-                                <div class="card-content white-text">
-                                    <span class="card-title">${totalClients}</span>
-                                    <p>CLIENTES</p>
-                                </div>
+                <div class="row">
+                    <h4>QUAL É A QUANTIDADE DE CLIENTES INTERESSADOS?</h4>
+                    <div class="col s12 m4">
+                        <div class="card indigo">
+                            <div class="card-content white-text">
+                                <span class="card-title">${totalClients}</span>
+                                <p>CLIENTES</p>
                             </div>
                         </div>
-                        <div class="col s12 m4">
-                            <div class="card indigo">
-                                <div class="card-content white-text">
-                                    <span class="card-title">${totalJobContracted}</span>
-                                    <p>ANÚNCIOS</p>
-                                </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="card indigo">
+                            <div class="card-content white-text">
+                                <span class="card-title">${totalJobContracted}</span>
+                                <p>ANÚNCIOS</p>
                             </div>
                         </div>
-                        <div class="col s12 m4">
-                            <div class="card indigo">
-                                <div class="card-content white-text">
-                                    <span class="card-title">${totalJobRequests}</span>
-                                    <p>AVALIAÇÕES</p>
-                                </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="card indigo">
+                            <div class="card-content white-text">
+                                <span class="card-title">${totalJobRequests}</span>
+                                <p>AVALIAÇÕES</p>
                             </div>
                         </div>
                     </div>
