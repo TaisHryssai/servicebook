@@ -77,6 +77,10 @@ public class JobRequest {
 	@OneToMany(mappedBy = "jobRequest", cascade = CascadeType.REMOVE)
 	Set<JobCandidate> jobCandidates = new HashSet<>();
 
+	@ManyToOne
+	@JoinColumn(name = "professional_service_offering")
+	private ProfessionalServiceOffering serviceOffering;
+
 	@PrePersist
 	public void onPersist(){
 		this.dateCreated = LocalDate.now();

@@ -30,9 +30,9 @@
                 </div>
                 <div class="col s12 m8 center">
                     <h3 class="center secondary-color-text"><strong>${professional.name}</strong></h3>
-                    <h5 class="center secondary-color-text"><i class="small material-icons">email</i> ${professional.email}</h5>
-                    <h5 class="center secondary-color-text"><i class="small material-icons">local_phone</i> ${professional.phoneNumber}</h5>
-                    <h5 class="center secondary-color-text"><i class="small material-icons">location_on</i> ${professional.address.neighborhood}, ${city.name} - ${city.state.uf}</h5>
+                    <h5 class="icon-edit-profile center secondary-color-text"><i class="small material-icons">email</i> ${professional.email}</h5>
+                    <h5 class="icon-edit-profile center secondary-color-text"><i class="small material-icons">local_phone</i> ${professional.phoneNumber}</h5>
+                    <h5 class="icon-edit-profile center secondary-color-text"><i class="small material-icons">location_on</i> ${professional.address.neighborhood}, ${city.name} - ${city.state.uf}</h5>
                 </div>
             </div>
             <div class="row">

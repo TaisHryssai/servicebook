@@ -131,6 +131,8 @@ public class MyAdsController {
 
             ProfessionalServiceOffering professionalServiceOffering = new ProfessionalServiceOffering();
             Optional<Service> oService = serviceService.findById(professionalServiceOfferingDTO.getServiceId());
+            Optional<Expertise> oExpertise = expertiseService.findById(professionalServiceOfferingDTO.getExpertiseId());
+
             professionalServiceOffering.setUser(oUser.get());
             professionalServiceOffering.setPrice(professionalServiceOfferingDTO.getPrice());
             professionalServiceOffering.setUnit(professionalServiceOfferingDTO.getUnit());
@@ -141,8 +143,10 @@ public class MyAdsController {
             if(oService.isPresent()){
                 professionalServiceOffering.setService(oService.get());
             }
-
-        //grava o nome do serviço original
+            if(oExpertise.isPresent()){
+                professionalServiceOffering.setExpertise(oExpertise.get());
+            }
+            //grava o nome do serviço original
             professionalServiceOffering.setName(oService.get().getName());
             professionalServiceOfferingService.save(professionalServiceOffering);
 

@@ -105,4 +105,13 @@ public interface ProfessionalServiceOfferingRepository extends JpaRepository<Pro
 
     @Query("SELECT e FROM ProfessionalServiceOffering e WHERE e.user.id = :userId AND e.service.expertise.id = :expertiseId")
     public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingByExpertiseAAndUser(Long userId, Long expertiseId);
+
+    @Query("SELECT e FROM ProfessionalServiceOffering e WHERE e.user.id = :user and e.service.id = :service")
+    public List<ProfessionalServiceOffering> findProfessionalServiceOfferingByServiceAndUser(Long service, Long user);
+
+    public Optional<ProfessionalServiceOffering> findById(Long id);
+
+    @Query("SELECT e FROM ProfessionalServiceOffering e WHERE e.id = :id and e.user.id = :user")
+    public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingByIdAndUser(Long id, Long user);
+
 }

@@ -12,6 +12,7 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import com.google.zxing.BarcodeFormat;
@@ -82,14 +83,14 @@ public class PaymentVoucherService {
     public File generateCertificate(String svgCertificateTemplate, String voucher, String service, String date, String date_due,
                                     String name_client, String document_client, String fone_client, String mail_client,
                                     String name_professional, String document_professional,String mail_professional,
-                                    String fone_professional, String endereco_pro, String payment_type, String payment_value, String qrCode) throws TranscoderException, IOException, ConfigurationException, TransformerException {
+                                    String fone_professional, String endereco_pro, String payment_type, String payment_value, String qrCode, String date_document) throws TranscoderException, IOException, ConfigurationException, TransformerException {
 
         //busca o template de certificado em SVG na nuvem
         URL url = new URL(svgCertificateTemplate);
 
         //realiza a customização
         Document doc = updateCertificate(url.openStream(), voucher, service,date, date_due,name_client,document_client,fone_client,mail_client,name_professional, document_professional,
-                mail_professional, fone_professional, endereco_pro, payment_type, payment_value, qrCode);
+                mail_professional, fone_professional, endereco_pro, payment_type, payment_value, qrCode, date_document);
 
         //persiste as alterções em um SVG temporário
         File fileSVG = convertDocumentToFile(doc);
@@ -108,11 +109,14 @@ public class PaymentVoucherService {
     private Document updateCertificate(InputStream svgInputStream, String voucher, String service, String date, String date_due,
                                        String name_client, String document_client, String fone_client, String mail_client,
                                        String name_professional, String document_professional,String mail_professional,
-                                       String fone_professional, String endereco_pro, String payment_type, String payment_value, String qrCodeBase64) throws IOException {
+                                       String fone_professional, String endereco_pro, String payment_type, String payment_value, String qrCodeBase64,String date_document) throws IOException {
         String parser = XMLResourceDescriptor.getXMLParserClassName();
         SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
 
         Document doc = f.createDocument(null, svgInputStream);
+        Element dateDocument = doc.getElementById("date-document");
+        dateDocument.setTextContent(date_document);
+
         Element numberVoucher = doc.getElementById("number-voucher");
         numberVoucher.setTextContent(voucher);
 
@@ -154,10 +158,6 @@ public class PaymentVoucherService {
 
         Element valor = doc.getElementById("valor");
         valor.setTextContent(payment_value);
-
-        Element payment = doc.getElementById("payment");
-        payment.setTextContent(payment_type);
-
 
 //        Element qrElement = doc.getElementById("image0");
 //        qrElement.setAttribute("xlink:href", qrCodeBase64);

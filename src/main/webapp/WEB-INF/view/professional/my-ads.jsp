@@ -46,14 +46,16 @@
             <div id="ads"></div>
 
             <c:if test="${empty servicesIndividuals}">
-              <h6 class="left-align" style="font-weight: bold">Serviços Individuais</h6>
+              <span class="left-align title-section" style="font-weight: bold">Serviços Individuais</span>
+              <hr>
               <t:empty-list message="Não há serviços individuais cadastrados"></t:empty-list>
             </c:if>
 
             <c:if test="${not empty servicesIndividuals}">
 
                 <div class="col s12">
-                  <span class="left-align" style="font-weight: bold; font-size: 1.5rem">Serviços Individuais</span>
+                  <span class="left-align title-section">Serviços Individuais</span>
+                  <hr>
                   <a href="minha-conta/profissional/meus-anuncios/individuais" class="btn-flat btn_view">ver mais <i class="material-icons right">navigate_next</i></a>
                 </div>
               <c:forEach var="service" items="${servicesIndividuals}">
@@ -78,7 +80,7 @@
                       </div>
                     </div>
                     <div class="label_price">
-                      <p style="margin: 0"><fmt:formatNumber value="${service.price/100}"   type = "currency"/> </p>
+                      <p style="margin: 0"><fmt:formatNumber value="${service.price}"   type = "currency"/> </p>
                     </div>
                   </div>
                   <p class="label_especialidade">${service.service.name}</p>
@@ -89,7 +91,8 @@
 
             <div class="col s12">
               <c:if test="${empty teste}">
-                <h6 class="left-align" style="font-weight: bold">Serviços Combinados</h6>
+                <span class="left-align title-section" >Serviços Combinados</span>
+                <hr>
                 <t:empty-list message="Não há serviços combinados cadastrados"></t:empty-list>
               </c:if>
 
@@ -100,7 +103,8 @@
 
             <div class="col s12">
               <c:if test="${empty servicesPackages}">
-                <h6 class="left-align" style="font-weight: bold">Pacotes de Serviços</h6>
+                <span class="left-align title-section">Pacotes de Serviços</span>
+                <hr>
                 <t:empty-list message="Não há pacotes de serviços cadastrados"></t:empty-list>
               </c:if>
 

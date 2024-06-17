@@ -2,11 +2,14 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <t:template title="Etapa 03">
     <jsp:body>
 
         <main>
             <div class="container">
+
+
                 <c:if test="${not empty errors}">
                     <div class="card-panel red">
                         <c:forEach var="e" items="${errors}">
@@ -14,19 +17,30 @@
                         </c:forEach>
                     </div>
                 </c:if>
+                <c:if test="${not empty msg}">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card-panel orange lighten-1 msg-view center-align">
+                                <span class="white-text">${msg}</span>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+
                 <div class="section">
                     <div class="row">
+                        <h3 class="center secondary-color-text">Descreva o tipo de serviço</h3>
                         <form method="post" action="requisicoes/passo-3">
-                            <h4 class="center secondary-color-text">Qual a quantidade máxima de contatos que deseja receber? </h4>
                             <div class="row center">
-                                <h3 id="value-input-range" class="grey-text center">10</h3>
-                                <div class="col s8 offset-s2 range-field  spacing-standard ">
-                                    <input id="quantityCandidatorsMax" name="quantityCandidatorsMax" type="range" min="1" max="20" value="10">
+                                <div class="col s12 m8 offset-m2 l8 offset-l2  input-field">
+                                    <div class="input-field col s12">
+                                        <textarea placeholder="Digite a descrição" id="description" name="description" class="area-type-service"></textarea>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col s6 m6 spacing-buttons">
                                 <div class="center">
-                                    <a href="requisicoes?passo=2" class="waves-effect waves-light btn btn-gray" href="#!">Voltar</a>
+                                    <a href="requisicoes?passo=3" class="waves-effect waves-light btn btn-gray" href="#!">Voltar</a>
                                 </div>
                             </div>
                             <div class="col s6 m6 spacing-buttons">

@@ -1,9 +1,7 @@
 $(document).ready(function () {
-    if ($("#category-select").val() != '') {
+    if ($("#category-select").val() != null) {
         selectCategory($("#category-select").val())
     }
-
-
 
     var element = $("#dto_expertise").val();
 
@@ -19,7 +17,7 @@ $(document).ready(function () {
                     $('#expertise-select').prop("disabled", true);
                     $("#expertise-select").append("<option disabled selected>Não há especialidades</option>");
                 } else
-                    $('#expertise-select').removeAttr("disabled");
+                    $('#expertise-select').prop("disabled", false);
                     $("#expertise-select").append("<option disabled selected>Selecione uma especialidade</option>");
 
                 $.each(expertises, function (index, expertise) {
@@ -35,7 +33,7 @@ $(document).ready(function () {
             }
         });
     }
-    if ($("#expertise-select").val() != '') {
+    if ($("#expertise-select").val() != null) {
         selectExpertise(element)
     }
 
@@ -75,24 +73,32 @@ $(document).ready(function () {
     // LISTA DE ESPECIALIDADE DE ACORDO COM A CATEGORIA
     $("#category-select").change(function () {
         let categoryId = $(this).val();
+
         $.ajax({
-            url: "especialidades/categoria/"+ categoryId,
+            url: "especialidades/categoria/" + categoryId,
             type: "GET",
             success: function (expertises) {
-                console.log(expertises)
+                console.log(expertises);
 
                 $("#expertise-select").empty();
 
-                //se o array for vazio, coloca o option que não há especialidades
-                if (expertises.length === 0)
+                // Se o array for vazio, coloca o option que não há especialidades
+                if (expertises.length === 0) {
                     $("#expertise-select").append("<option disabled selected>Não há especialidades</option>");
-                else
+                } else {
                     $("#expertise-select").append("<option disabled selected>Selecione uma especialidade</option>");
+                }
+                $("#expertise-select").prop("disabled", false);
 
                 $.each(expertises, function (index, expertise) {
                     $("#expertise-select").append("<option value='" + expertise.id + "'>" + expertise.name + "</option>");
                 });
                 $("#expertise-select").formSelect();
+
+                // Habilitar o seletor de especialidades
+            },
+            error: function () {
+                console.error("Erro ao buscar especialidades.");
             }
         });
     });
@@ -112,6 +118,8 @@ $(document).ready(function () {
                     $("#service-select").append("<option disabled selected>Não há serviços</option>");
                 else
                     $("#service-select").append("<option disabled selected>Selecione um serviço</option>");
+
+                $("#service-select").prop("disabled", false);
 
                 $.each(services, function (index, service) {
                     $("#service-select").append("<option value='" + service.id + "'>" + service.name + "</option>");

@@ -6,6 +6,12 @@
     <jsp:body>
         <main class="">
             <div class="row">
+                <div class="col s12  breadcrumbs" style="margin-top: 20px">
+                    <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+                    <a href="${pageContext.request.contextPath}/minha-conta/empresa">Minha Conta</a> &gt;
+                    Meus Funcionários
+                </div>
+
                 <div class="col s12">
                     <h2 class="secondary-color-text">Meus Funcionários</h2>
                     <blockquote class="light-blue lighten-5 info-headers">

@@ -12,30 +12,31 @@ import br.edu.utfpr.servicebook.sse.EventSSE;
 import br.edu.utfpr.servicebook.sse.EventSSEDTO;
 import br.edu.utfpr.servicebook.sse.EventSseMapper;
 import br.edu.utfpr.servicebook.sse.SSEService;
-import br.edu.utfpr.servicebook.util.SessionNames;
+import br.edu.utfpr.servicebook.util.*;
 import br.edu.utfpr.servicebook.util.pagination.PaginationDTO;
 import br.edu.utfpr.servicebook.util.pagination.PaginationUtil;
-import br.edu.utfpr.servicebook.util.UserTemplateInfo;
-import br.edu.utfpr.servicebook.util.UserTemplateStatisticInfo;
-import br.edu.utfpr.servicebook.util.TemplateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequestMapping("/minha-conta/profissional")
@@ -114,6 +115,30 @@ public class ProfessionalHomeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AssessmentProfessionalMapper assessmentProfessionalMapper;
+
+    @Autowired
+    private AssessmentProfessionalService assessmentProfessionalService;
+
+    @Autowired
+    private AssessmentProfessionalFileService assessmentProfessionalFileService;
+
+    @Autowired
+    private AssessmentResponseService assessmentResponseService;
+
+    @Autowired
+    private PerspectiveAPIService perspectiveAPIService;
+
+    @Autowired
+    private JobImagesService jobImagesService;
+
+    @Autowired
+    private AssessmentResponseMapper assessmentResponseMapper;
+
+    @Value("${svg.certificate.template}")
+    private String svgCertificateTemplate;
+
     /**
      * Mostra a tela da minha conta no perfil do profissional, mostrando os anúncios disponíveis por default.
      * @param expertiseId
@@ -121,7 +146,7 @@ public class ProfessionalHomeController {
      * @throws Exception
      */
     @GetMapping
-    @RolesAllowed({RoleType.USER})
+    @RolesAllowed({RoleType.USER, RoleType.COMPANY})
     public ModelAndView showMyAccountProfessional(@RequestParam(required = false, defaultValue = "0") Optional<Long> expertiseId) throws Exception {
         log.debug("ServiceBook: Minha conta.");
 
@@ -502,7 +527,7 @@ public class ProfessionalHomeController {
     }
 
     @GetMapping("/detalhes-servico/{id}")
-    @RolesAllowed({RoleType.USER})
+    @RolesAllowed({RoleType.USER, RoleType.COMPANY})
     public ModelAndView showAvailableDetailJobs(
             @PathVariable Long id
     ) throws Exception {
@@ -523,6 +548,8 @@ public class ProfessionalHomeController {
         JobRequest jobRequest = oJobRequest.get();
 
         JobRequestDetailsDTO jobFull = jobRequestMapper.jobRequestDetailsDTO(jobRequest);
+
+        List<JobImages> jobImages = jobImagesService.findJobImagesByJobRequest(oJobRequest.get());
 
         Optional oClient, oCity, oState;
 
@@ -557,7 +584,26 @@ public class ProfessionalHomeController {
 
         UserTemplateInfo individualInfo = templateUtil.getUserInfo(oIndividual.get());
 
+        List<Object[]> assessmentResponseList1 = assessmentProfessionalService.findAssessmentProfessionalByAssessmentResponses(oIndividual.get().getId(),jobRequest.getId());
+
+        List<AssessmentProfessionalDTO> assessmentProfessionalDTOList = new ArrayList<>();
+
+        for (Object[] result : assessmentResponseList1) {
+            AssessmentProfessional assessmentProfessional = (AssessmentProfessional) result[0];
+            AssessmentResponse assessmentResponse = (AssessmentResponse) result[1];
+
+            AssessmentProfessionalDTO dto = assessmentProfessionalMapper.toFullDto(assessmentProfessional);
+
+            if(result[1] != null){
+                dto.setAssessmentResponses(assessmentProfessionalMapper.toResponseDto(assessmentResponse));
+            }
+
+            assessmentProfessionalDTOList.add(dto);
+        }
+
         mv.addObject("job", jobFull);
+        mv.addObject("jobImages", jobRequest.getJobImages());
+
         mv.addObject("client", client);
         mv.addObject("city", city.getName());
         mv.addObject("state", state.getName());
@@ -567,6 +613,7 @@ public class ProfessionalHomeController {
         mv.addObject("isAvailableJobRequest", isAvailableJobRequest);
         mv.addObject("isJobToHired", isJobToHired);
         mv.addObject("userInfo", individualInfo);
+        mv.addObject("assessmentsProfessional", assessmentProfessionalDTOList);
         return mv;
     }
 
@@ -765,5 +812,60 @@ public class ProfessionalHomeController {
                 .collect(Collectors.toList());
     }
 
+
+    @PostMapping("/avaliacao/{assessmentId}/resposta")
+    @RolesAllowed({RoleType.USER})
+    public ModelAndView  saveAssessmentResponseProfessional(
+            @PathVariable Long assessmentId,
+            AssessmentResponseDTO dto,
+            RedirectAttributes redirectAttributes,
+            BindingResult errors
+    ) throws IOException, ParseException {
+        String currentUserEmail = authentication.getEmail();
+        /*usuario logado*/
+        Optional<Individual> oUser = individualService.findByEmail(currentUserEmail);
+
+        Optional<AssessmentProfessional> oAssessmentProfessional = assessmentProfessionalService.findById(assessmentId);
+
+        if(!oAssessmentProfessional.isPresent()){
+            throw new EntityNotFoundException("Avaliação não foi encontrada!");
+        }
+
+        AssessmentResponse assessmentResponse = new AssessmentResponse();
+        String response = dto.getResponse();
+
+//        assessmentResponse.setAssessmentProfessional(dto.getAssessmentProfessional());
+
+//        assessmentResponse.setAssessmentProfessional(oAssessmentProfessional.get());
+
+        if (!response.isEmpty()){
+            String analyzedComment  = analyzeComment(response);
+            if ("Comentário Ofensivo".equals(analyzedComment)) {
+                errors.rejectValue("response", "error.dto", "Proibido comentários ofensivos!.");
+                return errorFowardingResponse(dto, errors);
+            }
+        }
+
+        assessmentResponse.setResponse(dto.getResponse());
+        assessmentResponse.setProfessional(oUser.get());
+        assessmentResponse.setDate(DateUtil.getToday());
+
+        assessmentResponseService.save(assessmentResponse);
+
+        return new ModelAndView("redirect:/minha-conta/profissional/meus-jobs#executados");
+    }
+
+    private ModelAndView errorFowardingResponse(AssessmentResponseDTO dto,BindingResult errors) {
+        ModelAndView mv = new ModelAndView("professional/detail-service");
+        mv.addObject("dto", dto);
+        mv.addObject("errors", errors.getAllErrors());
+        return mv;
+    }
+
+    /*Método responsavel em chamar a api e então validar comentários*/
+    @GetMapping("/analyze-comment")
+    public String analyzeComment(String coment){
+        return perspectiveAPIService.analyzeComment(coment);
+    }
 
 }

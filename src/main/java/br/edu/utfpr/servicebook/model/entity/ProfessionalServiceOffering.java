@@ -79,6 +79,12 @@ public class ProfessionalServiceOffering {
     private Service service;
 
     /**
+     * Especialidade do anúncio.
+     */
+    @ManyToOne
+    private Expertise expertise;
+
+    /**
      * Profissional que oferece o serviço.
      */
     @ManyToOne

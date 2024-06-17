@@ -7,48 +7,42 @@
     <jsp:body>
         <main>
             <div class="row primary-background-color">
-                <div class="carousel carousel-slider center">
-                    <div class="carousel-fixed-item center">
-                        <div class="left">
-                            <a href="Previo"
-                               class="movePrevCarousel middle-indicator-text waves-effect waves-light content-indicator"><i
-                                    class="material-icons left  middle-indicator-text">chevron_left</i></a>
-                        </div>
 
-                        <div class="right">
-                            <a href="Siguiente"
-                               class=" moveNextCarousel middle-indicator-text waves-effect waves-light content-indicator"><i
-                                    class="material-icons right middle-indicator-text">chevron_right</i></a>
-                        </div>
-                    </div>
-                    <div class="carousel-item blue white-text" href="#one!">
-                        <h2>01</h2>
-                    </div>
-                    <div class="carousel-item amber white-text" href="#two!">
-                        <h2>02</h2>
-                    </div>
-                    <div class="carousel-item green white-text" href="#three!">
-                        <h2>03</h2>
-                    </div>
-                    <div class="carousel-item red white-text" href="#four!">
-                        <h2>04</h2>
-                    </div>
-                    <div class="carousel-item blue white-text" href="#one!">
-                        <h2>05</h2>
-                    </div>
-                    <div class="carousel-item amber white-text" href="#two!">
-                        <h2>06</h2>
-                    </div>
-                    <div class="carousel-item green white-text" href="#three!">
-                        <h2>07</h2>
-                    </div>
-                    <div class="carousel-item blue white-text" href="#four!">
-                        <h2>08</h2>
-                    </div>
+                <div class="col s12 tertiary-background-color white-text center-align no-margin">
+                    <p class="upper-case job-details-professional-name" style="margin-bottom: 0">
+                            ${job.expertise.name}
+                    </p>
                 </div>
+
+                <div class="col s12 center">
+                    <c:if test="${not empty jobImages}">
+                        <div class="carousel carousel-slider center">
+                            <div class="carousel-fixed-item center">
+                                <div class="left">
+                                    <a href="Previo"
+                                       class="movePrevCarousel middle-indicator-text waves-effect waves-light content-indicator"><i
+                                            class="material-icons left  middle-indicator-text">chevron_left</i></a>
+                                </div>
+
+                                <div class="right">
+                                    <a href="Siguiente"
+                                       class=" moveNextCarousel middle-indicator-text waves-effect waves-light content-indicator"><i
+                                            class="material-icons right middle-indicator-text">chevron_right</i></a>
+                                </div>
+                            </div>
+                            <c:forEach var="image" items="${jobImages}">
+                                <div class="carousel-item white white-text" href="#${image.id}">
+                                    <img src="${image.path}" class="avatar" style="height: 300px">
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:if>
+
+                </div>
+
             </div>
             <c:if test="${not empty candidacyApplicationErrorMessage}">
-                <div class="card-panel red lighten-1 center-align">
+                <div class="col s12 card-panel red lighten-1 center-align">
                     <span class="white-text">${candidacyApplicationErrorMessage}</span>
                 </div>
             </c:if>
@@ -62,34 +56,46 @@
                     </div>
                     <div class="row">
                         <div class="row">
-                            <div class="col s12 m6 left area-info-request-client-left">
-                                <p class="text-area-info-cli primary-color-text"><i
-                                        class="small material-icons dark-color-text">person</i> ${job.expertise.name}
-                                </p>
-                                <p class="text-area-info-cli primary-color-text"><i
-                                        class="small material-icons dark-color-text">access_time</i>${job.textualDate}
-                                </p>
-                                <p class="text-area-info-cli primary-color-text"><i
-                                        class="small material-icons dark-color-text">location_on</i> ${job.user.address.street}, ${job.user.address.neighborhood}, ${job.user.address.number}, ${city}
-                                    - ${state}</p>
+                            <div class="col s12 center">
+
+                                <c:choose>
+                                    <c:when test="${client.profilePicture != null}">
+                                        <img src="${client.profilePicture}" class="avatar"
+                                             alt="${client.name}" width="150px" height="150px">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <svg style="width:100px;height:100px" viewBox="0 0 24 24" class="profile-photo">
+                                            <path class="dark-color-icon" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                                        </svg>
+                                    </c:otherwise>
+                                </c:choose>
+
                             </div>
-                            <div class="col s12 m6 left area-info-request-client-right">
-                                <div class="row">
-                                    <div class="col s12 m7">
-                                        <p class="text-area-info-cli primary-color-text"><i
-                                                class="small material-icons dark-color-text">person</i>${client.name}
-                                        </p>
-                                        <p class="text-area-info-cli primary-color-text"><i
-                                                class="small material-icons dark-color-text">phone</i> ${client.phoneNumber}
-                                        </p>
-                                        <p class="text-area-info-cli primary-color-text"><i
-                                                class="small material-icons dark-color-text">mail</i>${client.email}</p>
-                                    </div>
-                                    <div class="col s6 offset-s3 m5 area-foto center">
-                                        <img src="${client.profilePicture}" width="150px" height="150px"
-                                             alt="${client.name}">
-                                    </div>
-                                </div>
+
+                            <div class="col s12 center" style="margin-top: 30px">
+                                <span class="center title-section">
+                                        ${client.name}
+                                </span>
+
+                                <hr>
+                            </div>
+
+                            <div class="col s12 m6 left">
+                                <p class="text-area-info-cli primary-color-text left">
+                                    <i class="small material-icons dark-color-text">phone</i>
+                                    <span class="phone-text">
+                                            ${client.phoneNumber}
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="col s12 m6 right">
+                                <p class="text-area-info-cli primary-color-text right">
+                                    <i class="small material-icons dark-color-text">mail</i>
+                                    <span class="phone-text">
+                                        ${client.email}
+                                    </span>
+                                </p>
                             </div>
 
                         </div>
@@ -164,6 +170,30 @@
                         </c:if>
 
                         <div class="row">
+
+                            <div class="col s12 m6">
+                                <p class="text-area-info-cli primary-color-text">Descrição do
+                                    serviço: ${job.description}</p>
+                            </div>
+
+                            <div class="col s12 m6">
+                                <p class="text-area-info-cli primary-color-text right">
+                                    Para quando?
+                                        ${job.textualDate}
+                                </p>
+                            </div>
+
+                            <div class="col s12">
+                                <p class="text-area-info-cli primary-color-text"><i
+                                        class="small material-icons dark-color-text">location_on</i> ${job.user.address.street}, ${job.user.address.neighborhood}, ${job.user.address.number}, ${city}
+                                    - ${state}</p>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d637.164143085935!2d-51.450982613492!3d-25.39327015419766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ef3618cba4dc95%3A0x6ad7b00212a4f63b!2sPar%C3%B3quia%20Santana!5e0!3m2!1spt-BR!2sbr!4v1620666186774!5m2!1spt-BR!2sbr"
+                                        width="100%" height="350" style="border:0;" allowfullscreen=""
+                                        loading="lazy"></iframe>
+                            </div>
+
+                            <hr>
+
                             <c:if test="${hasTodoDate}">
                                 <div class="col s12">
                                     <p class="text-area-info-cli primary-color-text">Data de realização do
@@ -171,36 +201,117 @@
                                 </div>
                             </c:if>
 
-                            <div class="col s12">
-                                <p class="text-area-info-cli primary-color-text">Descrição do
-                                    serviço: ${job.description}</p>
-                            </div>
-                            <div class="col s12">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d637.164143085935!2d-51.450982613492!3d-25.39327015419766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ef3618cba4dc95%3A0x6ad7b00212a4f63b!2sPar%C3%B3quia%20Santana!5e0!3m2!1spt-BR!2sbr!4v1620666186774!5m2!1spt-BR!2sbr"
-                                        width="100%" height="350" style="border:0;" allowfullscreen=""
-                                        loading="lazy"></iframe>
-                            </div>
-                            <div class="col s6 m6 spacing-buttons">
-                                <div class="center">
-                                    <a
-                                            href="#modal-delete"
-                                            data-url="${pageContext.request.contextPath}/requisicoes/nao-quero/${job.id}"
-                                            class="waves-effect waves-light btn spacing-buttons red modal-trigger"
-                                    >Não quero</a
-                                    >
-                                </div>
-                            </div>
-                            <c:if test="${isAvailableJobRequest}">
-                                <form action="candidaturas" method="post">
-                                    <input name="id" type="hidden" value="${job.id}">
-                                    <div class="col s6 m6 spacing-buttons">
-                                        <div class="center">
-                                            <button class="waves-effect waves-light btn">Quero me candidatar</button>
-                                        </div>
+                            <c:if test="${empty hasTodoDate}">
+                                <div class="col s12 m6 spacing-buttons">
+                                    <div class="center">
+                                        <a
+                                                href="#modal-delete"
+                                                data-url="${pageContext.request.contextPath}/requisicoes/nao-quero/${job.id}"
+                                                class="waves-effect waves-light btn spacing-buttons red modal-trigger"
+                                        >Não quero</a
+                                        >
                                     </div>
-                                </form>
+                                </div>
+
+                                <div class="col s12 m6">
+                                    <form action="candidaturas" method="post">
+                                        <input name="id" type="hidden" value="${job.id}">
+                                        <div class="col s6 m6 spacing-buttons">
+                                            <div class="center">
+                                                <button class="waves-effect waves-light btn">Quero me candidatar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </c:if>
                         </div>
+
+
+                        <c:if test="${hasTodoDate}">
+                            <div class="row area-assesment">
+                                <div class="col s12">
+                                    <p class="text-area-info-cli primary-color-text">
+                                        <i class="material-icons small"> comment </i>
+                                        <span class="phone-text title-section">
+                                            Avaliações
+                                        </span>
+                                    </p>
+                                    <hr>
+                                </div>
+                                <c:forEach var="assessment" items="${assessmentsProfessional}">
+                                    <div class="col s12">
+                                        <div class="profile">
+                                            <c:choose>
+                                                <c:when test="${assessment.client.profilePicture != null}">
+                                                    <img src="${assessment.client.profilePicture}" class="avatar"
+                                                         alt="${assessment.client.name}" style="width: 100px; height: 5rem">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <svg style="width:100px;height:5rem" viewBox="0 0 24 24" class="profile-photo">
+                                                        <path class="dark-color-icon" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                                                    </svg>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <div class="profile-info">
+                                                <p class="profile-name">${assessment.client.name}</p>
+                                                <div class="profile-rating">
+                                                    <c:forEach var="star" begin="1" end="5">
+                                                        <c:if test="${star <= (assessment.quality)}">
+                                                            <i class="material-icons yellow-text small">star</i>
+                                                        </c:if>
+                                                        <c:if test="${star > (assessment.quality)}">
+                                                            <i class="material-icons dark-text small">star_border</i>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                                <small class="profile-date">${assessment.date}</small>
+                                            </div>
+                                        </div>
+
+                                            <p>
+                                                <i> ${assessment.comment} </i>
+                                                <br>
+                                            </p>
+                                        <c:if test="${empty assessment.assessmentResponses.response}">
+                                            <button class="blue-text responder-link"  onclick="showField('campo_'+${assessment.id})">Responder</button>
+                                        </c:if>
+
+
+                                        <div class="show-form escondido" id="campo_${assessment.id}">
+                                            <form action="minha-conta/profissional/avaliacao/${assessment.id}/resposta" method="post">
+                                                <div class="row">
+                                                    <div class="input-field col s12">
+                                                        <textarea name="response" id="textarea2" class="materialize-textarea" data-length="120"></textarea>
+                                                        <label for="textarea2">Resposta</label>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <button type="submit"
+                                                            class="btn waves-effect waves-light">Salvar
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <c:if test="${not empty assessment.assessmentResponses.response}">
+                                            <div class="row div-evaluates">
+                                                <div class="col 12">
+                                                    <p class="response-evaluation">Resposta:</p>
+                                                    <small>
+                                                            ${assessment.assessmentResponses.response}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </c:if>
+
+                                        <hr>
+
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </c:if>
+
                     </div>
                 </div>
             </div>
@@ -248,9 +359,28 @@
 
     </jsp:body>
 </t:template>
-
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
 <script>
+    function showField(item) {
+        var campo = document.getElementById(item);
+
+        if (campo.classList.contains('escondido')) {
+            campo.classList.remove('escondido');
+            campo.classList.add('mostrado');
+        } else {
+            campo.classList.remove('mostrado');
+            campo.classList.add('escondido');
+        }
+    }
+
     $(document).ready(function () {
+
+        $('input#input_text, textarea#textarea2').characterCounter();
+
         $('.modal').modal({
             onOpenEnd: function (modal, trigger) {
                 var url = $(trigger).data('url');

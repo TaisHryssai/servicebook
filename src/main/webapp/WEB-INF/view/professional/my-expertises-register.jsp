@@ -16,6 +16,19 @@
                     <div class="row">
 
                         <t:message-box/>
+                        <div class="col s12 l12 breadcrumbs" style="margin-top: 20px">
+                            <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+                            <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                <a href="${pageContext.request.contextPath}/minha-conta/profissional">Minha Conta</a> &gt;
+                                <a href="${pageContext.request.contextPath}/minha-conta/profissional/especialidades">Especialidades</a> &gt;
+                            </c:if>
+
+                            <c:if test="${access_type eq 'COMPANY'}">
+                                <a href="${pageContext.request.contextPath}/minha-conta/empresa">Minha Conta</a> &gt;
+                                <a href="${pageContext.request.contextPath}/minha-conta/empresa/especialidades">Especialidades</a> &gt;
+                            </c:if>
+                            Nova especialidade
+                        </div>
 
                         <div class="col s12">
                             <h3 class="secondary-color-text">Adicione uma especialidade</h3>
@@ -59,7 +72,14 @@
                                 </blockquote>
 
                                 <div class="right">
-                                    <a href="minha-conta/profissional/especialidades" class="btn-flat">Cancelar</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a href="minha-conta/profissional/especialidades" class="btn-flat">Cancelar</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a href="minha-conta/empresa/especialidades" class="btn-flat">Cancelar</a>
+                                    </c:if>
+
                                     <button type="submit"
                                             class="btn waves-effect waves-light">Salvar
                                     </button>

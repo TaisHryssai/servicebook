@@ -396,7 +396,18 @@ a.middle-indicator-text{
 }
 .text-area-info-cli{
   font-size: 1.5rem !important;
+  display: flex;
+  align-items: center;
 }
+
+.text-area-info-cli .material-icons {
+  margin-right: 8px; /* Ajuste o valor conforme necessário */
+}
+
+.phone-text {
+  vertical-align: middle;
+}
+
 .show-area-perfil {
   position: absolute;
   left: 20px;
@@ -698,4 +709,119 @@ textarea {
 
 .input-field{
   height: auto !important;
+}
+
+/*div com as avalições na area do profissional*/
+.div-evaluates{
+  padding: 0 20px !important;
+}
+
+.stars i.small{
+  margin: 0 !important;
+  font-size: 1.2rem !important;
+}
+
+/* Estilizando o contêiner do perfil */
+.profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+/* Estilizando a foto do perfil */
+.profile-photo {
+  margin-right: 15px;
+}
+
+/* Estilizando as informações do perfil */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+/* Estilizando o nome do perfil */
+.profile-name {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Estilizando a avaliação do perfil */
+.profile-rating {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.profile-rating .material-icons {
+  font-size: 20px;
+  margin-right: 3px;
+}
+
+/* Estilizando a data do perfil */
+.profile-date {
+  font-size: 12px;
+  color: rgb(128, 128, 128);
+}
+
+#add_responder{
+  font-size: .7rem;
+  cursor: pointer;
+}
+
+.mostrado {
+  display: block;
+}
+
+.escondido {
+  display: none;
+}
+
+.response-evaluation{
+  font-weight: bold;
+  font-size: .8rem;
+  margin: 0;
+}
+
+/* titulo padrão */
+.title-section {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.responder-link{
+  background-color: transparent;
+  border: transparent;
+  cursor: pointer;
+  font-size: .8rem;
+}
+
+.responder-link:focus, .responder-link:active {
+  outline: none;
+  box-shadow: none;
+  background-color: initial;
+}
+
+.icon-edit-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.material-icons {
+  margin-right: 8px;
+}
+
+.label_especialidade{
+  background-color: #333333;
+  margin: 0 !important;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.div-image {
+  margin: 30px 0;
 }

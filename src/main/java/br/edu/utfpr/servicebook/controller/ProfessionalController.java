@@ -84,6 +84,18 @@ public class ProfessionalController {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private AssessmentProfessionalMapper assessmentProfessionalMapper;
+
+    @Autowired
+    private AssessmentProfessionalService assessmentProfessionalService;
+
+    @Autowired
+    private AssessmentProfessionalFileMapper assessmentProfessionalFileMapper;
+
+    @Autowired
+    private AssessmentResponseService assessmentResponseService;
+
     @GetMapping
     @PermitAll
     protected ModelAndView showAll() throws Exception {
@@ -268,11 +280,11 @@ public class ProfessionalController {
         return mv;
     }
 
-    @GetMapping("/detalhes/{id}/servico/{service_id}")
+    @GetMapping("/detalhes/{id}/profissional/{professional_id}/servico/{service_id}")
     @PermitAll
-    protected ModelAndView showProfessionalDetailsAndServiceToVisitors(@PathVariable("id") Long id, @PathVariable("service_id") Long service_id) throws Exception {
+    protected ModelAndView showProfessionalDetailsAndServiceToVisitors(@PathVariable("id") Long id, @PathVariable("professional_id") Long professional_id, @PathVariable("service_id") Long service_id) throws Exception {
 
-        Optional<User> oProfessional = userService.findById(id);
+        Optional<User> oProfessional = userService.findById(professional_id);
 
         if (!oProfessional.isPresent()) {
             throw new EntityNotFoundException("Profissional não encontrado.");
@@ -312,12 +324,34 @@ public class ProfessionalController {
             servicesByExpertise.put(pe, professionalServiceOfferingsDTO);
         }
 
+        List<ProfessionalServiceOffering> professionalServiceOfferings = professionalServiceOfferingService.findProfessionalServiceOfferingByServiceAndUser(oService.get().getId(), oProfessional.get().getId());
+        List<ProfessionalServiceOffering> professionalServiceOfferings1 = professionalServiceOfferingService.findProfessionalServiceOfferingByUser(oProfessional.get());
+
+        /*AVALIAÇÕES*/
+//        List<AssessmentProfessional> assessmentProfessionalList =
+        List<Object[]> assessmentResponseList1 = assessmentProfessionalService.findAssessmentProfessionalByProfessional(oProfessional.get().getId());
+
+        List<AssessmentProfessionalDTO> assessmentProfessionalDTOList = new ArrayList<>();
+
+        for (Object[] result : assessmentResponseList1) {
+            AssessmentProfessional assessmentProfessional = (AssessmentProfessional) result[0];
+            AssessmentResponse assessmentResponse = (AssessmentResponse) result[1];
+            AssessmentProfessionalFiles assessmentProfessionalFiles = (AssessmentProfessionalFiles) result[2];
+
+            AssessmentProfessionalDTO dto = assessmentProfessionalMapper.toFullDto(assessmentProfessional);
+            dto.setAssessmentResponses(assessmentProfessionalMapper.toResponseDto(assessmentResponse));
+            dto.setAssessmentProfessionalFiles(assessmentProfessionalMapper.toFilesDto(assessmentProfessionalFiles));
+            assessmentProfessionalDTOList.add(dto);
+        }
+
         ModelAndView mv = new ModelAndView("visitor/professional-details");
         mv.addObject("professional", professionalDTO);
         mv.addObject("professionalExpertises", expertisesDTO);
         mv.addObject("logged", oClientAuthenticated.isPresent());
         mv.addObject("servicesByExpertise", servicesByExpertise);
         mv.addObject("service", oService.get());
+        mv.addObject("assessment", assessmentProfessionalDTOList);
+        mv.addObject("professionalServiceOfferings", professionalServiceOfferings1);
 
         //se o cliente está logado, mostra se ele segue o profissional
         if (oClientAuthenticated.isPresent()) {
@@ -326,6 +360,11 @@ public class ProfessionalController {
             UserDTO clientDTO = userMapper.toDto(oClientAuthenticated.get());
             mv.addObject("isFollow", isFollow);
             mv.addObject("client", clientDTO);
+        }
+
+        Optional<ProfessionalServiceOffering> oProfessionalServiceOffering = professionalServiceOfferingService.findById(id);
+        if(oProfessionalServiceOffering.isPresent()){
+            mv.addObject("oProfessionalServiceOffering", oProfessionalServiceOffering.get());
         }
         return mv;
     }

@@ -39,7 +39,7 @@
                     </div>
 
                     <c:forEach var="professional" items="${professionalServiceOfferingDTOS}">
-                        <a href="profissionais/detalhes/${professional.user.id}/servico/${professional.service.id}" class="card-link">
+                        <a href="profissionais/detalhes/${professional.id}/profissional/${professional.user.id}/servico/${professional.service.id}" class="card-link">
                             <div class="col s12 m6 l4">
                                 <div class="card">
                                     <div class="card-title">
@@ -64,7 +64,7 @@
                                     </div>
 
                                     <div class="card-footer">
-                                        <p class="label_price"> <fmt:formatNumber value="${professional.price/100}"   type = "currency"/> </p>
+                                        <p class="label_price"> <fmt:formatNumber value="${professional.price}"   type = "currency"/> </p>
                                         <p class="label_especialidade">${professional.duration}</p>
                                     </div>
                                 </div>
@@ -107,7 +107,7 @@
 <%--                                    </div>--%>
 <%--                                    <div class="label_price">--%>
 <%--                                        <p class=" white-text" style="margin: 0"><fmt:formatNumber--%>
-<%--                                                value="${professional.price/100}" type="currency"/></p>--%>
+<%--                                                value="${professional.price}" type="currency"/></p>--%>
 <%--                                    </div>--%>
 <%--                                </div>--%>
 <%--                            </div>--%>

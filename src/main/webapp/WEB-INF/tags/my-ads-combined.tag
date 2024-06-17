@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="label_price">
-        <p style="margin: 0"><fmt:formatNumber value="${service.professionalServicePackageOffering.price/100}"   type = "currency"/> </p>
+        <p style="margin: 0"><fmt:formatNumber value="${service.professionalServicePackageOffering.price}"   type = "currency"/> </p>
       </div>
     </div>
     <p class="label_especialidade">${service.professionalServiceOffering.service.name}</p>

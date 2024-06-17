@@ -23,5 +23,7 @@ public class JobRequestDetailsDTO implements Serializable {
     private String textualDate;
     private Long amountOfCandidates;
     private MultipartFile imageFile;
+    private String imageSession;
+    private ProfessionalServiceOfferingDTO professionalServiceOfferingDTO;
 
 }

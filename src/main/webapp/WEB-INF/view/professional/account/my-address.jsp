@@ -35,6 +35,12 @@
 
                 <div class="section">
                     <div class="row">
+                        <div class="col s12  breadcrumbs" style="margin-top: 20px">
+                            <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+                            <a href="${pageContext.request.contextPath}/minha-conta/perfil">Meu Perfil</a> &gt;
+                            Meu Endereço
+                        </div>
+
                         <h3 class="row center secondary-color-text">
                             Qual o seu endereço?
                         </h3>
@@ -42,7 +48,7 @@
                             Será útil para filtrar serviços por região e de acordo com a distância
                             para o local de realização do serviço.
                         </h5>
-                        <form id="addres-form" method="post" action="${pageContext.request.contextPath}/minha-conta/salvar-endereco/${professional.id}">
+                        <form id="addres-form" method="post" action="${pageContext.request.contextPath}/minha-conta/salvar-endereco/${userDTO.id}">
                             <input type="hidden" name="_method" value="PATCH"/>
                             <div class="row spacing-buttons">
                                 <div class="row">
@@ -52,7 +58,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s8 offset-s2">
-                                        <input id="postal-code" value="${professional.address.postalCode}" name="postalCode" type="text" placeholder="CEP"
+                                        <input id="postal-code" value="${userDTO.address.postalCode}" name="postalCode" type="text" placeholder="CEP"
                                                class="validate" disabled>
                                         <label for="postal-code">CEP</label>
                                         <span id="errorPostalCode" class="hide helper-text red-text darken-3"></span>
@@ -60,20 +66,20 @@
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s8 offset-s2">
-                                        <input id="number" name="number" value="${professional.address.number}" type="text" placeholder="Número"
+                                        <input id="number" name="number" value="${userDTO.address.number}" type="text" placeholder="Número"
                                                class="validate" disabled>
                                         <label for="number">Número</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s8 offset-s2">
-                                        <input id="street" value="${professional.address.street}" name="street" type="text" placeholder="Rua" class="validate" disabled>
+                                        <input id="street" value="${userDTO.address.street}" name="street" type="text" placeholder="Rua" class="validate" disabled>
                                         <label for="street">Rua</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s8 offset-s2">
-                                        <input id="neighborhood" value="${professional.address.neighborhood}" name="neighborhood" type="text" placeholder="Bairro"
+                                        <input id="neighborhood" value="${userDTO.address.neighborhood}" name="neighborhood" type="text" placeholder="Bairro"
                                                class="validate" disabled required>
                                         <label for="neighborhood">Bairro</label>
                                     </div>

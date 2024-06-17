@@ -97,6 +97,8 @@ public class MyAccountController {
     @Autowired
     private ModerateService moderateService;
 
+    @Autowired
+    private StateService stateService;
     private String userSmsErrorForwarding(String step, UserSmsDTO dto, Model model, BindingResult errors) {
         model.addAttribute("dto", dto);
         model.addAttribute("errors", errors.getAllErrors());
@@ -905,6 +907,92 @@ public class MyAccountController {
 
         redirectAttributes.addFlashAttribute("msg", "Informações pessoais atualizadas com sucesso!");
         return "redirect:/minha-conta/informacoes-pessoais/" + id;
+    }
+
+    @GetMapping("/meu-endereco/{id}")
+    @RolesAllowed({RoleType.USER, RoleType.COMPANY})
+    public ModelAndView showMyAddress(@PathVariable Long id) throws IOException {
+
+        Optional<User> oUser = this.userService.findById(id);
+
+        if (!oUser.isPresent()) {
+            throw new EntityNotFoundException("O usuário não foi encontrado.");
+        }
+
+        Optional<User> oUserAuthenticated = this.userService.findByEmail(authentication.getEmail());
+
+        User userAuthenticated = oUserAuthenticated.get();
+
+        if (id != userAuthenticated.getId()) {
+            throw new AuthenticationCredentialsNotFoundException("Você não tem permissão para atualizar essas informações pessoais.");
+        }
+
+        UserDTO userDTO = userMapper.toDto(userAuthenticated);
+
+        List<City> cities = cityService.findAll();
+        List<State> states = stateService.findAll();
+
+        ModelAndView mv = new ModelAndView("professional/account/my-address");
+        mv.addObject("userDTO", userDTO);
+        mv.addObject("cities", cities);
+        mv.addObject("states", states);
+        return mv;
+    }
+
+    /**
+     * Atualiza o endereço do indivíduo e empresa
+     * @param addressDTO
+     * @param errors
+     * @param redirectAttributes
+     * @return
+     * @throws IOException
+     */
+    @PatchMapping("/salvar-endereco/{id}")
+    @RolesAllowed({RoleType.USER, RoleType.COMPANY})
+    public String updateMyAddress(@PathVariable Long id,
+                                       AddressDTO addressDTO,
+                                       BindingResult errors,
+                                       RedirectAttributes redirectAttributes
+    ) throws IOException {
+
+        if (errors.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errors", errors.getAllErrors());
+            return "redirect:/minha-conta/meu-endereco/" + id;
+        }
+
+        Optional<User> oUser = this.userService.findById(id);
+
+        if (!oUser.isPresent()) {
+            throw new EntityNotFoundException("O usuário não foi encontrado.");
+        }
+
+        Optional<User> oUserAuthenticated = this.userService.findByEmail(authentication.getEmail());
+        User userAuthenticated = oUserAuthenticated.get();
+
+        if (id != userAuthenticated.getId()) {
+            throw new AuthenticationCredentialsNotFoundException("Você não tem permissão para atualizar o endereço.");
+        }
+
+            Optional<Individual> oInvididual = this.individualService.findById(id);
+
+            Optional<City> ocity = this.cityService.findByName(addressDTO.getCity());
+
+            Individual individual = oInvididual.get();
+            Address address = new Address();
+
+            address.setPostalCode(addressDTO.getPostalCode());
+            address.setNeighborhood(addressDTO.getNeighborhood());
+            address.setNumber(addressDTO.getNumber());
+            address.setStreet(addressDTO.getStreet());
+            address.setCity(ocity.get());
+
+            individual.setAddress(address);
+
+            this.individualService.save(individual);
+
+
+        redirectAttributes.addFlashAttribute("msg", "Endereço atualizado com sucesso!");
+        return "redirect:/minha-conta/meu-endereco/" + id;
     }
 }
 

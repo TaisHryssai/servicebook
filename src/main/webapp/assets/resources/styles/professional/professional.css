@@ -31,7 +31,7 @@
 
 .icone-default i{
     color: #B8B8B8;
-    font-size: 10rem;
+    font-size: 13.4rem;
     text-align: center;
 }
 
@@ -135,4 +135,31 @@
     padding: 5px !important;
     color: #0D47A1 !important;
     font-size: .9rem !important;
+}
+
+.middle-indicator{
+    position:absolute;
+    top:50%;
+}
+.middle-indicator-text{
+    font-size: 4.2rem;
+}
+a.middle-indicator-text{
+    color:black !important;
+}
+
+.content-indicator{
+    width: 64px;
+    height: 64px;
+    background: none;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+}
+.carousel.carousel-slider .carousel-fixed-item.with-indicators {
+    /*bottom: 200px;*/
+}
+
+.carousel.carousel-slider .carousel-fixed-item {
+    position: fixed !important;
 }

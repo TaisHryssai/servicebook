@@ -18,7 +18,6 @@
         </div>
     </div>
 </c:if>
-
 <c:forEach var="job" items="${jobs}">
     <c:if test="${not empty job.id}">
         <div class="container">

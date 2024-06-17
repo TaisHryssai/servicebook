@@ -21,8 +21,8 @@ public class ProfessionalServiceOfferingService {
      * @param id
      * @return
      */
-    public ProfessionalServiceOffering findById(Long id) {
-        return professionalServiceOfferingRepository.findById(id).orElse(null);
+    public Optional<ProfessionalServiceOffering> findById(Long id) {
+        return professionalServiceOfferingRepository.findById(id);
     }
 
     /**
@@ -120,7 +120,7 @@ public class ProfessionalServiceOfferingService {
      * @param id
      * @return
      */
-    public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingByName(Long id){
+    public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingById(Long id){
         return professionalServiceOfferingRepository.findProfessionalServiceOfferingById(id);
     }
 
@@ -134,5 +134,13 @@ public class ProfessionalServiceOfferingService {
 
     public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingByExpertiseAAndUser(Long user, Long expertise){
         return professionalServiceOfferingRepository.findProfessionalServiceOfferingByExpertiseAAndUser(user, expertise);
+    }
+
+    public List<ProfessionalServiceOffering> findProfessionalServiceOfferingByServiceAndUser(Long service, Long user) {
+        return professionalServiceOfferingRepository.findProfessionalServiceOfferingByServiceAndUser(service, user);
+    }
+
+    public Optional<ProfessionalServiceOffering> findProfessionalServiceOfferingByIdAndUser(Long id, Long user) {
+        return professionalServiceOfferingRepository.findProfessionalServiceOfferingByIdAndUser(id, user);
     }
 }

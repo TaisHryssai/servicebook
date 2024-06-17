@@ -13,8 +13,14 @@
         <div class="row">
             <t:message-box/>
             <div class="col s12 l12 breadcrumbs" style="margin-top: 20px">
-                <a href="${pageContext.request.contextPath}/">Início</a> &gt;
-                <a href="${pageContext.request.contextPath}/minha-conta/profissional">Minha Conta</a> &gt;
+                    <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                        <a href="${pageContext.request.contextPath}/minha-conta/profissional">Minha Conta</a> &gt;
+                    </c:if>
+
+                    <c:if test="${access_type eq 'COMPANY'}">
+                        <a href="${pageContext.request.contextPath}/minha-conta/empresa">Minha Conta</a> &gt;
+                    </c:if>
                 Minhas especialidades
             </div>
 
@@ -64,9 +70,13 @@
             </c:forEach>
         </div>
         <div class="center spacing-buttons">
-            <a href="minha-conta/profissional/especialidades/novo" class="waves-effect waves-light btn">
-                NOVA ESPECIALIDADE
-            </a>
+            <c:if test="${access_type eq 'PROFESSIONAL'}">
+                <a class="waves-effect waves-light btn" href="minha-conta/profissional/especialidades/novo">NOVA ESPECIALIDADE</a>
+            </c:if>
+
+            <c:if test="${access_type eq 'COMPANY'}">
+                <a class="waves-effect waves-light btn" href="minha-conta/empresa/especialidades/novo">NOVA ESPECIALIDADE</a>
+            </c:if>
         </div>
     </jsp:body>
 </t:template-side-nav>

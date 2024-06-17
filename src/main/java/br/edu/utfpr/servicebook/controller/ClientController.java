@@ -12,6 +12,7 @@ import br.edu.utfpr.servicebook.sse.EventSSE;
 import br.edu.utfpr.servicebook.sse.EventSSEDTO;
 import br.edu.utfpr.servicebook.sse.EventSseMapper;
 import br.edu.utfpr.servicebook.sse.SSEService;
+import br.edu.utfpr.servicebook.util.DateUtil;
 import br.edu.utfpr.servicebook.util.pagination.PaginationDTO;
 import br.edu.utfpr.servicebook.util.pagination.PaginationUtil;
 import br.edu.utfpr.servicebook.util.UserTemplateInfo;
@@ -54,7 +55,25 @@ import com.google.zxing.WriterException;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.fop.configuration.ConfigurationException;
 import com.mercadopago.MercadoPagoConfig;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.nio.file.Files;
+import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Map;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/minha-conta/cliente")
 @Controller
 public class ClientController {
@@ -146,8 +165,31 @@ public class ClientController {
     @Autowired
     private ProfessionalServiceOfferingService professionalServiceOfferingService;
 
+    @Autowired
+    private AssessmentProfessionalService assessmentProfessionalService;
+
+    @Autowired
+    private  AssessmentProfessionalFileService assessmentProfessionalFileService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private AssessmentProfessionalFileMapper assessmentProfessionalFileMapper;
+
+    @Autowired
+    private ModerateService moderateService;
+
+    @Autowired
+    private AssessmentResponseService assessmentResponseService;
+
+    @Autowired
+    private PerspectiveAPIService perspectiveAPIService;
+
     @Value("${svg.certificate.template}")
     private String svgCertificateTemplate;
+
+
     /**
      * Método que apresenta a tela inicial do cliente
      * @return
@@ -235,11 +277,14 @@ public class ClientController {
      */
     @GetMapping("/meus-pedidos/{id}")
     @RolesAllowed({RoleType.USER, RoleType.COMPANY})
-    public ModelAndView showDetailsRequest(@PathVariable Optional<Long> id) throws Exception {
+    public ModelAndView showDetailsRequest(@PathVariable Optional<Long> id,
+                                           @RequestParam(value = "pag", defaultValue = "1") int page,
+                                           @RequestParam(value = "siz", defaultValue = "4") int size) throws Exception {
 
         ModelAndView mv = new ModelAndView("client/details-request");
 
         Optional<JobRequest> jobRequest = jobRequestService.findById(id.get());
+        Optional<JobContracted> oJobContracted = jobContractedService.findByJobRequest(jobRequest.get());
 
         if (!jobRequest.isPresent()) {
             throw new EntityNotFoundException("Solicitação de serviço não encontrado. Por favor, tente novamente.");
@@ -257,7 +302,31 @@ public class ClientController {
 
         ExpertiseMinDTO expertiseDTO = expertiseMapper.toMinDto(expertise.get());
 
-        List<JobCandidate> jobCandidates = jobCandidateService.findByJobRequestOrderByChosenByBudgetDesc(jobRequest.get());
+        Optional<User> client = (userService.findByEmail(authentication.getEmail()));
+
+        if (!client.isPresent()) {
+            throw new Exception("Usuário não autenticado! Por favor, realize sua autenticação no sistema.");
+        }
+
+        PageRequest pageRequest = PageRequest.of(1 - 1, 4, Sort.by("dateTarget").ascending());
+        Page<JobRequest> jobRequestPage = null;
+        List<JobRequestFullDTO> jobRequestFullDTOs = null;
+
+        List<JobCandidate> jobCandidates = jobCandidateService.findByJobRequestAndChosenByBudget(jobRequest.get(), true);
+
+        jobRequestPage = jobRequestService.findByStatusAndClient(JobRequest.Status.DOING, client.get(), pageRequest);
+
+        jobRequestFullDTOs = jobRequestPage.stream()
+                .map(jobRequest1 -> {
+                    Optional<JobContracted> totalCandidates = jobContractedService.findByJobRequest(jobRequest1);
+
+                    if (totalCandidates.isPresent()) {
+                        return jobRequestMapper.toFullDto(jobRequest1);
+                    }
+
+                    return jobRequestMapper.toFullDto(jobRequest1, Optional.ofNullable(0L));
+                }).collect(Collectors.toList());
+
 
         List<JobCandidateDTO> jobCandidatesDTOs = jobCandidates.stream()
                 .map(candidate -> {
@@ -265,109 +334,18 @@ public class ClientController {
                 })
                 .collect(Collectors.toList());
 
-        MercadoPagoConfig.setAccessToken("TEST-2738533774159236-052518-f4e09de99516f8d7b2adb21186313d1b-494777183");
-        PreferenceClient client = new PreferenceClient();
-
-        PreferenceItemRequest itemRequest =
-                PreferenceItemRequest.builder()
-                        .id("1234")
-                        .title("Dummy Title")
-                        .description("Dummy description")
-                        .pictureUrl("http://www.myapp.com/myimage.jpg")
-                        .categoryId("car_electronics")
-                        .quantity(1)
-                        .currencyId("BRL")
-                        .unitPrice(new BigDecimal("10"))
-                        .build();
-
-        List<PreferenceItemRequest> items = new ArrayList<>();
-        items.add(itemRequest);
-
-        PreferenceFreeMethodRequest freeMethod =
-                PreferenceFreeMethodRequest.builder()
-                        .id(1L).build();
-        List<PreferenceFreeMethodRequest> freeMethodList = new ArrayList<>();
-        freeMethodList.add(freeMethod);
-
-        List<PreferencePaymentTypeRequest> excludedPaymentTypes = new ArrayList<>();
-        excludedPaymentTypes.add(PreferencePaymentTypeRequest.builder().id("ticket").build());
-
-        List<PreferencePaymentMethodRequest> excludedPaymentMethods = new ArrayList<>();
-        excludedPaymentMethods.add(PreferencePaymentMethodRequest.builder().id("").build());
-
-        PreferenceRequest preferenceRequest = PreferenceRequest.builder()
-                .backUrls(
-                        PreferenceBackUrlsRequest.builder()
-                                .success("http://test.com/success")
-                                .failure("http://test.com/failure")
-                                .pending("http://test.com/pending")
-                                .build())
-                .differentialPricing(
-                        PreferenceDifferentialPricingRequest.builder()
-                                .id(1L)
-                                .build())
-                .expires(false)
-                .items(items)
-                .marketplaceFee(new BigDecimal("0"))
-                .payer(
-                        PreferencePayerRequest.builder()
-                                .name("Test")
-                                .surname("User")
-                                .email("your_test_email@example.com")
-                                .phone(PhoneRequest.builder().areaCode("11").number("4444-4444").build())
-                                .identification(
-                                        IdentificationRequest.builder().type("CPF").number("19119119100").build())
-                                .address(
-                                        AddressRequest.builder()
-                                                .zipCode("06233200")
-                                                .streetName("Street")
-                                                .streetNumber("123")
-                                                .build())
-                                .build())
-                .additionalInfo("Discount: 12.00")
-                .autoReturn("all")
-                .binaryMode(true)
-                .externalReference("1643827245")
-                .marketplace("marketplace")
-                .notificationUrl("http://notificationurl.com")
-                .operationType("regular_payment")
-                .paymentMethods(
-                        PreferencePaymentMethodsRequest.builder()
-                                .defaultPaymentMethodId("master")
-                                .excludedPaymentTypes(excludedPaymentTypes)
-                                .excludedPaymentMethods(excludedPaymentMethods)
-                                .installments(5)
-                                .defaultInstallments(1)
-                                .build())
-                .shipments(
-                        PreferenceShipmentsRequest.builder()
-                                .mode("custom")
-                                .localPickup(false)
-                                .defaultShippingMethod(null)
-                                .freeMethods(freeMethodList)
-                                .cost(BigDecimal.TEN)
-                                .freeShipping(false)
-                                .dimensions("10x10x20,500")
-                                .receiverAddress(
-                                        PreferenceReceiverAddressRequest.builder()
-                                                .zipCode("06000000")
-                                                .streetNumber("123")
-                                                .streetName("Street")
-                                                .floor("12")
-                                                .apartment("120A")
-                                                .build())
-                                .build())
-                .statementDescriptor("Test Store")
-                .build();
-
-        Preference preference = client.create(preferenceRequest);
+        if (jobRequest.get().getServiceOffering() != null) {
+            Optional<ProfessionalServiceOffering> pso = professionalServiceOfferingService.findById(jobRequest.get().getServiceOffering().getId());
+            mv.addObject("service_professional", pso.get());
+        }
 
 
-        System.out.println("AAAAAAA");
-        System.out.println(preference.getClientId());
         mv.addObject("candidates", jobCandidatesDTOs);
+        mv.addObject("jobCandidates12", jobRequestFullDTOs);
         mv.addObject("expertise", expertiseDTO);
         mv.addObject("jobRequest", jobDTO);
+        mv.addObject("jobContracted", oJobContracted.get());
+
         return mv;
     }
 
@@ -380,15 +358,33 @@ public class ClientController {
      */
     @GetMapping("/meus-pedidos/{jobId}/detalhes/{candidateId}")
     @RolesAllowed({RoleType.USER, RoleType.COMPANY})
-    public ModelAndView showDetailsRequestCandidate(@PathVariable Optional<Long> jobId, @PathVariable Optional<Long> candidateId) throws Exception {
+    public ModelAndView showDetailsRequestCandidate(@PathVariable Long jobId, @PathVariable Long candidateId) throws Exception {
         ModelAndView mv = new ModelAndView("client/details-request-candidate");
 
-        Optional<User> oCandidate = userService.findById(candidateId.get());
+        System.out.println("DADOSSS");
+        System.out.println(jobId);
+        System.out.println(candidateId);
+
+        Optional<User> oCandidate = userService.findById(candidateId);
+        Optional<Individual> oIndividual = individualService.findById(candidateId);
+
+        System.out.println(oCandidate);
+        System.out.println(oIndividual.get());
+
         if (!oCandidate.isPresent()) {
             throw new EntityNotFoundException("O candidato não foi encontrado!");
         }
 
-        Optional<JobCandidate> jobCandidate = jobCandidateService.findById(jobId.get(), oCandidate.get().getId());
+        Optional<JobRequest> oJobRequest = jobRequestService.findById(jobId);
+        System.out.println("oJobRequest");
+        System.out.println(oJobRequest);
+
+        if (!oJobRequest.isPresent()) {
+            throw new EntityNotFoundException("O candidato não foi encontrado!");
+        }
+
+        Optional<JobCandidate> jobCandidate = jobCandidateService.findById(oJobRequest.get().getId(), oIndividual.get().getId());
+
         if (!jobCandidate.isPresent()) {
             throw new EntityNotFoundException("Candidato não encontrado. Por favor, tente novamente.");
         }
@@ -882,7 +878,7 @@ public class ClientController {
      * Altera o estado de um serviço para TO_HIRED, ou seja, o cliente contratou um serviço mas
      * fica no estado de espera da confirmação do profissional.
      * @param jobId
-     * @param individualId
+     * @param userId
      * @param redirectAttributes
      * @return
      * @throws IOException
@@ -925,60 +921,66 @@ public class ClientController {
         return "redirect:/minha-conta/cliente/meus-pedidos/"+jobId;
     }
 
+    @Autowired
+    public ClientController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+
     /**
      * Responsável por realizar o pagamento via API Mercado Pago.
      */
     @PostMapping("/pagamento")
     @RolesAllowed({RoleType.USER})
-    public ResponseEntity<?> createPayment(@RequestBody Map<String, Object> paymentData){
-        ResponseDTO response = new ResponseDTO();
-
-        try {
-            if (paymentData == null || paymentData.isEmpty()) {
-                response.setMessage("Erro ao enviar dados. Verifique os campos e tente novamente!");
-                return ResponseEntity.status(400).body(response);
-            }
+    public ResponseEntity<PaymentResponseDTO> createPayment(@RequestBody CardPaymentDTO cardPaymentDTO) {
+        log.info("Received payment request: {}", cardPaymentDTO);
 
             Optional<User> oUser = (userService.findByEmail(authentication.getEmail()));
 
-            if (!oUser.isPresent()) {
-                response.setMessage("Usuário não autenticado! Por favor, realize sua autenticação no sistema.");
-                return ResponseEntity.status(401).body(response);
-            }
+//
+////            if(!paymentResponse.getStatusCode().is2xxSuccessful()){
+////                response.setMessage("Erro ao processar pagamento. Tente novamente");
+////                return ResponseEntity.status(paymentResponse.getStatusCode()).body(response);
+////            }
+//
+//            Map<?, ?> responseMap = (Map<?, ?>) responseBody;
 
-            ResponseEntity<?> paymentResponse = paymentService.pay(paymentData);
-
-            if(!paymentResponse.getStatusCode().is2xxSuccessful()){
-                response.setMessage("Erro ao processar pagamento. Tente novamente");
-                return ResponseEntity.status(paymentResponse.getStatusCode()).body(response);
-            }
-
-            Object responseBody = paymentResponse.getBody();
-
-            Map<?, ?> responseMap = (Map<?, ?>) responseBody;
-            Integer paymentId = (Integer) responseMap.get("id");
-            String status = (String) responseMap.get("status");
-
-            PaymentDTO paymentDTO = new PaymentDTO(paymentId, status);
-            Payment payment = paymentMapper.toEntity(paymentDTO);
-
-            paymentService.save(payment);
-
-            response.setData(paymentResponse.getBody());
-
-
-
-            System.out.println("SATTSUS PAGAMENTO.....");
-            System.out.println(status);
-
-
-            return ResponseEntity.ok(response);
+//            Integer paymentId = (Integer) responseMap.get("id");
+//            String status = (String) responseMap.get("status");
+////
+//            PaymentDTO paymentDTO = new PaymentDTO(paymentId, status);
+//            Payment payment = paymentMapper.toEntity(paymentDTO);
+////
+//            paymentService.save(payment);
+//
+//            response.setData(paymentResponse.getBody());
+//
+//            System.out.println("SATTSUS PAGAMENTO.....");
+////            System.out.println(status);
+//
+//
+//            return ResponseEntity.ok(response);
+//
+//
+//        } catch (Exception e) {
+//            response.setMessage("Erro ao fazer pagamento. Por favor, tente novamente.");
+//            return ResponseEntity.status(400).body(response);
+//        }
 
 
-        } catch (Exception e) {
-            response.setMessage("Erro ao fazer pagamento. Por favor, tente novamente.");
-            return ResponseEntity.status(400).body(response);
+        PaymentResponseDTO payment = paymentService.pay(cardPaymentDTO);
+
+        System.out.println("paymentResponse");
+        System.out.println(payment.getStatus());
+        System.out.println(payment.getId());
+
+        if(Objects.equals(payment.getStatus(), "approved")){
+            Payment payment1 = new Payment();
+            payment1.setStatus(payment.getStatus());
+            payment1.setPaymentId(payment.getId());
+            paymentService.save(payment1);
         }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(payment);
     }
 
     /**
@@ -993,7 +995,7 @@ public class ClientController {
         ModelAndView modelAndView = new ModelAndView();
         final Date now = new Date();
 
-        Optional<Payment> oPayment = paymentService.find(dto.getPaymentId());
+        Optional<Payment> oPayment = paymentService.findByPaymentId(dto.getPaymentId());
         Optional<JobRequest> oJobRequest = jobRequestService.findById(dto.getJobRequestId());
 
         PaymentJobRequest paymentJob = new PaymentJobRequest();
@@ -1062,7 +1064,8 @@ public class ClientController {
 
         String service_name = oJobRequest.get().getExpertise().getName();
 
-        Optional<ProfessionalServiceOffering> optionalProfessionalServiceOffering = professionalServiceOfferingService.findProfessionalServiceOfferingByExpertiseAAndUser(paymentVoucher.getProfessional().getId(), oJobRequest.get().getExpertise().getId());
+//        Optional<ProfessionalServiceOffering> optionalProfessionalServiceOffering = professionalServiceOfferingService.findProfessionalServiceOfferingByExpertiseAAndUser(paymentVoucher.getProfessional().getId(), oJobRequest.get().getExpertise().getId());
+        Optional<ProfessionalServiceOffering> optionalProfessionalServiceOffering = professionalServiceOfferingService.findProfessionalServiceOfferingByIdAndUser(oJobRequest.get().getServiceOffering().getId(), paymentVoucher.getProfessional().getId());
 
         String value_service = "0,00";
         if (optionalProfessionalServiceOffering.isPresent()){
@@ -1071,7 +1074,7 @@ public class ClientController {
 
         File pdfFile = paymentVoucherService.generateCertificate(svgCertificateTemplate, paymentVoucher.getCode(),service_name, sdfNovo.format(dataAtual), sdfNovo.format(dataFinal),
                 client_name, "111111111", client_fone, client_email, profes_name, "10444444440",
-                profes_email, profes_fone, profes_address, "PIX", value_service, "QRDCOD");
+                profes_email, profes_fone, profes_address, "PIX", value_service, "QRDCOD", sdfNovo.format(dataAtual));
         Map uploadResult = cloudinary.uploader().upload(pdfFile, ObjectUtils.asMap("folder", "certificates"));
 
         String uploadURL = (String)uploadResult.get("url");
@@ -1093,5 +1096,225 @@ public class ClientController {
         UUID uuid = UUID.randomUUID();
         String codigo = uuid.toString().replace("-", "").substring(0, 10);
         return codigo.toUpperCase();
+    }
+
+    /**
+     * Avalia o serviço depois de finalizado
+     * @param jobId
+     * @param redirectAttributes
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("/avaliar/servico/{jobId}/profissional/{profissionalId}")
+    @RolesAllowed({RoleType.USER, RoleType.COMPANY})
+    public ModelAndView evaluateService(@PathVariable Long jobId, @PathVariable Long profissionalId, RedirectAttributes redirectAttributes) throws IOException {
+        Optional<User> oClientAuthenticated = (userService.findByEmail(authentication.getEmail()));
+        ModelAndView mv = new ModelAndView("client/evaluate-jobs");
+
+        if(!oClientAuthenticated.isPresent()){
+            return mv.addObject("visitor/login");
+        }
+
+        Optional<JobRequest> oJobRequest = jobRequestService.findById(jobId);
+
+        Optional<User> oIndividual = userService.findById(profissionalId);
+
+        System.out.println("INDIVIDUAL");
+        System.out.println(oIndividual.get().getName());
+
+        Optional<JobContracted> oJobContracted = jobContractedService.findByJobRequest(oJobRequest.get());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+
+        mv.addObject("job", oJobRequest.get());
+        mv.addObject("professional", oIndividual.get());
+        mv.addObject("jobContracted", oJobContracted.get());
+        mv.addObject("hiredDate", dateTimeFormatter.format(oJobContracted.get().getHiredDate()));
+        mv.addObject("finishDate", dateTimeFormatter.format(oJobContracted.get().getFinishDate()));
+
+        return mv;
+    }
+
+    /**
+     * @param jobId
+     * @param profissionalId
+     * @param dto
+     * @param redirectAttributes
+     * @return
+     * @throws IOException
+     * @throws ParseException
+     */
+    @PostMapping("/avaliar/servico/{jobId}/profissional/{profissionalId}")
+    @RolesAllowed({RoleType.USER})
+    public ModelAndView  saveAssessmentProfessional(
+            @PathVariable Long profissionalId,
+            @PathVariable Long jobId,
+            AssessmentProfessionalDTO dto,
+            AssessmentProfessionalFileDTO assessmentProfessionalFileDTO,
+            @RequestParam("pathImage") MultipartFile file,
+            RedirectAttributes redirectAttributes,
+            BindingResult errors
+    ) throws IOException, ParseException {
+        String currentUserEmail = authentication.getEmail();
+
+        Optional<Individual> oindividual = individualService.findById(profissionalId);
+        Optional<Individual> oClliente = individualService.findByEmail(currentUserEmail);
+
+        if(!oindividual.isPresent()){
+            throw new EntityNotFoundException("O usuário não foi encontrado!");
+        }
+
+        Optional<JobRequest> oJobRequest = jobRequestService.findById(jobId);
+
+        AssessmentProfessional assessmentProfessional = new AssessmentProfessional();
+        String comment = dto.getComment();
+
+        if (!comment.isEmpty()){
+            String analyzedComment  = analyzeComment(comment);
+            if ("Comentário Ofensivo".equals(analyzedComment)) {
+                errors.rejectValue("comment", "error.dto", "Proibido comentários ofensivos!.");
+                return errorFowarding(dto, assessmentProfessionalFileDTO, errors);
+            }
+        }
+
+        assessmentProfessional.setComment(dto.getComment());
+        assessmentProfessional.setProfessional(oindividual.get());
+        assessmentProfessional.setQuality(dto.getQuality());
+        assessmentProfessional.setDate(DateUtil.getToday());
+
+        assessmentProfessional.setClient(oClliente.get());
+        assessmentProfessional.setJobRequest(oJobRequest.get());
+        assessmentProfessionalService.save(assessmentProfessional);
+
+        if (!assessmentProfessionalFileDTO.getPathImage().isEmpty() ) {
+            Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+
+            String imageUrl = (String) uploadResult.get("url");
+
+            if(moderateService.isNsfwImage(imageUrl)){
+                String publicId = (String) uploadResult.get("public_id");
+                cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+                redirectAttributes.addFlashAttribute("msgError", "A imagem enviada contém conteúdo impróprio. Por favor, envie outra foto.");
+                return new ModelAndView("redirect:/minha-conta/cliente/avaliar/servico/"+jobId+"/profissional/"+profissionalId);
+            }
+
+//            AssessmentProfessionalFiles assessmentProfessionalFiles = assessmentProfessionalFileMapper.toEntity(assessmentProfessionalFileDTO);
+//            assessmentProfessionalFiles.setAssessmentProfessional(assessmentProfessional);
+            AssessmentProfessionalFiles assessmentProfessionalFiles1 = new AssessmentProfessionalFiles();
+            assessmentProfessionalFiles1.setPathImage(imageUrl);
+            assessmentProfessionalFiles1.setAssessmentProfessional(assessmentProfessional);
+            assessmentProfessionalFileService.save(assessmentProfessionalFiles1);
+        }
+
+        redirectAttributes.addFlashAttribute("msg", "Avaliação realizada com sucesso!");
+
+        return new ModelAndView("redirect:/minha-conta/cliente#executados");
+    }
+
+    public boolean isValidateImage(MultipartFile image){
+        List<String> contentTypes = Arrays.asList("image/png", "image/jpg", "image/jpeg");
+
+        for(int i = 0; i < contentTypes.size(); i++){
+            if(image.getContentType().toLowerCase().startsWith(contentTypes.get(i))){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /*Método responsavel em chamar a api e então validar comentários*/
+    @GetMapping("/analyze-comment")
+    public String analyzeComment(String coment){
+        return perspectiveAPIService.analyzeComment(coment);
+    }
+
+    private ModelAndView errorFowarding(AssessmentProfessionalDTO dto, AssessmentProfessionalFileDTO dtoFiles,BindingResult errors) {
+        ModelAndView mv = new ModelAndView("client/evaluate-jobs");
+        mv.addObject("dto", dto);
+        mv.addObject("errors", errors.getAllErrors());
+        return mv;
+    }
+
+    private ModelAndView errorFowardingResponse(AssessmentResponseDTO dto,BindingResult errors) {
+        ModelAndView mv = new ModelAndView("professional/detail-service");
+        mv.addObject("dto", dto);
+        mv.addObject("errors", errors.getAllErrors());
+        return mv;
+    }
+
+    /**
+     * @param profissionalId
+     * @param dto
+     * @param redirectAttributes
+     * @return
+     * @throws IOException
+     * @throws ParseException
+     */
+    @PostMapping("/contratar-servico/profissional/{profissionalId}")
+    @RolesAllowed({RoleType.USER})
+    public ModelAndView  saveContratedServiceProfessional(
+            JobRequestDTO dto,
+            RedirectAttributes redirectAttributes,
+            @PathVariable Long profissionalId,
+            BindingResult errors
+    ) throws IOException, ParseException {
+        String currentUserEmail = authentication.getEmail();
+
+        System.out.println(dto);
+
+        Optional<Individual> oCliente = individualService.findByEmail(currentUserEmail);
+
+        if(!oCliente.isPresent()){
+            throw new EntityNotFoundException("O usuário não foi encontrado!");
+        }
+
+        Optional<Expertise> oExpertise = expertiseService.findById(dto.getExpertiseId());
+
+        if(!oExpertise.isPresent()){
+            throw new EntityNotFoundException("Especialidade não foi encontrada!");
+        }
+
+        JobRequest jobRequest = new JobRequest();
+        jobRequest.setExpertise(oExpertise.get());
+        jobRequest.setUser(oCliente.get());
+        jobRequest.setClientConfirmation(true);
+        jobRequest.setQuantityCandidatorsMax(1);
+        jobRequest.setDateCreated(LocalDate.now());
+        jobRequest.setDateTarget(DateUtil.getThisMonth()); // para este mês
+        jobRequest.setDescription(oExpertise.get().getDescription());
+        jobRequest.setProfessionalConfirmation(true);
+        jobRequest.setStatus(JobRequest.Status.TO_DO);
+
+        Optional<User> oUser = userService.findById(profissionalId);
+
+        Optional<ProfessionalServiceOffering> oProfessionalServiceOffering = professionalServiceOfferingService.findById(dto.getProfessionalServiceOfferingId());
+        if(!oProfessionalServiceOffering.isPresent()){
+            throw new EntityNotFoundException("Serviço do profissional não foi encontrada!");
+        }
+        jobRequest.setServiceOffering(oProfessionalServiceOffering.get());
+
+        jobRequestService.save(jobRequest);
+
+        JobCandidate jobCandidate = new JobCandidate(jobRequest, oUser.get());
+        jobCandidateService.save(jobCandidate);
+
+        if(!oUser.isPresent()){
+            throw new EntityNotFoundException("Profissional não foi encontrado!");
+        }
+
+        JobContracted jobContracted = new JobContracted();
+        jobContracted.setJobRequest(jobRequest);
+        jobContracted.setUser(oUser.get());
+        jobContracted.setHiredDate(LocalDate.now());
+
+        jobContractedService.save(jobContracted);
+
+        jobRequest.setStatus(JobRequest.Status.TO_DO);
+        jobRequestService.save(jobRequest);
+
+        redirectAttributes.addFlashAttribute("msg", "Pedido foi enviado, o profissional receberá uma notificação!!");
+
+        return new ModelAndView("redirect:/minha-conta/cliente#paraFazer");
     }
 }

@@ -32,7 +32,6 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="assets/libraries/materialize/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="assets/resources/styles/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
     <link href="assets/resources/styles/tags/template-tag.css" type="text/css" rel="stylesheet"
           media="screen,projection"/>

@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="col s12 l6 spacing-buttons">
-                    <a href="minha-conta/profissional/meus-jobs" class="dark-color-text">
+                    <a href="minha-conta/empresa/meus-jobs" class="dark-color-text">
                         <div class="active-profission no-padding">
                             <h3 class="center"><strong><i class="medium material-icons">chrome_reader_mode</i></strong></h3>
                             <h4 class="center"><strong>Minhas Solicitações</strong></h4>
@@ -44,7 +44,7 @@
                     </a>
                 </div>
                 <div class="col s12 l6 spacing-buttons">
-                    <a href="minha-conta/profissional/especialidades" class="dark-color-text">
+                    <a href="minha-conta/empresa/especialidades" class="dark-color-text">
                         <div class="active-profission no-padding">
                             <h3 class="center"><strong><i class="medium material-icons">assignment_ind</i></strong></h3>
                             <h4 class="center"><strong>Minhas Especialidades</strong></h4>
@@ -52,7 +52,7 @@
                     </a>
                 </div>
                 <div class="col s12 l6 spacing-buttons">
-                    <a href="minha-conta/profissional/servicos" class="dark-color-text">
+                    <a href="minha-conta/empresa/servicos" class="dark-color-text">
                         <div class="active-profission no-padding">
                             <h3 class="center"><strong><i class="medium material-icons">work</i></strong></h3>
                             <h4 class="center"><strong>Meus Serviços</strong></h4>
@@ -60,18 +60,10 @@
                     </a>
                 </div>
                 <div class="col s12 l6 spacing-buttons">
-                    <a href="minha-conta/profissional/meus-anuncios" class="dark-color-text">
+                    <a href="minha-conta/empresa/meus-anuncios" class="dark-color-text">
                         <div class="active-profission no-padding">
                             <h3 class="center"><strong><i class="medium material-icons">store</i></strong></h3>
-                            <h4 class="center"><strong>Minha Loja</strong></h4>
-                        </div>
-                    </a>
-                </div>
-                <div class="col s12 l6 spacing-buttons">
-                    <a href="minha-conta/profissional/minha-agenda" class="dark-color-text">
-                        <div class="active-profission no-padding">
-                            <h3 class="center"><strong><i class="medium material-icons">event_note</i></strong></h3>
-                            <h4 class="center"><strong>Minha Agenda</strong></h4>
+                            <h4 class="center"><strong>Meus Anúncios</strong></h4>
                         </div>
                     </a>
                 </div>

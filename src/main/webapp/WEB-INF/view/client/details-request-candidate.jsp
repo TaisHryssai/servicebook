@@ -214,37 +214,6 @@
                         </div>
                     </c:if>
 
-                    <c:if test="${jobCandidate.getJobRequest().status == 'CLOSED'}">
-                        <div class="row center-align">
-                            <h5>Avaliação:</h5>
-
-                            <a href="javascript:void(0)" onclick="Avaliar(1)">
-                                <img width="50px" src="assets/resources/images/star0.png" id="s1"></a>
-
-                            <a href="javascript:void(0)" onclick="Avaliar(2)">
-                                <img width="50px" src="assets/resources/images/star0.png" id="s2"></a>
-
-                            <a href="javascript:void(0)" onclick="Avaliar(3)">
-                                <img width="50px" src="assets/resources/images/star0.png" id="s3"></a>
-
-                            <a href="javascript:void(0)" onclick="Avaliar(4)">
-                                <img width="50px" src="assets/resources/images/star0.png" id="s4"></a>
-
-                            <a href="javascript:void(0)" onclick="Avaliar(5)">
-                                <img width="50px" src="assets/resources/images/star0.png" id="s5"></a>
-
-                            <div class="row" style="margin-top: 15px">
-                                <div class="input-field col s12 offset-m2 m8">
-                                    <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                    <label for="textarea1">Deixe um comentário</label>
-                                </div>
-
-                                <div class="col s12">
-                                    <button class="waves-effect waves-light btn spacing-buttons">Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </c:if>
                 </div>
             </div>
         </main>

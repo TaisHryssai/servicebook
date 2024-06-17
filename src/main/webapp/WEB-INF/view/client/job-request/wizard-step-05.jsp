@@ -1,7 +1,9 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <t:template title="Etapa 05">
     <jsp:body>
 
@@ -14,52 +16,90 @@
                         </c:forEach>
                     </div>
                 </c:if>
-                <c:if test="${not empty msg}">
-                    <div class="row">
-                        <div class="col s12">
-                            <div class="card-panel red lighten-1 msg-view center-align">
-                                <span class="white-text">${msg}</span>
-                            </div>
-                        </div>
-                    </div>
-                </c:if>
 
                 <div class="section">
+                    <div>
+                        <h4 class="center"><strong>Estes ${professionalsAmount} profissionais tem a especialidade que
+                            procura!</strong></h4>
+                        <h5 class="center">Para ter acesso a lista completa de profissionais deste especialidade ou
+                            melhor, para receber o contato de apenas profissionais interessados e disponíveis para a
+                            data especificada, podendo você verificar a reputação dos mesmos e experiência, solicitar
+                            orçamento e por fim, avaliar o serviço prestado.</h5>
+                        <div class="container">
+                            <div class="section">
+                                <div class="row">
+                                    <c:if test="${not empty professionals}">
+                                        <c:forEach var="professional" items="${professionals}">
 
-                    <!--   Icon Section   -->
-                    <div class="row">
-                        <h4 class="center secondary-color-text">Anexe fotos do serviço, se houver.</h4>
-
-                        <div class="row center">
-                            <div class="rowspacing-standard">
-                                <form method="post" action="requisicoes/passo-5" enctype="multipart/form-data">
-                                    <div class="col s12 m6 offset-m3 l4 offset-l4 ">
-                                        <div class="file-field input-field">
-                                            <div class="btn">
-                                                <span>Choose File</span>
-                                                <input type="file" value="${dto.imageFile}" name="imageFile" accept=".jpg, .jpeg, .png">
+                                            <div class="col s12 m6 card-panel" style="padding: 0">
+                                                <a href="profissionais/detalhes/${professional.id}">
+                                                    <div>
+                                                        <div class="card-title" style="margin: 0">
+                                                            <p class="label_especialidade upper-case"
+                                                               truncate>${professional.name}</p>
+                                                        </div>
+                                                        <div class="center-align div-image">
+                                                            <c:choose>
+                                                                <c:when test="${professional.profilePicture != null}">
+                                                                    <img src="${professional.profilePicture}"
+                                                                         class="avatar" alt="Foto de perfil">
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <img src="assets/resources/images/no-photo.png"
+                                                                         class="avatar"
+                                                                         alt="Sem foto de perfil">
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <div class="divider"></div>
+                                                        </div>
+                                                        <div class="center-align">
+                                                            <c:forEach var="expertise"
+                                                                       items="${professional.expertises}">
+                                                                <div class="col expertise-label">${expertise.name}</div>
+                                                            </c:forEach>
+                                                        </div>
+                                                    </div>
+                                                </a>
                                             </div>
-                                            <div class="file-path-wrapper">
-                                                <input class="file-path validate" placeholder="image.jpg"  type="text">
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${empty professionals}">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col s12 spacing-buttons     ">
+                                                    <div class="none-profission center">
+                                                        <i class="material-icons large">
+                                                            sentiment_dissatisfied </i>
+                                                        <p class="center text-form-dados">
+                                                            Nenhum profissional encontrado!
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col s6 m6 spacing-buttons">
-                                        <div class="center">
-                                            <a href="requisicoes?passo=4" class="waves-effect waves-light btn btn-gray" href="#!">Voltar</a>
-                                        </div>
-                                    </div>
-                                    <div class="col s6 m6 spacing-buttons">
-                                        <div class="center">
-                                            <button class="waves-effect waves-light btn" >Próximo</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <sec:authorize access="!isAuthenticated()">
+                        <div>
+                            <div class="row center-align">
+                                <p> LOGIN PARA EFETIVAR O SEU PEDIDO E RECEBER OS CONTATOS DOS PROFISSIONAIS!</p>
+                                <a class="waves-effect waves-light btn" href="login">Entrar</a>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <div class="row center-align">
+                                <p>VOCÊ AINDA NÃO TEM UMA CONTA?</p>
+                                <a class="waves-effect waves-light btn" href="cadastrar-se">Cadastrar-se</a>
+                            </div>
+                        </div>
+                    </sec:authorize>
                 </div>
             </div>
         </main>
+
     </jsp:body>
 </t:template>

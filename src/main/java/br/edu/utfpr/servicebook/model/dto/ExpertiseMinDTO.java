@@ -12,5 +12,5 @@ import java.io.Serializable;
 public class ExpertiseMinDTO implements Serializable {
 
     private String name;
-
+    private Long categoryId;
 }

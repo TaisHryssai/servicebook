@@ -20,7 +20,7 @@ public class Payment {
 
     @NonNull
     @Column(unique = true)
-    private Integer paymentId;
+    private Long paymentId;
 
     @NonNull
     @Column()

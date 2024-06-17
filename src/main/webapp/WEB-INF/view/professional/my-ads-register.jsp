@@ -42,7 +42,7 @@
                         <!-- Formulário de adição de especialidade -->
                         <div class="row">
                             <div class="col s12">
-                                <p class="darken-text"> <strong> TIPO DE ANÚNCIO </strong> </p>
+                                <span class="darken-text title-section"> <strong> TIPO DE ANÚNCIO </strong> </span>
                                 <hr>
                             </div>
 
@@ -66,7 +66,7 @@
                     </div>
                     <div class="row">
                         <div class="col s12 type-individual">
-                            <p class="darken-text"> <strong> SERVIÇO </strong> </p>
+                            <span class="darken-text title-section"> <strong> SERVIÇO </strong> </span>
                             <hr>
                         </div>
                         <div class="col s12 type-individual" id="type-individual">
@@ -110,7 +110,7 @@
                                     <div class="col s12">
                                             <label>
                                                 <input type="checkbox" id="add_price"/>
-                                                <span> <strong> ADICIONAR PREÇO </strong></span>
+                                                <span class="title-section"> <strong> ADICIONAR PREÇO </strong></span>
                                             </label>
                                         </p>
                                         <hr>

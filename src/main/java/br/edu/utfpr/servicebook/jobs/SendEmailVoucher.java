@@ -70,28 +70,29 @@ public class SendEmailVoucher implements Job {
         String emailProfessional = (String) oProfessional.get().getEmail();
 
         String text = "<html><body>" +
-                "<h1>Olá, "+ email1 +"</h1>" +
-                "<p>Segue o voucher por anexo que deverá ser apresentado no momento da realização do serviço.</p>" +
+                "<h1>Olá, "+ oUser.get().getName() +"</h1>" +
+                "<p>Segue abaixo o link para acessar o seu voucher. Com ele é possível verificar os dados relacionados ao seu pedido.</p>" +
                 "<p>Qualquer informação pode ser obtida diretamente com o profissional, através do contato disponibilizado na plataforma.</p>" +
+                "<p><strong> Clique no link para acessar o seu voucher: </strong></p>" +
                 "<p><a href=\"" + voucher + "\" target=\"_blank\">Ver o meu Voucher</a></p>"+
                 "<p>Atenciosamente, </p>" +
                 "<p>Equipe ServiceBook. </p>" +
                 "</body></html>";
 
         String textProfessional = "<html><body>" +
-                "<h1>Olá, "+ email1 +"</h1>" +
-                "<p>Segue o voucher por anexo que deverá ser apresentado pelo cliente no momento da realização do serviço.</p>" +
+                "<h1>Olá, "+ oProfessional.get().getName() +"</h1>" +
+                "<p>Segue o voucher emitido pelo cliente referente ao pedido de serviço.</p>" +
                 "<p>Serviço solicitado por: <strong>"+ oUser.get().getName() +"</strong>.</p>" +
-                "<p>Ele est&aacute; dispon&iacute;vel no seguinte link:</p>" +
-                "<p><a href=\"" + voucher + "\" target=\"_blank\">Ver o meu Voucher</a></p>"+
+                "<p>Serviço solicitado: <strong>"+ service +"</strong>.</p>" +
+                "<p><strong> Clique no link para acessar o voucher disponível: </strong></p>" +
+                "<p><a href=\"" + voucher + "\" target=\"_blank\">Ver o Voucher</a></p>"+
                 "<p>Atenciosamente, </p>" +
                 "<p>Equipe ServiceBook. </p>" +
                 "</body></html>";
-
         try {
 
-            emailSenderService.sendHTMLEmail(email1, "Service Book - Comprovante de Pagamento", text);
-            emailSenderService.sendHTMLEmail(email1, "Service Book - Comprovante de Pagamento", textProfessional);
+            emailSenderService.sendHTMLEmail(email1, "Service Book - Voucher de Pagamento", text);
+            emailSenderService.sendHTMLEmail(email1, "Service Book - Voucher de Pagamento", textProfessional);
 
         } catch (MessagingException e) {
             System.out.println(e.getMessage());

@@ -20,6 +20,8 @@ public class JobRequestDTO implements Serializable {
     @NotNull(message = "Especialidade inválida! Por favor, selecione uma especialidade de um profissional.", groups = RequestExpertiseGroupValidation.class)
     private Long expertiseId;
 
+    private Long professionalServiceOfferingId;
+
     private Long clientId;
     private Integer dateProximity;
     private LocalDate dateCreated;

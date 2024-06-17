@@ -35,12 +35,26 @@
                         </c:if>
 
                         <c:if test="${not empty job.jobRequest.jobImages}">
-                            <c:forEach var="jobImage" items="${job.jobRequest.jobImages}">
-                                <div class="carousel-item blue white-text col-image-job-request">
-                                    <img src="${jobImage.path}" width="150px" height="150px"
-                                         alt="image_job">
-                                </div>
-                            </c:forEach>
+                            <div class="carousel carousel-slider center">
+                                <c:forEach var="image" items="${job.jobRequest.jobImages}">
+                                    <div class="carousel-item white white-text" href="#${image.id}">
+                                        <img src="${image.path}" class="avatar" style="height: 300px; position: relative;">
+                                        <div class="carousel-fixed-item center">
+                                            <div class="left">
+                                                <a href="Previo" class="movePrevCarousel middle-indicator-text waves-effect waves-light content-indicator">
+                                                    <i class="material-icons left middle-indicator-text">chevron_left</i>
+                                                </a>
+                                            </div>
+                                            <div class="right">
+                                                <a href="Siguiente" class="moveNextCarousel middle-indicator-text waves-effect waves-light content-indicator">
+                                                    <i class="material-icons right middle-indicator-text">chevron_right</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+
                         </c:if>
 
                         <span class="card-title"> <i class="material-icons small blue-color-text icon_default">location_on</i>
@@ -77,3 +91,34 @@
 <div class="container col s12 center-align">
     <t:pagination-tab-ajax pagination="${pagination}"></t:pagination-tab-ajax>
 </div>
+<style>
+    .carousel{
+        height: 200px !important;
+    }
+    .carousel .carousel-fixed-item.center {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        transform: translateY(-50%);
+        justify-content: space-between;
+    }
+
+    .carousel .carousel-fixed-item .left,
+    .carousel .carousel-fixed-item .right {
+        z-index: 1;
+    }
+
+    .carousel .carousel-fixed-item .left {
+        margin-left: 10px;
+    }
+
+    .carousel .carousel-fixed-item .right {
+        margin-right: 10px;
+    }
+
+</style>
+<script>
+    $(document).ready(function(){
+        $('.carousel').carousel();
+    });
+</script>

@@ -54,34 +54,82 @@
                         <div class="row" style="margin-top: 20px">
                             <ul class="tabs tabs-fixed-width center open-jobs-tabs">
                                 <li class="tab" id="1">
-                                    <a id="tab-default" data-url="minha-conta/profissional/em-disputa"
-                                       href="#emDisputa">EM DISPUTA</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a id="tab-default" data-url="minha-conta/profissional/em-disputa"
+                                           href="#emDisputa">EM DISPUTA</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a id="tab-default" data-url="minha-conta/empresa/em-disputa"
+                                           href="#emDisputa">EM DISPUTA</a>
+                                    </c:if>
                                 </li>
                                 <li class="tab" id="2">
-                                    <a data-url="minha-conta/profissional/em-orcamento" href="#paraOrcamento">PARA
-                                        ORÇAMENTO</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a data-url="minha-conta/profissional/em-orcamento" href="#paraOrcamento">PARA
+                                            ORÇAMENTO</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a data-url="minha-conta/empresa/em-orcamento" href="#paraOrcamento">PARA
+                                            ORÇAMENTO</a>
+                                    </c:if>
                                 </li>
                                 <li class="tab" id="3">
-                                    <a data-url="minha-conta/profissional/para-contratar" href="#paraContratar">PARA
-                                        CONFIRMAR</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a data-url="minha-conta/profissional/para-contratar" href="#paraContratar">PARA
+                                            CONFIRMAR</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a data-url="minha-conta/empresa/para-contratar" href="#paraContratar">PARA
+                                            CONFIRMAR</a>
+                                    </c:if>
                                 </li>
                             </ul>
                             <ul class="tabs tabs-fixed-width center todo-jobs-tabs" style="display: none">
                                 <li class="tab" id="4">
-                                    <a id="tab-default-todo" data-url="minha-conta/profissional/para-fazer"
-                                       href="#paraFazer">PARA FAZER</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a id="tab-default-todo" data-url="minha-conta/profissional/para-fazer"
+                                           href="#paraFazer">PARA FAZER</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a id="tab-default-todo" data-url="minha-conta/empresa/para-fazer"
+                                           href="#paraFazer">PARA FAZER</a>
+                                    </c:if>
                                 </li>
                                 <li class="tab" id="5">
-                                    <a data-url="minha-conta/profissional/fazendo" href="#fazendo">FAZENDO</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a data-url="minha-conta/profissional/fazendo" href="#fazendo">FAZENDO</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a data-url="minha-conta/empresa/fazendo" href="#fazendo">FAZENDO</a>
+                                    </c:if>
                                 </li>
                             </ul>
                             <ul class="tabs tabs-fixed-width center closed-jobs-tabs" style="display: none">
                                 <li class="tab" id="6">
-                                    <a id="tab-default-closed" data-url="minha-conta/profissional/executados"
-                                       href="#executados">EXECUTADOS</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a id="tab-default-closed" data-url="minha-conta/profissional/executados"
+                                           href="#executados">EXECUTADOS</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a id="tab-default-closed" data-url="minha-conta/empresa/executados"
+                                           href="#executados">EXECUTADOS</a>
+                                    </c:if>
+
                                 </li>
                                 <li class="tab" id="7">
-                                    <a data-url="minha-conta/profissional/cancelados" href="#cancelados">CANCELADOS</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a data-url="minha-conta/profissional/cancelados" href="#cancelados">CANCELADOS</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a data-url="minha-conta/empresa/cancelados" href="#cancelados">CANCELADOS</a>
+                                    </c:if>
                                 </li>
                             </ul>
                         </div>

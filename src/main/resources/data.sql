@@ -3,7 +3,8 @@ VALUES ('Paraná', 'PR'),
        ('Santa Catarina', 'SC');
 
 INSERT INTO cities (path_image, name, state_id)
-VALUES ('https://i.imgur.com/qMKc4rf.png', 'Guarapuava', '1');
+-- VALUES ('https://i.imgur.com/qMKc4rf.png', 'Guarapuava', '1');
+VALUES ('https://i.imgur.com/qMKc4rf.png', 'Guarapuava', '1'), ('https://www.viajeparana.com/sites/viaje-parana/arquivos_restritos/files/imagem/2019-04/igreja_nossa_senhora_da_gloria_ca.jpg', 'Pitanga', '1');
 
 INSERT INTO addresses (neighborhood, number, postal_code, street, city_id)
 VALUES ('Industrial', '800', '85053525', 'Avenida Professora Laura Pacheco Bastos', '1');
@@ -23,12 +24,12 @@ VALUES ('admin@mail.com', 'true', 'Administrador', '(42) 99999-9995', 'true',
 INSERT INTO users
 (email, email_verified, name, phone_number, phone_verified, profile_picture, profile_verified,
  address_id, rating, profile, password, description)
-VALUES ('profissional1@mail.com', 'true', 'Nome do Primeiro Profissional', '(42) 99999-9991', 'true',
-        'https://i.imgur.com/owhNAKK.png', 'true', '1', 2, 'ROLE_USER','$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição profissional 1'),
-       ('profissional2@mail.com', 'true', 'Nome do Segundo Profissional', '(42) 99999-9992', 'true',
-        'https://i.imgur.com/sHAg9pz.png', 'true', '1', 4,'ROLE_USER', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição profissional 1'),
-       ('cliente1@mail.com', 'true', 'Nome do Primeiro Cliente', '(42) 99999-9993', 'true',
-        'https://i.imgur.com/y9dH2bJ.jpeg', 'true', '1', 5, 'ROLE_USER', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição profissional 1'),
+VALUES ('profissional1@mail.com', 'true', 'Duarte Trindade', '(42) 99999-9991', 'true',
+        'https://res.cloudinary.com/dgueb0wir/image/upload/v1717708789/images/perfil01_bpevao.png', 'true', '1', 2, 'ROLE_USER','$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição profissional 1'),
+       ('profissional2@mail.com', 'true', 'Margarida Macedo', '(42) 99999-9992', 'true',
+        'https://res.cloudinary.com/dgueb0wir/image/upload/v1717708789/images/perfil04_kq1jfw.png', 'true', '1', 4,'ROLE_USER', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição profissional 1'),
+       ('cliente1@mail.com', 'true', 'Luís Almeida', '(42) 99999-9993', 'true',
+        'https://res.cloudinary.com/dgueb0wir/image/upload/v1717708790/images/perfil03_ymoozz.png', 'true', '1', 5, 'ROLE_USER', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição profissional 1'),
        ('cliente2@mail.com', 'true', 'Nome do Segundo Cliente', '(42) 99999-9994', 'true',
         'https://i.imgur.com/owhNAKK.png', 'true', '1', 1, 'ROLE_USER', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição profissional 1'),
        ('profissional3@mail.com', 'true', 'Nome do Terceiro Profissional', '(42) 99999-9995', 'false',
@@ -43,7 +44,9 @@ INSERT INTO users
 VALUES ('empresa@mail.com', 'true', 'Nome Empresa', '(42) 99999-9994', 'true',
         'https://i.imgur.com/owhNAKK.png', 'true', '1', 1, 'ROLE_COMPANY', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição empresa 1'),
        ('empresa1@mail.com', 'true', 'Alguma Empresa', '(42) 99999-9996', 'true',
-        'https://i.imgur.com/owhNAKK.png', 'true', '1', 2, 'ROLE_COMPANY', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS', 'Descrição profissional 1');
+        'https://i.imgur.com/owhNAKK.png', 'true', '1', 2, 'ROLE_COMPANY', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS', 'Descrição profissional 1'),
+       ('thryssai@gmail.com', 'true', 'Tais Michele Hryssai da Luz', '(42) 99993-5496', 'true',
+        'https://i.imgur.com/owhNAKK.png', 'true', '1', 1, 'ROLE_COMPANY', '$2a$10$ZqgnFnwi6/8qjELs5.Y7rOXacIu/vbudYDl4vA55KDvDuGcpaEFzS',  'Descrição profissional 1');
 
 INSERT INTO individuals (cpf, gender, birth_date, id)
 VALUES ('982.988.640-93', 'MASCULINE', '2003-01-01', '2'),
@@ -73,7 +76,7 @@ INSERT INTO expertises (name, description, path_icon, category_id)
 VALUES ('Encanador', 'Realiza serviço como encanador', 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176874/servicebook/expertises/encanador_q7b9vg.svg', 7),
        ('Eletricista', 'Realiza serviço como eletricista', 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176874/servicebook/expertises/eletricista_tlqro5.svg', 7),
        ('Pintor', 'Realiza serviço como pintor', 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176875/servicebook/expertises/pintor_kfl3de.svg', 7),
-       ('Mecânico', 'Realiza serviço como mecânico', 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176876/servicebook/expertises/mecanico_quczum.svg', 7);
+       ('Mecânico', 'Realiza serviço como mecânico', 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176876/servicebook/expertises/mecanico_quczum.svg', 5);
 
 INSERT INTO professional_expertises (expertise_id, professional_id, rating, description)
 VALUES (1, 2, 1, 'descrição'),
@@ -87,6 +90,10 @@ VALUES (1, 2, 1, 'descrição'),
 INSERT INTO services (name, description, allow_scheduling, path_icon, expertise_id)
 VALUES ('Balanceamento', 'Balanceamento das rodas', false, 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176876/servicebook/expertises/mecanico_quczum.svg', 4),
        ('Troca de óleo', 'Troca do óleo do motor', false, 'https://res.cloudinary.com/dgueb0wir/image/upload/v1689176876/servicebook/expertises/mecanico_quczum.svg', 4);
+
+INSERT INTO PROFESSIONAL_SERVICE_OFFERINGS (DESCRIPTION,DURATION,NAME,PRICE,TYPE,UNIT,SERVICE_ID, USER_ID, EXPERTISE_ID, ID)
+values ('Balanceamento  Teste', '1 Hora','Balanceamento', 9.00, 'INDIVIDUAL', 'Hora', 1, 5, 4, 1),
+ ('Balanceamento com máquina importada1', '2 Horas', 'O balanceamento com 100% de garantia',219000,'COMBINED_PACKAGE','Hora', 2, 5, 4, 2);
 
 -- INSERT INTO professional_service_offerings (name, description, price, unit, duration, service_id, user_id, type, id)
 -- VALUES ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'INDIVIDUAL', 1),
@@ -103,36 +110,37 @@ VALUES ('Balanceamento', 'Balanceamento das rodas', false, 'https://res.cloudina
 --  ('Balanceamento com máquina importada', 'O balanceamento com 100% de garantia', 19000, 'Hora', '2 Horas', 1, 2, 'SIMPLE_PACKAGE', 2, 5);
 
 INSERT INTO companies (cnpj, id)
-VALUES ('98.988.640/0001-91', 7);
+VALUES ('98.988.640/0001-91', 8),
+       ('98.988.640/0001-91', 9);
 
 INSERT INTO job_requests
 (client_confirmation, date_created, date_target, description, professional_confirmation, quantity_candidators_max,
  status, client_id, expertise_id)
-VALUES ('false', '2021-01-01', '2021-01-01', 'Preciso de um Encanador 1!', 'true', '5', 'AVAILABLE', '2', '1'),
-       ('false', '2021-01-01', '2021-01-02', 'Preciso de um Encanador 2!', 'true', '10', 'AVAILABLE', '2', '1'),
-       ('false', '2021-01-01', '2021-01-07', 'Preciso de um Encanador 3!', 'true', '15', 'AVAILABLE', '2', '1'),
-       ('true', '2021-01-01', '2021-01-07', 'Preciso de um Encanador 30!', 'true', '15', 'TO_HIRED', '2', '1'),
-       ('false', '2021-01-01', '2021-01-08', 'Preciso de um Encanador 4!', 'true', '20', 'TO_DO', '2', '1'), -- 4
-       ('false', '2021-01-01', '2021-01-08', 'Preciso de um Encanador 5!', 'true', '20', 'DOING', '2', '1'),
-       ('false', '2021-01-01', '2021-01-08', 'Preciso de um Encanador 6!', 'true', '20', 'CANCELED', '2', '1'),
+VALUES ('false', '2024-01-01', '2024-01-01', 'Preciso de um Encanador 1!', 'true', '5', 'AVAILABLE', '2', '1'),
+       ('false', '2024-01-01', '2024-01-02', 'Preciso de um Encanador 2!', 'true', '10', 'AVAILABLE', '2', '1'),
+       ('false', '2024-01-01', '2024-01-07', 'Preciso de um Encanador 3!', 'true', '15', 'AVAILABLE', '2', '1'),
+       ('true', '2024-01-01', '2024-01-07', 'Preciso de um Encanador 30!', 'true', '15', 'TO_HIRED', '2', '1'),
+       ('false', '2024-01-01', '2024-01-08', 'Preciso de um Encanador 4!', 'true', '20', 'TO_DO', '2', '1'), -- 4
+       ('false', '2024-01-01', '2024-01-08', 'Preciso de um Encanador 5!', 'true', '20', 'DOING', '2', '1'),
+       ('false', '2024-01-01', '2024-01-08', 'Preciso de um Encanador 6!', 'true', '20', 'CANCELED', '2', '1'),
        ('false', '2022-11-29', '2022-12-13', 'Preciso de um Encanador 7!', 'true', '20', 'DOING', '3', '1'),
-       ('false', '2021-01-01', '2021-01-08', 'Preciso de um Encanador 8!', 'true', '20', 'DOING', '3', '1'),
-       ('false', '2021-01-01', '2021-01-30', 'Preciso de um Eletricista 1!', 'true', '5', 'TO_HIRED', '3', '2'),--10
-       ('false', '2021-01-01', '2021-02-02', 'Preciso de um Eletricista 2!', 'true', '10', 'CLOSED', '3', '2'),
-       ('true', '2021-01-01', '2021-03-01', 'Preciso de um Eletricista 3!', 'true', '15', 'TO_HIRED', '4', '2'),
-       ('false', '2021-01-01', '2021-04-01', 'Preciso de um Eletricista 4!', 'true', '20', 'TO_DO', '4', '2'), -- 13
-       ('false', '2021-01-01', '2021-04-01', 'Preciso de um Eletricista 5!', 'true', '20', 'CLOSED', '4', '2'),
-       ('false', '2021-01-01', '2021-04-01', 'Preciso de um Eletricista 6!', 'true', '20', 'CLOSED', '4', '2'),
-       ('true', '2021-01-01', '2021-01-01', 'Preciso de um Pintor 1!', 'true', '5', 'TO_HIRED', '4', '3'),
-       ('true', '2021-01-01', '2021-01-02', 'Preciso de um Pintor 2!', 'true', '10', 'AVAILABLE', '4', '3'),
-       ('true', '2021-01-01', '2021-01-03', 'Preciso de um Pintor 3!', 'true', '15', 'TO_HIRED', '4', '3'),
-       ('true', '2023-01-01', '2021-01-04', 'Preciso de um Pintor 4!', 'true', '20', 'TO_DO', '3', '3'), -- 19
-       ('true', '2023-07-01', '2021-01-04', 'Preciso de um Pintor 5!', 'true', '20', 'CLOSED', '4', '3'),
-       ('true', '2023-04-01', '2021-01-04', 'Preciso de um Pintor 6!', 'true', '20', 'DOING', '4', '3'),
-       ('true', '2023-04-26', '2021-08-27', 'Preciso de um Mecânico 1!', 'true', '5', 'AVAILABLE', '4', '4'),
-       ('true', '2023-05-26', '2021-08-28', 'Preciso de um Mecânico 2!', 'true', '10', 'AVAILABLE', '4', '4'),
-       ('true', '2023-03-26', '2021-09-01', 'Preciso de um Mecânico 3!', 'true', '15', 'AVAILABLE', '4', '4'),
-       ('true', '2023-02-26', '2021-09-10', 'Preciso de um Mecânico 4!', 'true', '20', 'AVAILABLE', '4', '4'),
+       ('false', '2024-01-01', '2024-01-08', 'Preciso de um Encanador 8!', 'true', '20', 'DOING', '3', '1'),
+       ('false', '2024-01-01', '2024-01-30', 'Preciso de um Eletricista 1!', 'true', '5', 'TO_HIRED', '3', '2'),--10
+       ('false', '2024-01-01', '2024-02-02', 'Preciso de um Eletricista 2!', 'true', '10', 'CLOSED', '3', '2'),
+       ('true', '2024-01-01', '2024-03-01', 'Preciso de um Eletricista 3!', 'true', '15', 'TO_HIRED', '4', '2'),
+       ('false', '2024-01-01', '2024-04-01', 'Preciso de um Eletricista 4!', 'true', '20', 'TO_DO', '4', '2'), -- 13
+       ('false', '2024-01-01', '2024-04-01', 'Preciso de um Eletricista 5!', 'true', '20', 'CLOSED', '4', '2'),
+       ('false', '2024-01-01', '2024-04-01', 'Preciso de um Eletricista 6!', 'true', '20', 'CLOSED', '4', '2'),
+       ('true', '2024-01-01', '2024-01-01', 'Preciso de um Pintor 1!', 'true', '5', 'TO_HIRED', '4', '3'),
+       ('true', '2024-01-01', '2024-01-02', 'Preciso de um Pintor 2!', 'true', '10', 'CLOSED', '4', '4'),
+       ('true', '2024-01-01', '2024-01-03', 'Preciso de um Pintor 3!', 'true', '15', 'TO_HIRED', '4', '3'),
+       ('true', '2023-01-01', '2024-01-04', 'Preciso de um Pintor 4!', 'true', '20', 'TO_DO', '3', '3'), -- 19
+       ('true', '2023-07-01', '2024-01-04', 'Preciso de um Pintor 5!', 'true', '20', 'CLOSED', '4', '3'),
+       ('true', '2023-04-01', '2024-01-04', 'Preciso de um Pintor 6!', 'true', '20', 'DOING', '4', '3'),
+       ('true', '2023-04-26', '2024-08-27', 'Preciso de um Mecânico 1!', 'true', '5', 'AVAILABLE', '4', '4'),
+       ('true', '2023-05-26', '2024-08-28', 'Preciso de um Mecânico 2!', 'true', '10', 'AVAILABLE', '4', '4'),
+       ('true', '2023-03-26', '2024-09-01', 'Preciso de um Mecânico 3!', 'true', '15', 'AVAILABLE', '4', '4'),
+       ('true', '2023-02-26', '2024-09-10', 'Preciso de um Mecânico 4!', 'true', '20', 'AVAILABLE', '4', '4'),
        ('true', '2023-02-16', '2023-01-17', 'Preciso de um Mecânico 5!', 'true', '20', 'CLOSED', '4', '4');
 
 
@@ -144,15 +152,15 @@ VALUES ('Ótimo Encanador!', '5', '19', '5', '2024-04-01', '2024-08-26'),
        ('Bom Encanador!', '3', '5', '2', '2024-04-01', '2024-08-26'),
        ('Bom Encanador!', '3', '8', '2', '2024-04-01', '2024-08-26'),
        ('Bom Encanador!', '3', '9', '2', '2024-04-01', '2024-08-26'),
-       ('Péssimo Encanador!', '1', '6', '2', '2024-04-01', '2024-08-26'),
+       ('Péssimo Encanador!', '1', '6', '6', '2024-04-01', '2024-08-26'),
        ('Bom Eletricista!', '3', '11', '2', '2024-04-01', '2024-08-26'),
        ('Péssimo Eletricista!', '1', '12', '2', '2024-04-01', '2024-08-26'),
        ('Bom Pintor!', '3', '15', '2', '2024-04-01','2024-08-26'),
        ('Bom Pintor!', '3', '20', '2', '2024-04-01', '2024-08-26'),
-       ('Bom Pintor!', '3', '21', '2', '2024-04-01', '2024-08-26'),
+       ('Bom Pintor!', '3', '17', '2', '2024-04-01', '2024-08-26'),
+       ('Bom Pintor!', '3', '1', '2', '2024-05-01', '2024-05-26'),
+       ('Bom Pintor!', '3', '4', '2', '2024-05-01', '2024-05-26'),
        ('Péssimo Pintor!', '1', '14', '2', '2024-04-01', '2024-08-26');
-
-
 
 INSERT INTO job_candidates (job_id, professional_id, chosen_by_budget)
 VALUES ('1', '2', 'false'),
@@ -160,8 +168,10 @@ VALUES ('1', '2', 'false'),
        ('1', '6', 'false'),
        ('2', '2', 'false'),
        ('3', '2', 'true'),
-       ('17', '2', 'false');
-
+       ('6', '2', 'false'),
+       ('17', '2', 'false'),
+       ('4', '2', 'false'),
+       ('6', '6', 'true');
 
 INSERT INTO follows (client_id, professional_id)
 VALUES (4, 2);
@@ -184,5 +194,24 @@ VALUES ('Hora'),
        ('Unidade');
 
 
-INSERT INTO payments (id, payment_id, status)
-VALUES (1, 1, 'approved')
+-- INSERT INTO payments (id, payment_id, status)
+-- VALUES (1, 1, 'approved');
+--
+INSERT INTO assessment_professionals (id, comment, date, quality, client_id, job_request_id, professional_id)
+VALUES (1, 'Legal', '2024-06-01', 4, 4, 14, 2),
+       (2, 'Pontual', '2024-06-02', 4, 4, 14, 5);
+
+INSERT INTO assessment_responses (id,response, date, assessment_professional, professional_id)
+VALUES (1,'Legal teu zoio', '2024-06-01', 1, 2),
+       (2,'Muito obrigada', '2024-06-01', 2, 5);
+
+INSERT INTO assessment_professionals_files (id,path_image, assessment_professional_id)
+VALUES (1,'http://res.cloudinary.com/dgueb0wir/image/upload/v1718155628/txvfo0gilijknjsrnsqr.jpg', 1),
+       (2,'http://res.cloudinary.com/dgueb0wir/image/upload/v1718155628/txvfo0gilijknjsrnsqr.jpg', 2);
+
+INSERT INTO job_images (id, path, job_request_id)
+VALUES (1,'https://res.cloudinary.com/dgueb0wir/image/upload/v1713823542/jobs/yof94o7nvsmeay8g1xto.jpg', 14),
+       (2,'https://res.cloudinary.com/dgueb0wir/image/upload/v1713823339/jobs/hghg8tnxh96zz5yo7nva.jpg', 14),
+       (3,'https://res.cloudinary.com/dgueb0wir/image/upload/v1713823542/jobs/yof94o7nvsmeay8g1xto.jpg', 1),
+       (4,'https://res.cloudinary.com/dgueb0wir/image/upload/v1713823542/jobs/yof94o7nvsmeay8g1xto.jpg', 2),
+       (5,'https://res.cloudinary.com/dgueb0wir/image/upload/v1713823339/jobs/hghg8tnxh96zz5yo7nva.jpg', 3);

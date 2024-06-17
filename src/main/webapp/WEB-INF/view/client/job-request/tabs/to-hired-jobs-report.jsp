@@ -16,7 +16,7 @@
         </div>
     </div>
 </c:if>
-
+to-hired
 <c:forEach var="job" items="${jobs}">
     <div class="container">
         <div class="row card-request spacing-standard">

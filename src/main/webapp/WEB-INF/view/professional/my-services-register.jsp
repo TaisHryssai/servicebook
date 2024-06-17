@@ -16,6 +16,20 @@
                     <div class="row">
 
                         <t:message-box/>
+                        <div class="col s12 l12 breadcrumbs" style="margin-top: 20px">
+                            <a href="${pageContext.request.contextPath}/">Início</a> &gt;
+
+                            <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                <a href="${pageContext.request.contextPath}/minha-conta/profissional">Minha Conta</a> &gt;
+                                <a href="${pageContext.request.contextPath}/minha-conta/profissional/servicos">Meus Serviços</a> &gt;
+                            </c:if>
+
+                            <c:if test="${access_type eq 'COMPANY'}">
+                                <a href="${pageContext.request.contextPath}/minha-conta/empresa">Minha Conta</a> &gt;
+                                <a href="${pageContext.request.contextPath}/minha-conta/empresa/servicos">Meus Serviços</a> &gt;
+                            </c:if>
+                            Novo Serviço
+                        </div>
 
                         <div class="col s12">
                             <h3 class="secondary-color-text">Adicione um serviço de ${expertise.name}</h3>
@@ -23,8 +37,13 @@
 
                         <!-- Formulário de adição de especialidade -->
                         <div class="col s12">
-                            <form action="minha-conta/profissional/servicos"
-                                  method="post">
+                            <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                <form action="minha-conta/profissional/servicos" method="post">
+                            </c:if>
+
+                            <c:if test="${access_type eq 'COMPANY'}">
+                                <form action="minha-conta/empresa/servicos" method="post">
+                            </c:if>
 
                                 <div class="input-field">
                                     <select id="expertise-select" name="expertiseId" value="${expertise.id}">
@@ -61,8 +80,16 @@
                                 </blockquote>
 
                                 <div class="right">
-                                    <a href="minha-conta/profissional/servicos?id=${expertise.id}"
-                                       class="waves-effect waves-light btn-flat">Cancelar</a>
+                                    <c:if test="${access_type eq 'PROFESSIONAL'}">
+                                        <a href="minha-conta/profissional/servicos?id=${expertise.id}"
+                                           class="waves-effect waves-light btn-flat">Cancelar</a>
+                                    </c:if>
+
+                                    <c:if test="${access_type eq 'COMPANY'}">
+                                        <a href="minha-conta/empresa/servicos?id=${expertise.id}"
+                                           class="waves-effect waves-light btn-flat">Cancelar</a>
+                                    </c:if>
+
                                     <button type="submit"
                                             class="btn waves-effect waves-light">Salvar
                                     </button>

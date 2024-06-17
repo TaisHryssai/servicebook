@@ -46,13 +46,13 @@
                         <div class="col s12 input-field select-visitor">
                             <label for="expertise-select">Selecione uma especialidade</label>
                             <select name="expertiseId" id="expertise-select" disabled>
-                                <option disabled selected value="null">Selecione uma especialidade</option>
+                                <option selected value="null">Selecione uma especialidade</option>
                             </select>
                             <input type="hidden" value="${dto_expertise.id}" id="dto_expertise">
                         </div>
 
                         <div class="col s12 input-field select-visitor">
-                            <label for="expertise-select">Selecione um serviço</label>
+                            <label for="service-select">Selecione um serviço</label>
                             <select name="serviceId" id="service-select" disabled required>
                                 <option disabled selected>Selecione um serviço</option>
                             </select>

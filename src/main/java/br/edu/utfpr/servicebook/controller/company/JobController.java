@@ -126,6 +126,8 @@ public class JobController {
         Optional<User> oUser = userService.findByEmail(authentication.getEmail());
         Optional<Company> oCompany = companyService.findById(oUser.get().getId());
 
+        System.out.println("EMPRESA");
+        System.out.println(oUser);
         if (!oCompany.isPresent()) {
             throw new EntityNotFoundException("A Empresa não foi encontrada!");
         }

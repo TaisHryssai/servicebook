@@ -67,7 +67,6 @@ public class JobRequestMapper {
         dto.setDateCreated(this.dateTimeFormatter.format(entity.getDateCreated()));
         dto.setDateTarget(this.dateTimeFormatter.format(entity.getDateTarget()));
         dto.setTextualDate(DateUtil.getTextualDate((entity.getDateTarget())));
-
         dto.setUser(entity.getUser());
         dto.setJobImages(entity.getJobImages());
 
