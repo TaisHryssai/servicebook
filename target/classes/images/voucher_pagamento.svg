@@ -1,0 +1,8 @@
+<svg width="842" height="595" viewBox="0 0 842 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="842" height="595" fill="white"/>
+    <rect width="842" height="87" fill="#2E75B6"/>
+    <text fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="72" font-weight="bold" letter-spacing="0em"><tspan x="196" y="210.609">CERTIFICADO</tspan></text>
+    <text id="student-name" fill="#2E75B6" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="48" font-weight="bold" letter-spacing="0em" x="421" y="340" text-anchor="middle">NOME </text>
+    <rect y="508" width="842" height="87" fill="#2E75B6"/>
+    <text id="year" fill="white" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="48" font-weight="bold" letter-spacing="0em" x="421" y="568.406" text-anchor="middle">ANO</text>
+</svg>

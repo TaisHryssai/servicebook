@@ -1,0 +1,8 @@
+br\edu\utfpr\servicebook\ServicebookApplicationTests.class
+br\edu\utfpr\servicebook\model\repository\ProfessionalExpertiseRepositoryTest.class
+br\edu\utfpr\servicebook\model\repository\JobOpeningsRequestRepositoryTest.class
+br\edu\utfpr\servicebook\util\DateUtilTest.class
+br\edu\utfpr\servicebook\controller\ProfessionalHomeControllerTest.class
+br\edu\utfpr\servicebook\model\repository\ExpertiseRepositoryTest.class
+br\edu\utfpr\servicebook\model\repository\JobOpeningsCandidateRepositoryTest.class
+br\edu\utfpr\servicebook\model\repository\JobOpeningsContractedRepositoryTest.class
