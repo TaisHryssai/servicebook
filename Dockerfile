@@ -14,15 +14,17 @@ ENV CLOUDINARY_API_SECRET=UPEpuVA_PWlah9B5BrkZMx7E5VE
 ENV PERSPECTIVE_API_KEY=AIzaSyAR_kjALl3HzXJRaG6V3eKlo1pgEBLwtKw
 ENV RECAPTCHA_SITE_KEY=6LfOFAMqAAAAAKvHm--E8qVYG7o_3yni9DVyEYgG
 ENV TWILIO_ACCOUNT_SID=AC30d2adc6827d2186d06f36785556ac8c
-ENV TWILIO_AUTH_TOKEN=8a3dd9e822be613339400f3f35102d96
+ENV TWILIO_AUTH_TOKEN=3283f771543b60f994dba6f9e651977f
 ENV TWILIO_VERIFY_SERVICE_SID=VA6c8f3c66a214024b60d809e1953dad68
 
 WORKDIR /app
 
 COPY target/servicebook-2.7.1-SNAPSHOT.jar /app/servicebook.jar
 #COPY pom.xml /app/pom.xml
+COPY src/main/webapp/assets/libraries/jquery.mask.js /app/src/main/webapp/assets/libraries/jquery.mask.js
 COPY src/main/webapp/assets/libraries/materialize/ /app/src/main/webapp/assets/libraries/materialize/
 COPY src/main/webapp/assets/libraries/select2/ /app/src/main/webapp/assets/libraries/select2/
+
 COPY src/main/webapp/assets/resources/images/ /app/src/main/webapp/assets/resources/images/
 COPY src/main/webapp/assets/resources/scripts/ /app/src/main/webapp/assets/resources/scripts/
 COPY src/main/webapp/assets/resources/styles/ /app/src/main/webapp/assets/resources/styles/

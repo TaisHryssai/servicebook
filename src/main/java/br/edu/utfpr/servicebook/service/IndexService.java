@@ -43,15 +43,23 @@ public class IndexService {
         Expertise expertise5 = new Expertise("Pedreiro", "realiza serviço como pedreiro", "https://res.cloudinary.com/dgueb0wir/image/upload/v1656539373/images/f0ykcuhr8kbnjsjg6hrr.svg");
         expertiseRepository.saveAll(Arrays.asList(expertise1, expertise2, expertise3, expertise4, expertise5));
 
-        Individual individual1 = new Individual("Darth Vader", "darth_vader@mail.com", "Senha123", "(42)9 9999-9999", CPFUtil.geraCPF());
+        Individual individual1 = new Individual("Administrador", "admin@mail.com", "Senha123", "(42)9 9999-9999", CPFUtil.geraCPF());
         individual1.setBirthDate(LocalDate.now());
         individual1.setProfilePicture("https://i.imgur.com/owhNAKK.png");
-        individual1.setDescription("Sua falta de fé é perturbadora.");
+        individual1.setDescription("");
         individual1.setRating(5);
         individual1.setDenounceAmount(1);
         individualRepository.save(individual1);
 
-        Individual individual2 = new Individual("Chewbacca", "chewbacca@mail.com", "Senha123", "(42)9 9999-9999", CPFUtil.geraCPF());
+        Individual individual2 = new Individual("Duarte Trindade", "duarte@mail.com", "Senha123", "(42)9 9999-9999", CPFUtil.geraCPF());
+        individual2.setBirthDate(LocalDate.now());
+        individual2.setProfilePicture("https://res.cloudinary.com/dgueb0wir/image/upload/v1717708789/images/perfil01_bpevao.png");
+        individual2.setDescription("");
+        individual2.setRating(5);
+        individual2.setDenounceAmount(1);
+        individualRepository.save(individual2);
+
+       /* Individual individual2 = new Individual("Chewbacca", "chewbacca@mail.com", "Senha123", "(42)9 9999-9999", CPFUtil.geraCPF());
         individual2.setBirthDate(LocalDate.now());
         individual2.setProfilePicture("https://i.imgur.com/owhNAKK.png");
         individual2.setDescription("Sua falta de fé é perturbadora.");
@@ -85,7 +93,7 @@ public class IndexService {
         jobRequestRepository.save(jb1);
 
         JobCandidate jobCandidate = new JobCandidate(jb1, individual1);
-        jobCandidateRepository.save(jobCandidate);
+        jobCandidateRepository.save(jobCandidate);*/
     }
 
 }
