@@ -91,8 +91,8 @@ public class SendEmailVoucher implements Job {
                 "</body></html>";
         try {
 
-            emailSenderService.sendHTMLEmail(email1, "Service Book - Voucher de Pagamento", text);
-            emailSenderService.sendHTMLEmail(email1, "Service Book - Voucher de Pagamento", textProfessional);
+            emailSenderService.sendHTMLEmail(emailClient, "Service Book - Voucher de Pagamento", text);
+            emailSenderService.sendHTMLEmail(emailProfessional, "Service Book - Voucher de Pagamento", textProfessional);
 
         } catch (MessagingException e) {
             System.out.println(e.getMessage());

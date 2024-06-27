@@ -75,6 +75,10 @@ public class UserService {
         return this.userRepository.countUsersWithoutExpertise();
     }
 
+    public List<User> findProfessionalsNotExist() {
+        return this.userRepository.findProfessionals();
+    }
+
     /**
      * Retorna uma lista de ExpertiseDTOs de um profissional
      * @param professional

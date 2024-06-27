@@ -109,4 +109,50 @@ public class TemplateUtil {
                 oProfessionalExpertise.get().getRating()
         );
     }
+
+    public UserTemplateStatisticInfo getCompanyStatisticInfo(User oProfessional, Long expertiseId) {
+
+        if (expertiseId == 0L) {
+            ProfessionalDTO professional = professionalMapper.toResponseDto(oProfessional);
+
+            return new UserTemplateStatisticInfo(
+                    jobContractedService.countByProfessional(oProfessional).orElse(0L),
+                    jobContractedService.countRatingByProfessional(oProfessional).orElse(0L),
+                    jobContractedService.countCommentsByProfessional(oProfessional).orElse(0L),
+                    professional.getRating()
+            );
+        }
+
+        if (expertiseId < 0) {
+            throw new InvalidParamsException("O identificador da especialidade não pode ser negativo. Por favor, tente novamente.");
+        }
+
+        Optional<Expertise> oExpertise = expertiseService.findById(expertiseId);
+        if (!oExpertise.isPresent()) {
+            throw new EntityNotFoundException("A especialidade não foi encontrada pelo id informado. Por favor, tente novamente.");
+        }
+
+        Optional<ProfessionalExpertise> oProfessionalExpertise = professionalExpertiseService.findByProfessionalAndExpertise(
+                oProfessional,
+                oExpertise.get()
+        );
+
+        if (!oProfessionalExpertise.isPresent()) {
+            throw new InvalidParamsException("A especialidade profissional não foi encontrada. Por favor, tente novamente.");
+        }
+
+        Long totalJobsByExpertise = jobContractedService.countByProfessionalAndJobRequest_Expertise(
+                oProfessional, oExpertise.get()).orElse(0L);
+        Long totalRatingsByExpertise = jobContractedService.countRatingByProfessionalAndJobRequest_Expertise(
+                oProfessional, oExpertise.get()).orElse(0L);
+        Long totalCommentsByExpertise = jobContractedService.countCommentsByProfessionalAndJobRequest_Expertise(
+                oProfessional, oExpertise.get()).orElse(0L);
+
+        return new UserTemplateStatisticInfo(
+                totalJobsByExpertise,
+                totalRatingsByExpertise,
+                totalCommentsByExpertise,
+                oProfessionalExpertise.get().getRating()
+        );
+    }
 }

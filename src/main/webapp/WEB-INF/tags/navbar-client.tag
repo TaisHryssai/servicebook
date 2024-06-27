@@ -60,12 +60,26 @@
 
         <li>
             <a class='dropdown-trigger circle truncate' href='#' data-target='dropdown-perfil'>
-                <img src="${userInfo.profilePicture}" class="responsive-img" style="width: 50px; padding: 15px 5px 0px 5px">
+                <c:choose>
+                    <c:when test="${userInfo.profilePicture != null}">
+                        <img src="${userInfo.profilePicture}" class=" responsive-img" alt="Foto de perfil" style="width: 50px; padding: 15px 5px 0px 5px">
+                    </c:when>
+                    <c:otherwise>
+                        <img src="assets/resources/images/no-photo.png" class="" alt="Sem foto de perfil" style="width: 50px; padding: 15px 5px 0px 5px">
+                    </c:otherwise>
+                </c:choose>
             </a>
             <ul id='dropdown-perfil' class='dropdown-content dropdown-content-width'>
                 <li style="background-color: #f0f0f0">
                     <div class="center-align">
-                        <img src="${userInfo.profilePicture}" class="responsive-img" style="width: 50px; padding: 15px 5px 0px 5px">
+                        <c:choose>
+                            <c:when test="${userInfo.profilePicture != null}">
+                                <img src="${userInfo.profilePicture}" class=" responsive-img" alt="Foto de perfil" style="width: 50px; padding: 15px 5px 0px 5px">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="assets/resources/images/no-photo.png" class="" alt="Sem foto de perfil" style="width: 50px; padding: 15px 5px 0px 5px">
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <span class="center upper-case disabled">${userInfo.name}</span>
                 </li>

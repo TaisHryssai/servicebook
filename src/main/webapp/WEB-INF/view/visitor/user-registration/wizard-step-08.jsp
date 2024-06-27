@@ -46,7 +46,7 @@
                                             <c:forEach var="professionalExpertise" items="${professionalExpertises}">
                                                 <div class="col s12 m5 offset-m1 card-expertise-list row">
                                                     <div class="col s2 delete-exerpertise expertise-icon">
-                                                        <i class="material-icons">work</i>
+                                                        <i class="material-icons" style="margin-top: 10px; font-size: 60px">work</i>
                                                     </div>
                                                     <div class="col s8">
                                                         <p class="center">

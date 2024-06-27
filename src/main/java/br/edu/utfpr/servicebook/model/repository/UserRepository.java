@@ -55,5 +55,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE EXISTS (SELECT pe FROM ProfessionalExpertise pe WHERE pe.professional = u AND pe.expertise = :expertise)")
     List<User> findByExpertise(Expertise expertise);
 
-
+    @Query("SELECT  e FROM User e WHERE e.profile = 'ROLE_USER'")
+    List<User> findProfessionals();
 }

@@ -673,6 +673,7 @@ public class UserRegisterController {
 
         if(isCompany){
             CompanyDTO userSessionDTO = (CompanyDTO) userWizardUtil.getWizardState(httpSession, CompanyDTO.class, UserWizardUtil.KEY_WIZARD_COMPANY);
+            userSessionDTO.setProfilePicture(null);
 
             validator.validate(userSessionDTO, errors, new Class[]{
                     IndividualDTO.RequestUserEmailInfoGroupValidation.class,
@@ -692,6 +693,7 @@ public class UserRegisterController {
         }
         else{
             IndividualDTO userSessionDTO = (IndividualDTO) userWizardUtil.getWizardState(httpSession, IndividualDTO.class, UserWizardUtil.KEY_WIZARD_INDIVIDUAL);
+            userSessionDTO.setProfilePicture(null);
 
             validator.validate(userSessionDTO, errors, new Class[]{
                     IndividualDTO.RequestUserEmailInfoGroupValidation.class,
