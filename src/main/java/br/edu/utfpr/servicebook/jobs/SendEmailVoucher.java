@@ -2,7 +2,6 @@ package br.edu.utfpr.servicebook.jobs;
 
 import br.edu.utfpr.servicebook.service.EmailSenderService;
 import br.edu.utfpr.servicebook.service.UserService;
-import com.itextpdf.layout.properties.TextAlignment;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -13,17 +12,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.Optional;
 import br.edu.utfpr.servicebook.model.entity.User;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-
 import java.io.ByteArrayOutputStream;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Text;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -97,41 +86,5 @@ public class SendEmailVoucher implements Job {
         } catch (MessagingException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    public byte[] generatePDF(String code, String service, String date, String professional, String client) throws JobExecutionException {
-        // criar PDF
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = new PdfWriter(outputStream);
-        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-        Document document = new Document(pdfDocument);
-
-        Text titleText = new Text("Comprovante de Pagamento\n\n")
-                .setFontSize(20)
-                .setBold();
-        Paragraph titleParagraph = new Paragraph(titleText)
-                .setTextAlignment(TextAlignment.CENTER);
-        document.add(titleParagraph);
-
-        Paragraph contentParagraph = new Paragraph()
-                .add(new Text("Voucher: ").setBold())
-                .add(new Text(code))
-                .add("\n")
-                .add(new Text("Serviço: ").setBold())
-                .add(new Text(service))
-                .add("\n")
-                .add(new Text("Data de Validade: ").setBold())
-                .add(new Text(date))
-                .add("\n\n")
-                .add(new Text("Profissional: : ").setBold())
-                .add(new Text(professional))
-                .add("\n\n")
-                .add(new Text("Cliente: ").setBold())
-                .add(new Text(client))
-                .add("\n\n");
-        document.add(contentParagraph);
-
-        document.close();
-        return outputStream.toByteArray();
     }
 }
